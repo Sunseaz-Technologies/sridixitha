@@ -1,0 +1,575 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#111827;
+    --sub:#6b7280;
+    --primary:#2563eb;
+}
+
+/* ===== PAGE ===== */
+
+body{
+    background:var(--bg);
+    font-family:'DM Sans',sans-serif;
+}
+
+.page-container{
+    max-width:1600px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+/* ===== HEADER ===== */
+
+.page-header{
+    margin-bottom:24px;
+}
+
+.page-title{
+    font-size:32px;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:6px;
+}
+
+.page-subtitle{
+    font-size:14px;
+    color:var(--sub);
+}
+
+/* ===== FILTER ===== */
+
+.filter-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:22px;
+    margin-bottom:24px;
+}
+
+.filter-wrapper{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    align-items:end;
+}
+
+.filter-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.filter-label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--sub);
+    text-transform:uppercase;
+}
+
+.filter-input{
+    height:46px;
+    min-width:220px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:0 16px;
+    background:#fff;
+    font-size:14px;
+}
+
+.filter-input:focus{
+    outline:none;
+    border-color:var(--primary);
+}
+
+.filter-btn{
+    height:46px;
+    padding:0 22px;
+    border:none;
+    border-radius:12px;
+    background:var(--primary);
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.filter-btn:hover{
+    background:#1d4ed8;
+}
+
+/* ===== TABLE ===== */
+
+.table-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:22px;
+    overflow:hidden;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#f9fafb;
+}
+
+thead th{
+    padding:18px 16px;
+    text-align:left;
+    font-size:11px;
+    font-weight:700;
+    color:var(--sub);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    white-space:nowrap;
+}
+
+tbody td{
+    padding:18px 16px;
+    border-top:1px solid var(--border);
+    vertical-align:middle;
+    font-size:14px;
+}
+
+tbody tr:hover{
+    background:#f9fbff;
+}
+
+/* ===== INFO ===== */
+
+.order-id{
+    font-weight:700;
+    color:#2563eb;
+}
+
+.customer-name{
+    font-weight:700;
+    margin-bottom:4px;
+    color:var(--text);
+}
+
+.customer-phone{
+    font-size:12px;
+    color:var(--sub);
+}
+
+.vendor-name{
+    font-weight:700;
+    color:#7c3aed;
+}
+
+.service-name{
+    font-weight:600;
+    color:var(--text);
+}
+
+/* ===== STATUS ===== */
+
+.status-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:110px;
+    height:36px;
+    padding:0 14px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.status-badge.paid{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.status-badge.pending{
+    background:#fff7ed;
+    color:#c2410c;
+}
+
+/* ===== TRANSACTION ===== */
+
+.txn-id{
+    font-size:12px;
+    color:#374151;
+    word-break:break-all;
+    line-height:1.5;
+}
+
+/* ===== IMAGE ===== */
+
+.proof-image{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:12px;
+    border:1px solid #d1d5db;
+}
+
+/* ===== BUTTON ===== */
+
+.edit-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    height:38px;
+    padding:0 14px;
+    border-radius:10px;
+    background:#2563eb;
+    color:#fff;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:700;
+}
+
+.edit-btn:hover{
+    background:#1d4ed8;
+    color:#fff;
+}
+
+/* ===== EMPTY ===== */
+
+.empty-row{
+    text-align:center;
+    padding:60px !important;
+    color:#6b7280;
+    font-size:15px;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:768px){
+
+    .page-container{
+        padding:15px;
+    }
+
+    .page-title{
+        font-size:26px;
+    }
+
+    .filter-wrapper{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .filter-group{
+        width:100%;
+    }
+
+    .filter-input{
+        width:100%;
+        min-width:100%;
+    }
+
+    .filter-btn{
+        width:100%;
+    }
+
+    table{
+        min-width:1500px;
+    }
+
+}
+
+</style>
+
+<div class="page-container">
+
+    <!-- HEADER -->
+    <div>
+
+            <h2 class="dashboard-heading">
+          My Services/Bookings
+            </h2>
+
+            <p class="dashboard-subheading">
+        View and manage all customer service orders and booking requests
+            </p>
+    </div>
+
+    <!-- FILTER -->
+
+    <div class="filter-card">
+
+        <form method="GET">
+
+            <div class="filter-wrapper">
+
+                <!-- STATUS -->
+
+                <div class="filter-group">
+
+                    <label class="filter-label">
+                        Payment Status
+                    </label>
+
+                    <select
+                        name="payment_status"
+                        class="filter-input"
+                    >
+
+                        <option value="">
+                            All Payments
+                        </option>
+
+                        <option value="paid"
+                            {% if request.GET.payment_status == "paid" %}selected{% endif %}>
+                            Paid
+                        </option>
+
+                        <option value="pending"
+                            {% if request.GET.payment_status == "pending" %}selected{% endif %}>
+                            Pending
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- DATE -->
+
+                <div class="filter-group">
+
+                    <label class="filter-label">
+                        Payment Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="date"
+                        value="{{ request.GET.date }}"
+                        class="filter-input"
+                    >
+
+                </div>
+
+                <button type="submit" class="filter-btn">
+                    Apply Filters
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="table-card">
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Vendor</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Total Amount</th>
+                        <th>Paid Amount</th>
+                        <th>Transaction ID</th>
+                        <th>Proof</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for p in payments %}
+
+                    <tr>
+
+                        <!-- ORDER -->
+
+                        <td>
+
+                            <div class="order-id">
+                                {{ p.booking.order_id }}
+                            </div>
+
+                        </td>
+
+                        <!-- CUSTOMER -->
+
+                        <td>
+
+                            <div class="customer-name">
+                                {{ p.booking.user.username }}
+                            </div>
+
+                            <div class="customer-phone">
+                                {{ p.booking.user.mobile }}
+                            </div>
+
+                        </td>
+
+                        <!-- VENDOR -->
+
+                        <td>
+
+                            <div class="vendor-name">
+
+                                {% if p.vendor %}
+                                    {{ p.vendor.username }}
+                                {% else %}
+                                    -
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+                        <!-- SERVICE -->
+
+                        <td>
+
+                            <div class="service-name">
+                                {{ p.service }}
+                            </div>
+
+                        </td>
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <span class="status-badge {{ p.status }}">
+                                {{ p.get_status_display }}
+                            </span>
+
+                        </td>
+
+                        <!-- TOTAL -->
+
+                        <td>
+
+                            ₹{{ p.total_amount }}
+
+                        </td>
+
+                        <!-- PAID -->
+
+                        <td>
+
+                            ₹{{ p.paid_amount }}
+
+                        </td>
+
+                        <!-- TRANSACTION -->
+
+                        <td>
+
+                            {% if p.transaction_id %}
+
+                                <div class="txn-id">
+                                    {{ p.transaction_id }}
+                                </div>
+
+                            {% else %}
+
+                                <span style="color:#9ca3af;">
+                                    Not Uploaded
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- PROOF -->
+
+                        <td>
+
+                            {% if p.screenshot %}
+
+                                <a
+                                    href="{{ p.screenshot.url }}"
+                                    target="_blank"
+                                >
+
+                                    <img
+                                        src="{{ p.screenshot.url }}"
+                                        class="proof-image"
+                                    >
+
+                                </a>
+
+                            {% else %}
+
+                                <span style="color:#9ca3af;">
+                                    No Proof
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            {{ p.created_at|date:"d M Y" }}
+
+                        </td>
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            <a
+                                href="{% url 'admin_edit_payment' p.id %}"
+                                class="edit-btn"
+                            >
+                                Edit
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="11" class="empty-row">
+                            No payment records found
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

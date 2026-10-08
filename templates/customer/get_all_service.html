@@ -1,0 +1,634 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+ <style>
+
+/* ========================= GLOBAL ========================= */
+
+body {
+    background: #f4f7fb;
+
+}
+:root {
+  --theme-color: #074c7d;
+  /* Blue */
+  --secondary-color: #ea5f01;
+  /* Orange */
+}
+
+.cat-section {
+  padding: 70px 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 15px;
+}
+
+
+.cat-card {
+  position: relative;
+  height: 150px;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0b1e34;
+  border-top: 2px solid var(--theme-color);
+  border-right: 2px solid var(--theme-color);
+  border-bottom: 2px solid var(--secondary-color);
+  border-left: 2px solid var(--secondary-color);
+  transition: 0.35s;
+}
+
+.cat-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 22px 52px rgba(234, 95, 1, 0.30);
+  border-color: var(--secondary-color);
+}
+
+/* ============================================
+   LISTING BADGE
+   ============================================ */
+.listing-pill {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--theme-color);
+  color: #fff;
+  font-size: 11px;
+  padding: 5px 13px;
+  border-radius: 20px;
+}
+
+/* ============================================
+   IMAGE + OVERLAY
+   ============================================ */
+.card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.cat-card:hover .card-img {
+  opacity: 1;
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(234, 121, 8, 0.2) 10%,
+      rgba(50, 111, 155, 0.9) 80%);
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.cat-card:hover .card-overlay {
+  opacity: 1;
+}
+
+/* ============================================
+   DEFAULT CONTENT
+   ============================================ */
+.card-default {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 2;
+  /* background: linear-gradient(145deg, #0a3151, #1e3f66); */
+  background: #ffff;
+}
+
+.cat-card:hover .card-default {
+  opacity: 0;
+}
+
+/* ICON */
+.card-icon {
+  width: 65px;
+  height: 65px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(191 228 255 / 20%);
+  border: 1.5px solid rgba(44, 111, 159, 0.4);
+  transition: 0.3s;
+}
+
+.cat-card:hover .card-icon {
+  background: rgba(234, 95, 1, 0.25);
+  border-color: var(--secondary-color);
+}
+
+/* TEXT */
+.card-default-title {
+  padding: 0px 5px;
+  font-size: 14px;
+  color: var(--theme-color);
+  font-weight: 700;
+  text-align: center;
+}
+
+.card-default-count {
+  font-size: 12px;
+  color: #ddd;
+  background: rgba(7, 76, 125, 0.18);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* ============================================
+   HOVER CONTENT
+   ============================================ */
+
+.card-hover {
+  position: absolute;
+  bottom: 0;
+  padding: 10px 20px;
+  z-index: 3;
+  opacity: 0;
+  /* transform: translateY(10px); */
+  transform: scale(1, 3);
+  transition: 0.3s;
+}
+
+.cat-card:hover .card-hover {
+  opacity: 1;
+  transform: translateY(0);
+
+}
+
+/* BADGE */
+.hover-badge {
+  background: var(--secondary-color);
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 8px 0;
+
+}
+
+
+
+/* TITLE */
+.hover-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* DESC */
+.hover-desc {
+  color: #ddd;
+  font-size: 12px;
+}
+
+/* BUTTON */
+.hover-btn {
+  font-size: 12px;
+  background: var(--secondary-color);
+  color: #fff;
+  padding: 2px 2px;
+  border-radius: 20px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.hover-btn:hover {
+  background: var(--secondary-color);
+}
+
+
+
+
+
+.vsl-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.cat-section {
+    padding: 10px 0 70px;
+}
+
+
+
+.alphabet-nav-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    background: #2563eb;
+    border-radius: 16px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.28);
+    overflow: hidden;
+}
+
+.alpha-arrow-btn {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background .2s ease;
+    line-height: 1;
+    user-select: none;
+}
+
+.alpha-arrow-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.alphabet-scroll-track {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    margin: 0 10px;
+}
+
+.alphabet-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.35s cubic-bezier(.4, 0, .2, 1);
+    will-change: transform;
+}
+
+.alphabet-btn {
+    flex-shrink: 0;
+    min-width: 40px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background .2s ease, border-color .2s ease;
+    white-space: nowrap;
+}
+
+.alphabet-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+}
+
+.alphabet-btn.active {
+    background: #fff;
+    border-color: #fff;
+    color: #2563eb;
+}
+
+
+
+.empty-box {
+    background: #fff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 20px;
+    padding: 80px 20px;
+    text-align: center;
+    grid-column: 1 / -1;
+}
+
+.empty-box p {
+    color: #64748b;
+    font-size: 15px;
+    margin: 0;
+}
+
+
+
+.vsl-pagination {
+    margin-top: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.vsl-page-link {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #0f172a;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.vsl-page-link:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #fff;
+}
+
+.vsl-page-link.active {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #fff;
+}
+
+
+
+/* EXTRA SMALL MOBILE */
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 768px){
+
+    .cat-section{
+        padding:20px 14px 50px;
+    }
+
+    .cat-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:14px;
+    }
+
+    .cat-card{
+        height:165px;
+        border-radius:16px;
+    }
+
+    .card-default{
+        padding:12px;
+    }
+
+    .card-icon{
+        width:58px;
+        height:58px;
+        border-radius:14px;
+    }
+
+    .card-icon img{
+        width:38px;
+        height:38px;
+        object-fit:contain;
+    }
+
+    .card-default-title{
+        font-size:13px;
+        line-height:1.4;
+        font-weight:600;
+    }
+
+    .card-hover{
+        width:100%;
+        left:0;
+        bottom:12px;
+        padding:0 12px;
+        display:flex;
+        justify-content:center;
+    }
+
+    .hover-btn{
+        width:100%;
+        height:38px;
+        border-radius:10px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:13px;
+        font-weight:600;
+        padding:0;
+    }
+
+    .dashboard-heading{
+        font-size:24px;
+    }
+
+    .dashboard-subheading{
+        font-size:13px;
+        line-height:1.5;
+    }
+
+    .alphabet-nav-wrapper{
+        padding:8px;
+        border-radius:14px;
+        margin-bottom:24px;
+    }
+
+    .alphabet-btn{
+        min-width:34px;
+        height:34px;
+        font-size:12px;
+    }
+
+    .vsl-pagination{
+        margin-top:35px;
+        gap:8px;
+    }
+
+    .vsl-page-link{
+        width:38px;
+        height:38px;
+        border-radius:10px;
+        font-size:12px;
+    }
+}
+
+/* EXTRA SMALL MOBILE */
+
+@media (max-width:480px){
+
+    .cat-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+    }
+
+    .cat-card{
+        height:150px;
+    }
+
+    .card-default-title{
+        font-size:12px;
+    }
+
+    .hover-btn{
+        height:36px;
+        font-size:12px;
+    }
+}
+
+
+</style> 
+
+<div class="vsl-main-wrapper">
+    <div class="vsl-container">
+
+        <section class="cat-section" id="services">
+
+            <!-- HEADER -->
+    <div class="page-header">
+
+    <div>
+
+        <h2 class="dashboard-heading">
+           All Services 
+        </h2>
+
+        <p class="dashboard-subheading">
+      See all your services and stay updated with live booking progress
+        </p>
+
+    </div>
+
+    </div>
+
+    
+            <!-- ALPHABET NAV -->
+            <div class="alphabet-nav-wrapper">
+                <button class="alpha-arrow-btn" id="alphaLeft" aria-label="Scroll left">&#8249;</button>
+                <div class="alphabet-scroll-track" id="alphaTrack">
+                    <div class="alphabet-wrap" id="alphaWrap">
+
+                        <a href="{% url 'services_page' %}"
+                           class="alphabet-btn {% if not selected_letter %}active{% endif %}">
+                            All
+                        </a>
+
+                        {% for letter in alphabet_list %}
+                        <a href="?letter={{ letter }}"
+                           class="alphabet-btn {% if selected_letter == letter %}active{% endif %}">
+                            {{ letter }}
+                        </a>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                <button class="alpha-arrow-btn" id="alphaRight" aria-label="Scroll right">&#8250;</button>
+            </div>
+
+            <!-- SERVICES GRID — unchanged -->
+            <div class="cat-grid">
+
+                {% for service in services_cards %}
+                <div class="cat-card">
+
+                    <img class="card-img"
+                         src="{% if service.service_image %}{{ service.service_image.url }}{% else %}{% static 'assets/img/default-service.jpg' %}{% endif %}"
+                         alt="{{ service.servicename }}">
+
+                    <div class="card-overlay"></div>
+
+                    <div class="card-default">
+                        <div class="card-icon">
+                            <img src="{% if service.serviceicon %}{{ service.serviceicon.url }}{% else %}{% static 'assets/img/default-icon.png' %}{% endif %}"
+                                 width="82" height="82"
+                                 alt="{{ service.servicename }}">
+                        </div>
+                        <div class="card-default-title">{{ service.servicename }}</div>
+                    </div>
+
+                    <div class="card-hover">
+                        <a class="hover-btn" href="{% url 'book_service' %}">
+                            Book Now
+                        </a>
+                    </div>
+
+                </div>
+                {% empty %}
+                <div class="empty-box">
+                    <p>No services available</p>
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <!-- PAGINATION -->
+            {% if is_paginated %}
+            <nav class="vsl-pagination">
+
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}&letter={{ selected_letter }}"
+                   class="vsl-page-link">&#8249;</a>
+                {% endif %}
+
+                {% for num in paginator.page_range %}
+                <a href="?page={{ num }}&letter={{ selected_letter }}"
+                   class="vsl-page-link {% if page_obj.number == num %}active{% endif %}">
+                    {{ num }}
+                </a>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&letter={{ selected_letter }}"
+                   class="vsl-page-link">&#8250;</a>
+                {% endif %}
+
+            </nav>
+            {% endif %}
+
+        </section>
+
+    </div>
+</div>
+
+<script>
+(function () {
+    var track  = document.getElementById('alphaTrack');
+    var wrap   = document.getElementById('alphaWrap');
+    var btnL   = document.getElementById('alphaLeft');
+    var btnR   = document.getElementById('alphaRight');
+    var offset = 0;
+    var step   = 180;
+
+    function maxOffset() {
+        return Math.max(0, wrap.scrollWidth - track.clientWidth);
+    }
+
+    function moveTo(val) {
+        offset = Math.min(Math.max(0, val), maxOffset());
+        wrap.style.transform = 'translateX(-' + offset + 'px)';
+    }
+
+    btnL.addEventListener('click', function () { moveTo(offset - step); });
+    btnR.addEventListener('click', function () { moveTo(offset + step); });
+
+    window.addEventListener('load', function () {
+        var active = wrap.querySelector('.alphabet-btn.active');
+        if (active && active.offsetLeft > track.clientWidth / 2) {
+            moveTo(active.offsetLeft - track.clientWidth / 2 + active.offsetWidth / 2);
+        }
+    });
+}());
+</script>
+
+{% endblock %}

@@ -1,0 +1,446 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+body{
+    background:#f4f6f9;
+}
+
+/* MAIN */
+
+.a4-wrapper{
+    padding:30px;
+    display:flex;
+    justify-content:center;
+}
+
+/* A4 SHEET */
+
+.a4-sheet{
+    width:100%;
+    max-width:900px;
+    background:#ffffff;
+    border:1px solid #dbe3ec;
+    padding:50px;
+    box-shadow:0 4px 18px rgba(0,0,0,.06);
+}
+
+/* HEADER */
+
+.form-header{
+    text-align:center;
+    margin-bottom:35px;
+    border-bottom:1px solid #e5e7eb;
+    padding-bottom:22px;
+}
+
+.form-header h2{
+    margin:0;
+    font-size:30px !important;
+    font-weight:700;
+    color:#111827;
+}
+
+.form-header p{
+    margin-top:8px;
+    color:#6b7280;
+    font-size:14px;
+}
+
+/* TOP DETAILS */
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px 40px;
+    margin-bottom:40px;
+}
+
+.info-row{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.info-label{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    color:#6b7280;
+}
+
+.info-value{
+    font-size:15px;
+    font-weight:600;
+    color:#111827;
+    word-break:break-word;
+}
+
+/* TERMS */
+
+.terms-title{
+    text-align:center;
+    font-size:24px !important;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:30px;
+}
+
+.terms-content{
+    line-height:2;
+}
+
+.terms-content p{
+    margin-bottom:18px;
+    font-size:15px !important;
+    color:#374151;
+    text-align:justify;
+    word-break:break-word;
+}
+
+.terms-content strong{
+    color:#111827;
+}
+
+/* SIGNATURE */
+
+.signature-section{
+    margin-top:50px;
+}
+
+.signature-title{
+    font-size:18px !important;
+    font-weight:700;
+    margin-bottom:18px;
+    color:#111827;
+}
+
+.signature-img{
+    width:260px;
+    max-width:100%;
+    border:1px solid #dbe3ec;
+    padding:10px;
+    background:#ffffff;
+}
+
+/* PRINT */
+
+.print-btn{
+    margin-top:40px;
+    padding:14px 28px;
+    background:#2563eb;
+    color:#ffffff;
+    border:none;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.print-btn:hover{
+    background:#1d4ed8;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .a4-wrapper{
+        padding:15px;
+    }
+
+    .a4-sheet{
+        padding:25px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+        gap:18px;
+    }
+
+    .form-header h2{
+        font-size:24px !important;
+    }
+
+    .terms-title{
+        font-size:20px !important;
+    }
+
+    .terms-content p{
+        font-size:14px !important;
+        line-height:1.9;
+    }
+
+}
+
+@media print{
+
+    .print-btn{
+        display:none;
+    }
+
+    .a4-sheet{
+        box-shadow:none;
+        border:none;
+    }
+
+}
+
+</style>
+
+
+<div class="a4-wrapper">
+
+    <div class="a4-sheet">
+
+        <!-- HEADER -->
+
+        <div class="form-header">
+
+            <h2>
+                Terms Acceptance Form
+            </h2>
+
+            <p>
+                Sri Dixitha Enterprises
+            </p>
+
+        </div>
+
+
+        <!-- TOP INFORMATION -->
+
+        <div class="info-grid">
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Customer ID
+                </span>
+
+                <span class="info-value">
+                    SDE-EMP-{{ form_data.customer.id }}
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Customer Name
+                </span>
+
+                <span class="info-value">
+                    {{ form_data.customer.first_name }}
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Email Address
+                </span>
+
+                <span class="info-value">
+                    {{ form_data.customer.email }}
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Phone Number
+                </span>
+
+                <span class="info-value">
+                    {{ form_data.customer.phone }}
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Accepted Date
+                </span>
+
+                <span class="info-value">
+                    {{ form_data.accepted_at }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- TERMS -->
+
+        <div class="terms-title">
+
+            TERMS & CONDITIONS
+
+        </div>
+
+
+        <div class="terms-content">
+
+            <p>
+                <strong>1.</strong>
+                Salary need to credit to
+                <strong>M/S: Sri Dixitha Enterprises</strong>
+                bank account by 2nd of every month.
+            </p>
+
+            <p>
+                <strong>2.</strong>
+                Renewal can be done in the 11th month prior to expiry of term.
+            </p>
+
+            <p>
+                <strong>3.</strong>
+                Discounts available on renewals from time to time.
+            </p>
+
+            <p>
+                <strong>4.</strong>
+                Registration fee is company charges and this is not employed salary or advance.
+            </p>
+
+            <p>
+                <strong>5.</strong>
+                Over time charges applicable for full time job for 9-10 hrs &
+                <strong>(24/7 employment max work time is 12 hrs in a day)</strong>.
+            </p>
+
+            <p>
+                <strong>6.</strong>
+                Place cannot be changed without approval from concerned persons.
+            </p>
+
+            <p>
+                <strong>7.</strong>
+                Advances to employed person need approval from
+                <strong>M/S: Sri Dixitha Enterprises</strong>.
+            </p>
+
+            <p>
+                <strong>8.</strong>
+                Company registration fee is non refundable.
+            </p>
+
+            <p>
+                <strong>9.</strong>
+                Customer should maintain business ethics and should not disclose registration fee or salary details.
+            </p>
+
+            <p>
+                <strong>10.</strong>
+                Service charges applicable is
+                <strong>Rs.1000</strong>
+                on salary for office use only.
+            </p>
+
+            <p>
+                <strong>11.</strong>
+                Good food, proper shelter and minimum 10 hrs rest should be provided to employed person.
+            </p>
+
+            <p>
+                <strong>12.</strong>
+                Registration charges are one time and non refundable.
+            </p>
+
+            <p>
+                <strong>13.</strong>
+                Maximum 3 replacements will be given if employed person fails to deliver agreed works.
+            </p>
+
+            <p>
+                <strong>14.</strong>
+                Agreement can be withdrawn by both parties at any time.
+            </p>
+
+            <p>
+                <strong>15.</strong>
+                If customer withdraws agreement company has liberty not to refund any amount.
+            </p>
+
+            <p>
+                <strong>16.</strong>
+                Any dispute should be resolved mutually by discussion only.
+            </p>
+
+            <p>
+                <strong>17.</strong>
+                No third party intervention is valid and subject to Hyderabad jurisdiction only.
+            </p>
+
+            <p>
+                <strong>18.</strong>
+                No refund policy available. Only replacements will be provided.
+            </p>
+
+            <p>
+                <strong>19.</strong>
+                Visiting charges of
+                <strong>Rs.500</strong>
+                applicable per visit.
+            </p>
+
+            <p>
+                <strong>20.</strong>
+                Customer should not re-employ company employed person directly or indirectly without approval.
+            </p>
+
+            <p>
+                <strong>21.</strong>
+                Cancellation from customer side leads to non refund of registration fee/services.
+            </p>
+
+            <p>
+                <strong>22.</strong>
+                Employed person should be handed over to company if customer picked employed person directly.
+            </p>
+
+        </div>
+
+
+        <!-- SIGNATURE -->
+
+        <div class="signature-section">
+
+            <div class="signature-title">
+                Customer Signature
+            </div>
+
+            <img
+                src="{{ form_data.signature.url }}"
+                alt="signature"
+                class="signature-img"
+            >
+
+        </div>
+
+
+        <!-- PRINT -->
+
+        <button
+            onclick="window.print()"
+            class="print-btn"
+        >
+            Print Form
+        </button>
+
+    </div>
+
+</div>
+
+{% endblock %}

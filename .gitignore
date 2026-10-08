@@ -1,0 +1,14 @@
+# db settings
+.env
+
+# python
+__pycache__/
+*.pyc
+
+# virtual environment
+myvenv/
+
+
+
+media/
+staticfiles/

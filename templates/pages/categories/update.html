@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="category-page">
+
+    <!-- HEADER -->
+
+   <div class="page-header">
+
+        <div>
+
+            <h6 class="fw-semibold mb-0">
+
+                Update Category
+
+            </h6>
+
+            <p class="page-subtitle">
+
+                Create and publish latest Category updates
+
+            </p>
+
+        </div>
+
+                <div class="header-right">
+
+            <div class="banner-badge">
+               Update Category
+
+            </div>
+
+            <a href="{% url 'list.category' %}"
+               class="list-btn">
+
+                <i class="bi bi-images"></i>
+
+                Category List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="category-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Update Category
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Edit category details, descriptions and images
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <!-- ICON -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Category Icon
+
+                        </label>
+
+                        <div class="image-box">
+
+                            <img id="icon_preview"
+                                 src="{% if category.icon %}{{ category.icon.url }}{% endif %}">
+
+                        </div>
+
+                        <input type="file"
+                               name="icon"
+                               class="file-input"
+                               onchange="previewImage(event, 'icon_preview')">
+
+                        <small class="small-text">
+
+                            Leave empty to keep existing image
+
+                        </small>
+
+                    </div>
+
+                    <!-- CONTENT -->
+
+                    <div class="col-md-8">
+
+                        <!-- TITLE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Category Title
+
+                            </label>
+
+                            <input type="text"
+                                   name="title"
+                                   class="form-control-custom"
+                                   value="{{ category.title }}"
+                                   required>
+
+                        </div>
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Description
+
+                            </label>
+
+                            <textarea name="description"
+                                      class="textarea-custom"
+                                      rows="3"
+                                      required>{{ category.description }}</textarea>
+
+                        </div>
+
+                        <!-- BADGE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Badge
+
+                            </label>
+
+                            <input type="text"
+                                   name="badge"
+                                   class="form-control-custom"
+                                   value="{{ category.badge }}">
+
+                        </div>
+
+                        <!-- TAGS -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Tags
+
+                            </label>
+
+                            <input type="text"
+                                   name="tags"
+                                   class="form-control-custom"
+                                   value="{{ category.tags }}">
+
+                        </div>
+
+                        <!-- SERVICE DESCRIPTION -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Service Description
+
+                            </label>
+
+                            <textarea name="category_about_des"
+                                      class="textarea-custom"
+                                      rows="3">{{ category.category_about_des }}</textarea>
+
+                        </div>
+
+                        <!-- IMAGES -->
+
+                        <div class="row g-4">
+
+                            <!-- ABOUT IMAGE -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+
+                                    Service About Image
+
+                                </label>
+
+                                <div class="small-image-box">
+
+                                    <img id="about_preview"
+                                         src="{% if category.category_about_img %}{{ category.category_about_img.url }}{% endif %}">
+
+                                </div>
+
+                                <input type="file"
+                                       name="category_about_img"
+                                       class="file-input"
+                                       onchange="previewImage(event, 'about_preview')">
+
+                            </div>
+
+                            <!-- BANNER IMAGE -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+
+                                    Banner Image
+
+                                </label>
+
+                                <div class="small-image-box">
+
+                                    <img id="banner_preview"
+                                         src="{% if category.banner_image %}{{ category.banner_image.url }}{% endif %}">
+
+                                </div>
+
+                                <input type="file"
+                                       name="banner_image"
+                                       class="file-input"
+                                       onchange="previewImage(event, 'banner_preview')">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'list.category' %}"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="update-btn">
+
+                        Update Category
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- IMAGE PREVIEW -->
+
+<script>
+
+function previewImage(event, previewId = 'preview') {
+
+    const reader = new FileReader();
+
+    reader.onload = function () {
+
+        document.getElementById(
+            previewId
+        ).src = reader.result;
+
+    }
+
+    reader.readAsDataURL(
+        event.target.files[0]
+    );
+
+}
+
+</script>
+
+{% endblock %}

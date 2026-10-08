@@ -1,0 +1,461 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+<style>
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: var(--shadow-7);
+}
+.stat-card.blue   { border-left: 4px solid #2563eb; }
+.stat-card.green  { border-left: 4px solid #22c55e; }
+.stat-card.orange { border-left: 4px solid #f59e0b; }
+.stat-card.purple { border-left: 4px solid #7c3aed; }
+.stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #9ca3af; display: block; margin-bottom: 4px; }
+.stat-value { font-size: 22px; font-weight: 700; color: #111827; }
+
+.card-header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+.search-wrap { position: relative; }
+.search-wrap input {
+  height: 38px; padding: 0 10px 0 32px;
+  border: 1px solid var(--border-color); border-radius: 8px;
+  font-size: 13px; outline: none; min-width: 220px;
+}
+.search-wrap input:focus { border-color: #2563eb; }
+.search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 13px; pointer-events: none; }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  padding: 11px 14px; font-size: 11px; text-transform: uppercase;
+  color: #6b7280; border-bottom: 1px solid var(--border-color);
+  white-space: nowrap; font-weight: 600; background: #fafafa;
+}
+tbody td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 13px; }
+tbody tr:hover { background: #f9fafb; }
+tbody tr.selected-row { background: #eff6ff; }
+
+.device-badge {
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; display: inline-block;
+}
+.device-badge.Mobile  { background: #fef9c3; color: #ca8a04; }
+.device-badge.Desktop { background: #dbeafe; color: #2563eb; }
+.device-badge.Tablet  { background: #f3e8ff; color: #7c3aed; }
+.device-badge.Unknown { background: #f3f4f6; color: #6b7280; }
+
+.sub-text { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+.url-cell { max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #6b7280; font-size: 12px; }
+
+/* bulk actions bar */
+.bulk-bar {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #eff6ff;
+  border-bottom: 1px solid #bfdbfe;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d4ed8;
+}
+.bulk-bar.visible { display: flex; }
+.bulk-bar span { margin-right: auto; }
+
+.btn-danger-sm {
+  height: 34px; padding: 0 14px; border: none; border-radius: 6px;
+  background: #ef4444; color: #fff; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: 0.2s;
+}
+.btn-danger-sm:hover { background: #dc2626; }
+.btn-outline-sm {
+  height: 34px; padding: 0 14px; border: 1px solid #e5e7eb; border-radius: 6px;
+  background: #fff; color: #374151; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: 0.2s;
+}
+.btn-outline-sm:hover { background: #f3f4f6; }
+
+/* pagination */
+.tbl-footer { display: flex; justify-content: flex-end; padding: 16px 20px; border-top: 1px solid #f1f5f9; }
+.page-btns  { display: flex; gap: 8px; flex-wrap: wrap; }
+.pg-btn {
+  min-width: 38px; height: 38px; padding: 0 12px; border-radius: 10px;
+  border: 1px solid #e5e7eb; background: #fff; color: #111827;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; transition: 0.2s;
+}
+.pg-btn:hover  { background: #f3f4f6; }
+.pg-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+
+.empty-row td { text-align: center; padding: 48px; color: #9ca3af; font-size: 14px; }
+
+/* confirm modal */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 9999; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal-box { background: #fff; border-radius: 16px; width: 100%; max-width: 420px; margin: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; }
+.modal-head { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; color: #fff; }
+.modal-head.red  { background: #ef4444; }
+.modal-head-title { font-weight: 700; font-size: 15px; }
+.modal-close-btn { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; }
+.modal-body   { padding: 24px; font-size: 14px; color: #374151; }
+.modal-footer { padding: 14px 24px; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end; gap: 10px; }
+</style>
+
+<div class="page-wrap">
+
+  <!-- HEADING -->
+  <div style="margin-bottom:20px;">
+    <h2 class="dashboard-heading">Visitors</h2>
+    <p class="dashboard-subheading">Non-logged-in visitors tracked by the system</p>
+  </div>
+
+
+  <!-- MAIN CARD -->
+  <div class="card">
+
+    <!-- TOOLBAR -->
+    <div class="card-header card-header-flex">
+      <div class="card-title">Visitor Records</div>
+
+      <div class="toolbar">
+        <!-- SEARCH -->
+        <form method="get" style="display:flex;gap:8px;align-items:center;">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" name="search" placeholder="Search country, city, browser..." value="{{ search }}">
+          </div>
+          <button type="submit" class="btn btn-primary" style="height:38px;padding:0 16px;border-radius:8px;font-size:13px;">Search</button>
+          {% if search %}
+            <a href="{% url 'visitors' %}" class="btn-outline-sm" style="display:inline-flex;align-items:center;height:38px;text-decoration:none;">✕ Clear</a>
+          {% endif %}
+        </form>
+
+        <!-- DELETE ALL -->
+        <button class="btn-danger-sm" onclick="openDeleteAllModal()">
+          🗑 Delete All
+        </button>
+      </div>
+    </div>
+
+    <!-- BULK ACTION BAR (shown when rows are selected) -->
+    <div class="bulk-bar" id="bulkBar">
+      <span id="selectedCount">0 selected</span>
+      <button class="btn-danger-sm" onclick="openDeleteSelectedModal()">🗑 Delete Selected</button>
+      <button class="btn-outline-sm" onclick="clearSelection()">✕ Cancel</button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <!-- select all checkbox -->
+            <th style="width:40px;">
+              <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" title="Select all">
+            </th>
+            <th>Sl.No</th>
+            <th>IP Address</th>
+            <th>Country</th>
+            <th>State</th>
+            <th>City</th>
+            <th>Device</th>
+            <th>Browser</th>
+            <th>OS</th>
+            <th>Page URL</th>
+            <th>Visit Time</th>
+          </tr>
+        </thead>
+
+        <tbody id="visitorTableBody">
+          {% for visitor in visitors %}
+          <tr id="vrow-{{ visitor.id }}">
+
+            <!-- checkbox -->
+            <td>
+              <input
+                type="checkbox"
+                class="row-check"
+                value="{{ visitor.id }}"
+                onchange="onRowCheck()"
+              >
+            </td>
+
+            <!-- Sl.No -->
+            <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+
+            <!-- IP -->
+            <td style="font-family:monospace;font-size:12px;color:#374151;">
+              {{ visitor.ip_address }}
+            </td>
+
+            <!-- Country -->
+            <td>{{ visitor.country|default:"—" }}</td>
+
+            <!-- State -->
+            <td>{{ visitor.state|default:"—" }}</td>
+
+            <!-- City -->
+            <td>{{ visitor.city|default:"—" }}</td>
+
+            <!-- Device -->
+            <td>
+              <span class="device-badge {{ visitor.device|default:'Unknown' }}">
+                {% if visitor.device == "Mobile" %}📱
+                {% elif visitor.device == "Desktop" %}🖥
+                {% elif visitor.device == "Tablet" %}📟
+                {% else %}❓
+                {% endif %}
+                {{ visitor.device|default:"Unknown" }}
+              </span>
+            </td>
+
+            <!-- Browser -->
+            <td>{{ visitor.browser|default:"—" }}</td>
+
+            <!-- OS -->
+            <td>{{ visitor.operating_system|default:"—" }}</td>
+
+            <!-- Page URL -->
+            <td title="{{ visitor.page_url }}">
+              <span class="url-cell">{{ visitor.page_url|default:"—" }}</span>
+            </td>
+
+            <!-- Visit Time -->
+            <td>
+              <div>{{ visitor.visited_at|date:"d M Y" }}</div>
+              <div class="sub-text">{{ visitor.visited_at|date:"h:i A" }}</div>
+            </td>
+
+          </tr>
+          {% empty %}
+          <tr class="empty-row">
+            <td colspan="11">No visitor records found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="tbl-footer">
+      <div class="page-btns">
+        {% if page_obj.has_previous %}
+          <a class="pg-btn" href="?page={{ page_obj.previous_page_number }}&search={{ search }}">‹</a>
+        {% endif %}
+        <span class="pg-btn active">{{ page_obj.number }}</span>
+        {% if page_obj.has_next %}
+          <a class="pg-btn" href="?page={{ page_obj.next_page_number }}&search={{ search }}">{{ page_obj.next_page_number }}</a>
+          <a class="pg-btn" href="?page={{ page_obj.next_page_number }}&search={{ search }}">›</a>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── CONFIRM DELETE SELECTED MODAL ─────────────────────────────── -->
+<div id="deleteSelectedModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head red">
+      <span class="modal-head-title">🗑 Delete Selected</span>
+      <button class="modal-close-btn" onclick="closeModal('deleteSelectedModal')">×</button>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to delete <strong id="deleteSelectedCount">0</strong> selected visitor(s)?
+      This action <strong>cannot be undone.</strong>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline-sm" onclick="closeModal('deleteSelectedModal')">Cancel</button>
+      <button class="btn-danger-sm" id="confirmDeleteSelectedBtn" onclick="confirmDeleteSelected()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONFIRM DELETE ALL MODAL ───────────────────────────────────── -->
+<div id="deleteAllModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head red">
+      <span class="modal-head-title">🗑 Delete All Visitors</span>
+      <button class="modal-close-btn" onclick="closeModal('deleteAllModal')">×</button>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to <strong>delete ALL visitor records</strong>?
+      This action <strong>cannot be undone.</strong>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline-sm" onclick="closeModal('deleteAllModal')">Cancel</button>
+      <button class="btn-danger-sm" id="confirmDeleteAllBtn" onclick="confirmDeleteAll()">Yes, Delete All</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+const CSRF         = "{{ csrf_token }}";
+const VISITOR_URL  = "{% url 'visitors' %}";
+
+// ── CHECKBOX LOGIC ────────────────────────────────────────────────
+
+function toggleSelectAll(master) {
+  document.querySelectorAll(".row-check").forEach(cb => {
+    cb.checked = master.checked;
+    cb.closest("tr").classList.toggle("selected-row", master.checked);
+  });
+  updateBulkBar();
+}
+
+function onRowCheck() {
+  const all     = document.querySelectorAll(".row-check");
+  const checked = document.querySelectorAll(".row-check:checked");
+
+  // sync master checkbox
+  document.getElementById("selectAll").checked       = checked.length === all.length;
+  document.getElementById("selectAll").indeterminate = checked.length > 0 && checked.length < all.length;
+
+  // highlight row
+  all.forEach(cb => {
+    cb.closest("tr").classList.toggle("selected-row", cb.checked);
+  });
+
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const count  = document.querySelectorAll(".row-check:checked").length;
+  const bulkBar = document.getElementById("bulkBar");
+  document.getElementById("selectedCount").textContent = count + " selected";
+  bulkBar.classList.toggle("visible", count > 0);
+}
+
+function clearSelection() {
+  document.querySelectorAll(".row-check").forEach(cb => {
+    cb.checked = false;
+    cb.closest("tr").classList.remove("selected-row");
+  });
+  document.getElementById("selectAll").checked       = false;
+  document.getElementById("selectAll").indeterminate = false;
+  updateBulkBar();
+}
+
+// ── MODAL HELPERS ─────────────────────────────────────────────────
+
+function openModal(id)  { document.getElementById(id).classList.add("open"); }
+function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+function openDeleteSelectedModal() {
+  const count = document.querySelectorAll(".row-check:checked").length;
+  if (!count) { alert("Please select at least one visitor."); return; }
+  document.getElementById("deleteSelectedCount").textContent = count;
+  openModal("deleteSelectedModal");
+}
+
+function openDeleteAllModal() {
+  openModal("deleteAllModal");
+}
+
+// ── DELETE SELECTED ───────────────────────────────────────────────
+
+function confirmDeleteSelected() {
+  const ids = [...document.querySelectorAll(".row-check:checked")].map(cb => cb.value);
+  const btn = document.getElementById("confirmDeleteSelectedBtn");
+
+  btn.disabled    = true;
+  btn.textContent = "Deleting...";
+
+  fetch(VISITOR_URL, {
+    method:  "POST",
+    headers: { "Content-Type": "application/json", "X-CSRFToken": CSRF },
+    body:    JSON.stringify({ action: "delete_selected", ids }),
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      // remove rows from DOM
+      ids.forEach(id => {
+        const row = document.getElementById("vrow-" + id);
+        if (row) row.remove();
+      });
+      closeModal("deleteSelectedModal");
+      clearSelection();
+      showToast(data.message, "green");
+    } else {
+      alert("Error: " + data.message);
+    }
+  })
+  .catch(() => alert("Network error. Try again."))
+  .finally(() => {
+    btn.disabled    = false;
+    btn.textContent = "Yes, Delete";
+  });
+}
+
+// ── DELETE ALL ────────────────────────────────────────────────────
+
+function confirmDeleteAll() {
+  const btn = document.getElementById("confirmDeleteAllBtn");
+  btn.disabled    = true;
+  btn.textContent = "Deleting...";
+
+  fetch(VISITOR_URL, {
+    method:  "POST",
+    headers: { "Content-Type": "application/json", "X-CSRFToken": CSRF },
+    body:    JSON.stringify({ action: "delete_all" }),
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      closeModal("deleteAllModal");
+      // clear all table rows
+      document.getElementById("visitorTableBody").innerHTML =
+        '<tr class="empty-row"><td colspan="11">No visitor records found.</td></tr>';
+      showToast(data.message, "green");
+    } else {
+      alert("Error: " + data.message);
+    }
+  })
+  .catch(() => alert("Network error. Try again."))
+  .finally(() => {
+    btn.disabled    = false;
+    btn.textContent = "Yes, Delete All";
+  });
+}
+
+// ── TOAST NOTIFICATION ────────────────────────────────────────────
+function showToast(message, color) {
+  const toast = document.createElement("div");
+  toast.textContent = message;
+  toast.style.cssText = `
+    position:fixed; bottom:24px; right:24px; z-index:99999;
+    background:${color === "green" ? "#16a34a" : "#ef4444"};
+    color:#fff; padding:12px 20px; border-radius:10px;
+    font-size:13px; font-weight:600;
+    box-shadow:0 4px 20px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// Close modals on backdrop click
+["deleteSelectedModal","deleteAllModal"].forEach(id => {
+  document.getElementById(id).addEventListener("click", function(e) {
+    if (e.target === this) closeModal(id);
+  });
+});
+</script>
+
+{% endblock %}

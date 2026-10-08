@@ -1,0 +1,585 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>
+    Invoice
+</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+
+body{
+    font-family:'DM Sans',sans-serif;
+    background:#f5f7fb;
+    padding:30px;
+}
+
+/* MAIN */
+
+.invoice{
+    max-width:900px;
+    margin:auto;
+    background:#fff;
+    padding:34px;
+    border-radius:18px;
+    border:1px solid #e5e7eb;
+}
+
+/* HEADER */
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:30px;
+}
+
+.company{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+}
+
+.meta{
+    font-size:13px;
+    color:#6b7280;
+    line-height:1.8;
+    text-align:right;
+}
+
+/* BILL */
+
+.bill{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:30px;
+    gap:30px;
+}
+
+.bill-box{
+    flex:1;
+}
+
+.bill-title{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:8px;
+}
+
+.bill-value{
+    font-size:15px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:4px;
+}
+
+/* TABLE */
+
+.table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+.table th{
+    text-align:left;
+    font-size:12px;
+    color:#6b7280;
+    padding:14px 10px;
+    background:#f9fafb;
+}
+
+.table td{
+    padding:16px 10px;
+    border-bottom:1px solid #e5e7eb;
+    font-size:14px;
+}
+
+/* TOTAL */
+
+.total-box{
+    margin-top:30px;
+    margin-left:auto;
+    width:340px;
+}
+
+.total-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:14px;
+    font-size:14px;
+}
+
+.total-final{
+    border-top:1px solid #e5e7eb;
+    padding-top:16px;
+    font-size:18px;
+    font-weight:700;
+}
+
+/* PAYMENT INFO */
+
+.payment-card{
+    margin-top:30px;
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:22px;
+}
+
+.payment-title{
+    font-size:16px;
+    font-weight:700;
+    margin-bottom:16px;
+    color:#111827;
+}
+
+.payment-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.pay-item{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:16px;
+}
+
+.pay-label{
+    font-size:12px;
+    color:#6b7280;
+    margin-bottom:6px;
+}
+
+.pay-value{
+    font-size:16px;
+    font-weight:700;
+    color:#111827;
+}
+
+/* BADGE */
+
+.method-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 14px;
+    border-radius:30px;
+    background:#eff6ff;
+    color:#2563eb;
+    font-size:12px;
+    font-weight:700;
+    text-transform:capitalize;
+}
+
+/* BUTTONS */
+
+.actions{
+    margin-top:35px;
+    text-align:right;
+}
+
+.btn{
+    height:42px;
+    border:none;
+    border-radius:10px;
+    padding:0 18px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    margin-left:10px;
+}
+
+.print{
+    background:#2563eb;
+    color:#fff;
+}
+
+.download{
+    background:#111827;
+    color:#fff;
+}
+
+/* FOOTER */
+
+.footer{
+    margin-top:35px;
+    text-align:center;
+    font-size:12px;
+    color:#6b7280;
+}
+
+/* PRINT */
+
+@media print{
+
+    body{
+        background:#fff;
+        padding:0;
+    }
+
+    .actions{
+        display:none;
+    }
+
+    .invoice{
+        border:none;
+        border-radius:0;
+    }
+
+}
+
+</style>  
+
+</head>
+
+<body>
+
+<div class="invoice">
+
+    <!-- HEADER -->
+
+
+     <div class="dashboard-topbar">
+
+
+
+</div>
+
+    <div class="header">
+
+    <div>
+
+        <h2 class="dashboard-heading">
+         Invoice
+        </h2>
+
+        <p class="dashboard-subheading">
+          Customer Payment Invoice
+        </p>
+
+    </div>
+
+        <div class="meta">
+
+            <div>
+                <strong>
+                    Invoice ID :
+                </strong>
+
+                INV-{{ booking.id }}
+            </div>
+
+            <div>
+                {{ booking.created_at|date:"d M Y" }}
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BILL -->
+
+    <div class="bill">
+
+        <div class="bill-box">
+
+            <div class="bill-title">
+                Bill To
+            </div>
+
+            <div class="bill-value">
+                {{ booking.user.first_name }}
+            </div>
+
+            <div style="font-size:13px;color:#6b7280;">
+                {{ booking.user.mobile }}
+            </div>
+
+        </div>
+
+        <div class="bill-box" style="text-align:right;">
+
+            <div class="bill-title">
+                Vendor
+            </div>
+
+            <div class="bill-value">
+
+                {% if booking.vendor %}
+                    {{ booking.vendor.first_name }}
+                {% else %}
+                    Not Assigned
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <table class="table">
+
+        <tr>
+
+            <th>
+                Service
+            </th>
+
+            <th>
+                Category
+            </th>
+
+            <th>
+                Qty
+            </th>
+
+            <th style="text-align:right;">
+                Amount
+            </th>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                {{ booking.service.s_title }}
+            </td>
+
+            <td>
+                {{ booking.category }}
+            </td>
+
+            <td>
+                1
+            </td>
+
+            <td style="text-align:right;">
+
+                ₹{{ total_amount }}
+
+            </td>
+
+        </tr>
+
+    </table>
+
+    <!-- TOTAL -->
+
+    <div class="total-box">
+
+        <div class="total-row">
+
+            <span>
+                Total Amount
+            </span>
+
+            <strong>
+                ₹{{ total_amount }}
+            </strong>
+
+        </div>
+
+        <div class="total-row">
+
+            <span>
+                Paid Amount
+            </span>
+
+            <strong style="color:#2563eb;">
+                ₹{{ paid_amount }}
+            </strong>
+
+        </div>
+
+        <div class="total-row">
+
+            <span>
+                Remaining Amount
+            </span>
+
+            <strong style="color:#dc2626;">
+                ₹{{ remaining_amount }}
+            </strong>
+
+        </div>
+
+        <div class="total-row total-final">
+
+            <span>
+                Final Amount
+            </span>
+
+            <span>
+                ₹{{ total_amount }}
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- PAYMENT INFO -->
+
+    <div class="payment-card">
+
+        <div class="payment-title">
+            Payment Information
+        </div>
+
+        <div class="payment-grid">
+
+            <div class="pay-item">
+
+                <div class="pay-label">
+                    Payment Method
+                </div>
+
+                <div class="pay-value">
+
+                    <span class="method-badge">
+
+                        {{ payment_method }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="pay-item">
+
+                <div class="pay-label">
+                    Transaction ID
+                </div>
+
+                <div class="pay-value">
+
+                    {% if payment and payment.transaction_id %}
+
+                        {{ payment.transaction_id }}
+
+                    {% else %}
+
+                        N/A
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="pay-item">
+
+                <div class="pay-label">
+                    Payment Status
+                </div>
+
+                <div class="pay-value">
+
+                    {% if payment %}
+
+                        {{ payment.get_status_display }}
+
+                    {% else %}
+
+                        Pending
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="pay-item">
+
+                <div class="pay-label">
+                    Due Date
+                </div>
+
+                <div class="pay-value">
+
+                    {% if payment and payment.due_date %}
+
+                        {{ payment.due_date }}
+
+                    {% else %}
+
+                        Not Updated
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SCREENSHOT -->
+
+    {% if payment and payment.screenshot %}
+
+    <div style="margin-top:30px;">
+
+        <div style="font-size:16px;font-weight:700;margin-bottom:14px;">
+            Payment Screenshot
+        </div>
+
+        <img
+            src="{{ payment.screenshot.url }}"
+            style="
+                width:220px;
+                border-radius:16px;
+                border:1px solid #e5e7eb;
+            "
+        >
+
+    </div>
+
+    {% endif %}
+
+    <!-- BUTTONS -->
+
+    <div class="actions">
+
+        <button
+            class="btn print"
+            onclick="window.print()"
+        >
+
+            Print Invoice
+
+        </button>
+
+        <button
+            class="btn download"
+            onclick="window.print()"
+        >
+
+            Download PDF
+
+        </button>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        Thank you for your business
+
+    </div>
+
+</div>
+
+</body>
+</html>

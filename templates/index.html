@@ -1,0 +1,718 @@
+{% extends 'public_base.html' %}
+{% load static %}
+{% block content %}
+<!--==============================
+  Hero Area
+  ==============================-->
+<style>
+.jd-custom-dropdown {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+}
+body.dropdown-open {
+    overflow: hidden !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.jd-custom-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+}
+.jd-custom-list {
+    position: absolute;
+    top: 160%;
+    left: -15px;
+    right: -15px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    max-height: 180px;      /* About 3-4 items */
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    overscroll-behavior: contain; /* PERFECTLY PREVENTS SCROLL CHAINING TO PAGE */
+}
+
+.jd-custom-list::-webkit-scrollbar {
+    display: none;
+    width: 0;
+}
+/* Increase width of Category dropdown container */
+.jd-cat {
+    min-width: 220px;
+}
+.jd-custom-dropdown.open .jd-custom-list {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.jd-custom-opt {
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #444;
+    transition: all 0.2s;
+}
+.jd-custom-opt:hover {
+    background: #f4f6f8;
+    color: #074c7d;
+}
+</style>
+
+<section class="jd-hero">
+
+    <!-- BG IMAGES -->
+    {% for banner in banners %}
+    <div
+        class="jd-bg {% if forloop.first %}active{% endif %}"
+        style="background-image:url('{% if banner.image %}{{ banner.image.url }}{% else %}{% static 'assets/img/default-banner.jpg' %}{% endif %}');"
+    ></div>
+    {% endfor %}
+
+    <!-- OVERLAY -->
+    <div class="jd-overlay"></div>
+
+    <!-- CONTENT -->
+    <div class="jd-inner">
+
+        <!-- TITLE -->
+<h1 class="jd-title">
+
+    Search across
+
+    <span>
+
+        {{ count_service }}+ Services
+
+    </span>
+
+</h1>
+
+        <!-- SEARCH -->
+        <form
+            method="GET"
+            action="{% url 'indexpage' %}"
+            id="heroSearchForm"
+            class="jd-bar"
+            autocomplete="off"
+        >
+
+            <!-- CATEGORY -->
+            <div class="jd-cat">
+                <i class="fa-solid fa-layer-group"></i>
+                
+                <div class="jd-custom-dropdown" id="custom-cat-dropdown">
+                    <div class="jd-custom-trigger">
+                        <span id="cat-display-text">All Categories</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size:12px; margin-left:8px;"></i>
+                    </div>
+                    <ul class="jd-custom-list">
+                        <li class="jd-custom-opt" data-value="">All Categories</li>
+                        {% for cat in categories %}
+                        <li class="jd-custom-opt" data-value="{{ cat.id }}">{{ cat.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <select name="category" id="category-select" class="d-none">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:'s' %}selected{% endif %}>{{ cat.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- DIVIDER -->
+            <span class="jd-sep"></span>
+
+            <!-- SERVICES -->
+            <div class="jd-svc">
+                
+                <div class="jd-custom-dropdown" id="custom-svc-dropdown">
+                    <div class="jd-custom-trigger">
+                        <span id="svc-display-text">Select Service</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size:12px; margin-left:8px;"></i>
+                    </div>
+                    <ul class="jd-custom-list" id="custom-svc-list">
+                        <li class="jd-custom-opt" data-value="">Select Service</li>
+                        {% if request.GET.category %}
+                            {% for service in cat_services %}
+                            <li class="jd-custom-opt" data-value="{{ service.id }}">{{ service.s_title }}</li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <select name="service" id="service-select" class="d-none">
+                    <option value="">Select Service</option>
+                    {% if request.GET.category %}
+                        {% for service in cat_services %}
+                        <option value="{{ service.id }}" {% if request.GET.service == service.id|stringformat:'s' %}selected{% endif %}>{{ service.s_title }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+
+            <!-- SEARCH BUTTON -->
+            <button
+                type="submit"
+                class="jd-btn-search"
+            >
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+            </button>
+
+        </form>
+
+        <!-- TEXT AREA -->
+        <div class="jd-text-area">
+
+            <!-- PREV -->
+            <button
+                class="jd-arr jd-arr-l"
+                id="heroPrev"
+            >
+                &#8249;
+            </button>
+
+            <!-- TEXT CENTER -->
+            <div class="jd-text-center">
+
+                {% for banner in banners %}
+
+                <div
+                    class="jd-slide-item {% if forloop.first %}active{% endif %}"
+                >
+
+                    <h2 class="jd-slide-h">
+                        {{ banner.heading }}
+                    </h2>
+
+                    <p class="jd-slide-p">
+                        {{ banner.sub_heading }}
+                    </p>
+
+                    <a
+                        href="#services"
+                        class="jd-expl-btn"
+                    >
+                        Explore More
+                    </a>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <!-- NEXT -->
+            <button
+                class="jd-arr jd-arr-r"
+                id="heroNext"
+            >
+                &#8250;
+            </button>
+
+        </div>
+
+        <!-- DOTS -->
+        <div
+            class="jd-dots"
+            id="heroDots"
+        >
+
+            {% for banner in banners %}
+
+            <span
+                class="jd-dot {% if forloop.first %}active{% endif %}"
+                data-index="{{ forloop.counter0 }}"
+            ></span>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+  <!-- Categories-->
+
+  <section class="svc-section" id="categories">
+
+    <div class="title-area text-center animation-style5 title-anime">
+      <span class="tes-sec-subtitle" style="color:#074c7d"> Explore our Categories</span>
+      <h2 class="sec-title title-anime__title">Everything you need all in one place </h2>
+    </div>
+    <div class="svc-grid">
+
+      <!-- B2B Services -->
+      {% for category in categories|slice:":8" %}
+      <a href="{% url 'category.services.listing' category.pk  %}" class="svc-card c5">
+
+        <div class="svc-arrow">
+          <span>
+            <i class="fa-solid fa-arrow-right text-white"></i>
+          </span>
+        </div>
+
+        <div class="svc-icon-wrap">
+          {% if category.icon %}
+          <img src="{{ category.icon.url }}" alt="">
+          {% else %}
+          <span>--</span>
+          {% endif %}
+        </div>
+
+        <p class="svc-card-title">{{ category.title }}</p>
+
+        <p class="svc-card-desc">
+          {{ category.description }}
+        </p>
+
+        <span class="svc-badge">{{ category.badge }}</span>
+
+        <div class="svc-pill-tag">
+          {% if category.tags %}
+          {% for tag in category.get_tags_list %}
+          <span class="svc-mini-tag">{{ tag }}</span>
+          {% endfor %}
+          {% else %}
+          <span class="svc-mini-tag">No Tags</span>
+          {% endif %}
+        </div>
+
+      </a>
+    {% endfor %}
+
+
+    </div>
+    <a href="{% url 'categoy.listings' %}" class="viewall-btn jd-expl-btn">View All</a>
+  </section>
+
+  <!--Catrgories section ends-->
+
+  <!-- Services Area Start-->
+
+  <section class="cat-section" id="services">
+    <div class="title-area text-center animation-style5 title-anime">
+      <span class="tes-sec-subtitle" style="color:#074c7d"> Our Services </span>
+      <h2 class="sec-title title-anime__title"> Explore Our Services </h2>
+    </div>
+    <!-- Cards Grid: 4 per row, 2 rows = 8 cards -->
+    <div class="cat-grid">
+      <!-- Card 1 -->
+
+      {% for service in services_cards %}
+      <div class="cat-card">
+        <img class="card-img"
+          src="{% if service.service_image %}{{ service.service_image.url }}{% else %}{% static 'assets/img/default-service.jpg' %}{% endif %}"
+          alt="{{ service.servicename }}">
+        <div class="card-overlay"></div>
+        <div class="card-default">
+          <div class="card-icon">
+            <img
+              src="{% if service.serviceicon %}{{ service.serviceicon.url }}{% else %}{% static 'assets/img/default-icon.png' %}{% endif %}"
+              width="82" height="82" alt="{{ service.servicename }}">
+          </div>
+          <div class="card-default-title">{{service.servicename }}</div>
+        </div>
+        <div class="card-hover">
+          <a class="hover-btn" href="{% url 'login' %}?next={% url 'book_service' %}">
+            Book Now
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <p>no service available </p>
+      {% endfor %}
+
+
+
+    </div>
+    <!-- <a href="#" class="viewall-btn">View All</a> -->
+  </section>
+  <!-- About Area End -->
+
+  <!--==============================
+    job postings area 
+	============================== -->
+
+  <section class="jbs-section" id="jobs">
+    <div class="jbs-wrap">
+
+      <div class="title-area text-center animation-style5 title-anime">
+        <span class="tes-sec-subtitle" style="color:#074c7d"> Careers</span>
+        <h2 class="sec-title title-anime__title">Explore Career Opportunities </h2>
+      </div>
+      <div class="jbs-stats">
+        <div class="jbs-stat">
+          <div class="jbs-stat-num">{{ jobs.count }}</div>
+          <div class="jbs-stat-lbl">Open roles</div>
+        </div>
+        <div class="jbs-stat">
+          <div class="jbs-stat-num">2–5 days</div>
+          <div class="jbs-stat-lbl">Response time</div>
+        </div>
+        <div class="jbs-stat">
+          <div class="jbs-stat-num">100%</div>
+          <div class="jbs-stat-lbl">Verified placements</div>
+        </div>
+        <div class="jbs-stat">
+          <div class="jbs-stat-num">500+</div>
+          <div class="jbs-stat-lbl">Families served</div>
+        </div>
+      </div>
+
+      <div class="jbs-grid">
+
+        {% for job in jobs|slice:":4" %}
+
+        <div class="jbs-card">
+
+          <div class="jbs-icon">
+            <img src="{% if job.icon %}{{ job.icon.url }}{% else %}{% static 'assets/img/default-job.png' %}{% endif %}"
+              alt="{{ job.title }}">
+          </div>
+          {% if job.status == 'urgent' %}
+          <div class="jbs-pill jbs-pill-urgent">Urgent</div>
+          {% else %}
+          <div class="jbs-pill jbs-pill-hire">Hiring</div>
+          {% endif %}
+
+          <h3 class="jbs-name">{{ job.title }}</h3>
+
+          <p class="jbs-desc">
+            {{ job.description|truncatewords:15 }}
+          </p>
+
+          <div class="jbs-meta">
+            <div class="jbs-meta-item">
+              <i class="fa-regular fa-clock"></i>
+              {{ job.get_job_type_display }}
+            </div>
+
+            <div class="jbs-meta-item">
+              <i class="fa-solid fa-location-dot"></i>
+              {{ job.get_work_mode_display }}
+            </div>
+          </div>
+
+          <a href="{% url 'job.apply' job.id %}" class="jbs-btn">Apply Now</a>
+
+        </div>
+        {% empty %}
+        <p>No jobs available</p>
+        {% endfor %}
+
+
+
+      </div>
+    </div>
+    <a href="{% url 'jobs.listing' %}" class="viewall-btn jd-expl-btn">View All</a>
+  </section>
+  <!--==============================
+    end-job postingarea 
+	============================== -->
+
+  <!--==============================
+    tesmonial area 
+	============================== -->
+  <section class="testi-layout1 space" style="background: url('{% static 'assets/images/bg/test_bg.png' %}')"
+    id="Testimonials">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-8">
+          <div class="title-area text-center animation-style5 title-anime">
+            <span class="tes-sec-subtitle">Testimonials</span>
+            <h2 class="sec-title title-anime__title" style="color: #fd9f0a">What Our Clients Say</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row vs-carousel" data-slide-show="3" data-lg-slide-show="2" data-md-slide-show="2" data-dots="true"
+        data-autoplay="true" data-pause-on-hover="true" data-autoplay-speed="3000">
+        {% for feedback in feedbacks %}
+        <div class="col-xl-4">
+          <div class="vs-testi testi-style1">
+
+            <!-- Image -->
+            <div class="testi-img">
+              <img
+                src="{% if feedback.image %}{{ feedback.image.url }}{% else %}{% static 'assets/images/profile imgs.png' %}{% endif %}"
+                alt="{{ feedback.service_name }}">
+            </div>
+
+            <!-- Top -->
+            <div class="testi-top">
+              <h5 class="testi-service">{{ feedback.service_name }}</h5>
+
+              <!-- Rating -->
+              <div class="star-rating">
+                {% for i in "12345" %}
+                {% if forloop.counter <= feedback.rating %} <i class="fa-solid fa-star"></i>
+                  {% else %}
+                  <i class="fa-regular fa-star"></i>
+                  {% endif %}
+                  {% endfor %}
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p class="testi-text">{{ feedback.description }}</p>
+
+            <!-- Name -->
+            <h4 class="testi-title">
+              <a href="#">{{ feedback.customer_name }}</a>
+            </h4>
+
+            <!-- Type -->
+            <span class="testi-desi">{{ feedback.customer_type }}</span>
+
+          </div>
+        </div>
+        {% endfor %}
+
+
+      </div>
+    </div>
+  </section>
+
+  <!--==============================
+	  tesmonial area end
+	============================== -->
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Categories Slider
+      $('.slick-slider-categories').slick({
+        dots: false,
+        infinite: true,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        cssEase: 'ease-in-out',
+        speed: 800,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        swipeToSlide: true,
+        touchMove: true,
+        arrows: true,
+        prevArrow: '<button type="button" class="slick-prev" style="position:absolute; top:50%; left:-25px; z-index:1; transform:translateY(-50%); background:none; border:none; font-size:24px; color:#074c7d;"><i class="fas fa-chevron-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-next" style="position:absolute; top:50%; right:-25px; z-index:1; transform:translateY(-50%); background:none; border:none; font-size:24px; color:#074c7d;"><i class="fas fa-chevron-right"></i></button>',
+        responsive: [
+          { breakpoint: 1024, settings: { slidesToShow: 3 } },
+          { breakpoint: 768, settings: { slidesToShow: 2 } },
+          { breakpoint: 480, settings: { slidesToShow: 1 } }
+        ]
+      });
+
+      // Mouse wheel support for Categories Slider
+      $('.slick-slider-categories').on('wheel', (function(e) {
+        e.preventDefault();
+        if (e.originalEvent.deltaY < 0) {
+          $(this).slick('slickPrev');
+        } else {
+          $(this).slick('slickNext');
+        }
+      }));
+
+      // Initialize Services Slider
+      $('.slick-slider-services').slick({
+        dots: false,
+        infinite: true,
+        autoplay: true,
+        autoplaySpeed: 3500,
+        cssEase: 'ease-in-out',
+        speed: 800,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        swipeToSlide: true,
+        touchMove: true,
+        arrows: true,
+        prevArrow: '<button type="button" class="slick-prev" style="position:absolute; top:50%; left:-25px; z-index:1; transform:translateY(-50%); background:none; border:none; font-size:24px; color:#074c7d;"><i class="fas fa-chevron-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-next" style="position:absolute; top:50%; right:-25px; z-index:1; transform:translateY(-50%); background:none; border:none; font-size:24px; color:#074c7d;"><i class="fas fa-chevron-right"></i></button>',
+        responsive: [
+          { breakpoint: 1024, settings: { slidesToShow: 3 } },
+          { breakpoint: 768, settings: { slidesToShow: 2 } },
+          { breakpoint: 480, settings: { slidesToShow: 1 } }
+        ]
+      });
+
+      // Mouse wheel support for Services Slider
+      $('.slick-slider-services').on('wheel', (function(e) {
+        e.preventDefault();
+        if (e.originalEvent.deltaY < 0) {
+          $(this).slick('slickPrev');
+        } else {
+          $(this).slick('slickNext');
+        }
+      }));
+    });
+
+    window.onload = function () {
+      const form = document.getElementById("heroSearchForm");
+      const categorySelect = document.getElementById("category-select");
+      const serviceSelect = document.getElementById("service-select");
+
+      // Custom Dropdown Init
+      function initDropdown(customId, hiddenId, displayId) {
+          const customWrap = document.getElementById(customId);
+          if(!customWrap) return;
+          const trigger = customWrap.querySelector('.jd-custom-trigger');
+          const display = document.getElementById(displayId);
+          const hiddenSel = document.getElementById(hiddenId);
+          const list = customWrap.querySelector('.jd-custom-list');
+
+          if(hiddenSel.value) {
+              const activeOpt = list.querySelector(`[data-value="${hiddenSel.value}"]`);
+              if(activeOpt) display.textContent = activeOpt.textContent;
+          }
+
+          trigger.addEventListener('click', (e) => {
+              e.stopPropagation();
+              document.querySelectorAll('.jd-custom-dropdown').forEach(d => {
+                  if(d !== customWrap) {
+                      d.classList.remove('open');
+                      const ic = d.querySelector('i.fa-chevron-down');
+                      if(ic) ic.style.transform = 'rotate(0deg)';
+                  }
+              });
+              customWrap.classList.toggle('open');
+              
+              if (document.querySelector('.jd-custom-dropdown.open')) {
+                  document.body.classList.add('dropdown-open');
+              } else {
+                  document.body.classList.remove('dropdown-open');
+              }
+
+              const icon = trigger.querySelector('i.fa-chevron-down');
+              if(icon) {
+                  icon.style.transform = customWrap.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+                  icon.style.transition = 'transform 0.3s ease';
+              }
+          });
+
+          list.addEventListener('click', (e) => {
+              if(e.target.classList.contains('jd-custom-opt')) {
+                  e.stopPropagation();
+                  display.textContent = e.target.textContent;
+                  hiddenSel.value = e.target.getAttribute('data-value');
+                  hiddenSel.dispatchEvent(new Event('change'));
+                  customWrap.classList.remove('open');
+                  document.body.classList.remove('dropdown-open');
+                  const icon = trigger.querySelector('i.fa-chevron-down');
+                  if(icon) icon.style.transform = 'rotate(0deg)';
+              }
+          });
+
+          // Explicitly handle mouse wheel to scroll dropdown without a scrollbar
+          customWrap.addEventListener('wheel', function(e) {
+              if (customWrap.classList.contains('open')) {
+                  e.preventDefault();
+                  list.scrollTop += e.deltaY;
+              }
+          }, { passive: false });
+      }
+
+      initDropdown('custom-cat-dropdown', 'category-select', 'cat-display-text');
+      initDropdown('custom-svc-dropdown', 'service-select', 'svc-display-text');
+
+      document.addEventListener('click', () => {
+          document.querySelectorAll('.jd-custom-dropdown').forEach(d => {
+              d.classList.remove('open');
+              const icon = d.querySelector('.jd-custom-trigger i.fa-chevron-down');
+              if(icon) icon.style.transform = 'rotate(0deg)';
+          });
+          document.body.classList.remove('dropdown-open');
+      });
+
+      // CATEGORY CHANGE (AJAX)
+      if(categorySelect) {
+        categorySelect.addEventListener('change', function() {
+            const categoryId = this.value;
+            const customSvcList = document.getElementById('custom-svc-list');
+            const svcDisplayText = document.getElementById('svc-display-text');
+
+            if (!categoryId) {
+                serviceSelect.innerHTML = '<option value="">Select Service</option>';
+                if(customSvcList) customSvcList.innerHTML = '<li class="jd-custom-opt" data-value="">Select Service</li>';
+                if(svcDisplayText) svcDisplayText.textContent = 'Select Service';
+                return;
+            }
+            
+            // AJAX Fetch Services
+            fetch(`/api/category/${categoryId}/services/`)
+            .then(response => response.json())
+            .then(data => {
+                serviceSelect.innerHTML = '<option value="">Select Service</option>';
+                if(customSvcList) customSvcList.innerHTML = '<li class="jd-custom-opt" data-value="">Select Service</li>';
+                if(svcDisplayText) svcDisplayText.textContent = 'Select Service';
+
+                data.services.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.id;
+                    option.textContent = service.s_title;
+                    serviceSelect.appendChild(option);
+
+                    if(customSvcList) {
+                        const li = document.createElement('li');
+                        li.className = 'jd-custom-opt';
+                        li.setAttribute('data-value', service.id);
+                        li.textContent = service.s_title;
+                        customSvcList.appendChild(li);
+                    }
+                });
+            })
+            .catch(err => console.error("Error fetching services:", err));
+        });
+      }
+
+      // FORM SUBMIT
+      if(form) {
+          form.onsubmit = function (e) {
+              e.preventDefault();
+              const categoryId = categorySelect.value;
+              const serviceId = serviceSelect.value;
+
+              if (!categoryId) {
+                alert("Please select a category.");
+                return false;
+              }
+
+              if (!serviceId) {
+                // REDIRECT TO CATEGORY PAGE ONLY
+                window.location.href = "/sridixitha/servicespagelist/" + categoryId + "/";
+              } else {
+                // REDIRECT TO CATEGORY PAGE WITH SERVICE SELECTED
+                window.location.href = "/sridixitha/servicespagelist/" + categoryId + "/?service=" + serviceId;
+              }
+          };
+      }
+    };
+</script>
+{% endblock %}

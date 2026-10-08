@@ -1,0 +1,305 @@
+{% extends 'public_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* Cart Page Custom Styles */
+    .cart-container {
+       background: linear-gradient(135deg, #f5f9ff 0%, #e8f2ff 100%);
+        min-height: 100vh;
+        padding-top: 120px !important;
+        font-family: 'Inter', sans-serif;
+    }
+    .cart-header-title {
+        font-weight: 800;
+        color: #074c7d;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    .cart-item-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid rgba(0,0,0,0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .cart-item-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        border-color: rgba(234, 95, 1, 0.3);
+    }
+    .cart-img-box {
+        width: 100px;
+        height: 100px;
+        border-radius: 12px;
+        overflow: hidden;
+        flex-shrink: 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .cart-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .cart-item-card:hover .cart-img-box img {
+        transform: scale(1.1);
+    }
+    .cart-item-title {
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #1f2937;
+    }
+    .cart-item-desc {
+        color: #6b7280;
+        font-size: 0.95rem;
+    }
+    .btn-animated {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border-radius: 30px;
+        font-weight: 600;
+        padding: 12px 30px;
+    }
+    .btn-animated:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .btn-checkout {
+        background-color: #ea5f01;
+        color: #fff;
+        border: none;
+    }
+    .btn-checkout:hover {
+        background-color: #d15501;
+        color: #fff;
+    }
+    .btn-remove {
+        background-color: #fff;
+        color: #ef4444;
+        border: 1px solid #fee2e2;
+        border-radius: 8px;
+        padding: 8px 15px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .btn-remove:hover {
+        background-color: #ef4444;
+        color: #fff;
+        border-color: #ef4444;
+    }
+    .summary-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        padding: 25px;
+    }
+    .empty-cart-animation {
+        animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    @media (max-width: 768px) {
+        .cart-item-card {
+            flex-direction: column;
+            text-align: center;
+        }
+        .cart-img-box {
+            margin-bottom: 15px;
+        }
+        .cart-item-actions {
+            margin-top: 15px;
+            width: 100%;
+        }
+        .btn-remove {
+            width: 100%;
+        }
+        .action-buttons {
+            flex-direction: column;
+            gap: 15px;
+        }
+        .action-buttons .btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid pt-4 pb-5 cart-container">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2 class="cart-header-title">Your Service Cart</h2>
+            <p class="text-muted">Review the services you've selected before checking out.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            {% if items %}
+                
+                <div class="cart-items-wrapper">
+                    {% for item in items %}
+                    <div class="cart-item-card" id="cart-item-{{ item.id }}">
+                        <div class="d-flex align-items-center flex-column flex-md-row text-center text-md-start">
+                            {% if item.service.image %}
+                                <div class="cart-img-box me-md-4">
+                                    <img src="{{ item.service.image.url }}" alt="{{ item.service.s_title }}">
+                                </div>
+                            {% else %}
+                                <div class="cart-img-box me-md-4 bg-light d-flex justify-content-center align-items-center">
+                                    <i class="fas fa-tools text-muted fa-2x"></i>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <h5 class="cart-item-title mb-1">{{ item.service.s_title }}</h5>
+                                <p class="cart-item-desc mb-0">{{ item.service.s_desc|truncatechars:80 }}</p>
+                            </div>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="btn btn-remove remove-cart-item" data-item-id="{{ item.id }}">
+                                <i class="fas fa-trash me-2"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="summary-card mb-5">
+                    <h5 class="mb-3 font-weight-bold" style="color: #074c7d;">Order Summary</h5>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted" style="font-size: 1.1rem;">Total Services Selected</span>
+                        <span class="badge bg-primary rounded-pill d-flex align-items-center px-3" style="font-size: 1.1rem;">{{ items|length }}</span>
+                    </div>
+                    <hr style="border-color: rgba(0,0,0,0.05);">
+                    <p class="text-muted small mb-0"><i class="fas fa-info-circle me-1"></i> Prices and final totals will be confirmed and processed at checkout.</p>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-5 action-buttons">
+                    <button class="btn btn-outline-danger btn-animated px-4" id="clear-cart-btn"><i class="fas fa-times me-2"></i> Clear Cart</button>
+                    <a href="{% url 'checkout' %}" class="btn btn-checkout btn-animated px-5"><i class="fas fa-check-circle me-2"></i> Proceed to Checkout</a>
+                </div>
+
+                <!-- Bottom continue shopping banner -->
+                <div class="text-center py-5 mt-4" style="background: rgba(7, 76, 125, 0.03); border-radius: 16px; border: 1px dashed rgba(7, 76, 125, 0.2);">
+                    <h5 class="mb-2" style="color: #074c7d;">Looking for more?</h5>
+                    <p class="text-muted mb-4">Explore additional services and add them to your cart anytime.</p>
+                    <a href="{% url 'categoy.listings' %}" class="btn btn-outline-primary btn-animated px-4"><i class="fas fa-plus me-2"></i> Browse More Services</a>
+                </div>
+
+            {% else %}
+                <div class="text-center py-5">
+                    {% if footer.cart_image %}
+                        <img src="{{ footer.cart_image.url }}" alt="Empty Cart" class="img-fluid mb-4 empty-cart-animation" style="max-width: 250px;">
+                    {% else %}
+                        <img src="{% static 'assets/images/empty-cart-character.png' %}" alt="Empty Cart" class="img-fluid mb-4 empty-cart-animation" style="max-width: 250px;">
+                    {% endif %}
+                    <h3 class="font-weight-bold" style="color: #074c7d;">Your cart is empty</h3>
+                    <p class="text-muted mb-4" style="font-size: 1.1rem;">Looks like you haven't added any services yet.</p>
+                    <a href="{% url 'categoy.listings' %}" class="btn btn-primary btn-animated px-5 py-3"><i class="fas fa-search me-2"></i> Browse Services</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Extra bottom spacer before footer -->
+    <div class="mb-5 pb-5"></div>
+</div>
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Remove Item
+    const removeButtons = document.querySelectorAll('.remove-cart-item');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const itemId = this.getAttribute('data-item-id');
+            
+            fetch("{% url 'remove_from_cart' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({'item_id': itemId})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    // Remove element from DOM
+                    const li = document.getElementById('cart-item-' + itemId);
+                    li.remove();
+                    
+                    // Update cart count badge if exists
+                    const countBadge = document.getElementById('cart-count-badge');
+                    if (countBadge) countBadge.innerText = data.cart_count;
+
+                    // If cart is empty now, reload page
+                    if(data.cart_count === 0) {
+                        window.location.reload();
+                    } else {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                }
+            });
+        });
+    });
+
+    // Clear Cart
+    const clearBtn = document.getElementById('clear-cart-btn');
+    if(clearBtn) {
+        clearBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will remove all services from your cart.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, clear it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{% url 'clear_cart' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.status === 'success') {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
+{% endblock %}

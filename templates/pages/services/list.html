@@ -1,0 +1,275 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="service-page">
+
+    
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                Service Management
+            </h5>
+
+            <p class="page-subtitle">
+
+                Add and manage all service information
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'add.services' %}"
+           class="add-btn">
+
+            <i class="bi bi-plus-circle-fill"></i>
+
+            Add Service
+
+        </a>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="service-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Service List
+
+                </h5>
+
+                <p class="card-desc">
+
+                    View and manage all available services
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table class="service-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+                        <th>Service Name</th>
+                        <th>Service Icon</th>
+                        <th>Service Image</th>
+                        <th>Created Date</th>
+                        <th class="text-center">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for service in services %}
+
+                    <tr>
+
+                        <!-- SL NO -->
+
+                        <td>
+
+                            <div class="sl-no">
+
+                                {{ page_obj.start_index|add:forloop.counter0 }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- NAME -->
+
+                        <td>
+
+                            <div class="service-name">
+
+                                {{ service.servicename }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- ICON -->
+
+                        <td>
+
+                            {% if service.serviceicon %}
+
+                            <div class="img-box">
+
+                                <img src="{{ service.serviceicon.url }}">
+
+                            </div>
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- IMAGE -->
+
+                        <td>
+
+                            {% if service.service_image %}
+
+                            <div class="img-box">
+
+                                <img src="{{ service.service_image.url }}">
+
+                            </div>
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            <div class="date-text">
+
+                                {{ service.created_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="action-wrap">
+
+                                <a href="{% url 'update.services' service.id %}"
+                                   class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                </a>
+
+                                <a href="{% url 'delete.services' service.id %}"
+                                   class="action-btn delete-btn">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="6"
+                            class="empty-row">
+
+                            No Service Available
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        {% if page_obj %}
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.previous_page_number }}">
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                <span class="pg-btn active">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    {{ page_obj.next_page_number }}
+
+                </a>
+
+                {% endif %}
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

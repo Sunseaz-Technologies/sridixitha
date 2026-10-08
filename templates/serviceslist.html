@@ -1,0 +1,193 @@
+{% extends 'public_base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+  <!--==============================
+    Breadcrumb
+============================== -->
+  <div class="breadcumb-wrapper"
+    data-bg-src="{% if selected_category.banner_image %} {{ selected_category.banner_image.url }} {% else %} {% static 'assets/img/bg/b2b_banner_list_img.webp' %} {% endif %}">
+    <div class="container z-index-common">
+      <div class="breadcumb-content">
+        <h1 class="breadcumb-title">{{selected_category.title}} Listing</h1>
+        <div class="breadcumb-menu-wrap">
+          <div class="breadcumb-menu">
+            <span><a href="{% url 'indexpage' %}">Home</a></span>
+            <span>{{ selected_category.title }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Services About section-->
+  <section class="b2b-services-section py-5">
+    <div class="container">
+      <h2 class="b2b-heading" style="color: #074c7d;margin: 20px 0px;">About :
+      </h2>
+      <div class="row align-items-center">
+
+        <!-- Image Side -->
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="b2b-image">
+            <img
+              src="{% if selected_category.category_about_img %}{{ selected_category.category_about_img.url }}{% else %}{% static 'assets/img/bg/b2b_about.jpg' %}{% endif %}"
+              alt="B2B Services" class="img-fluid rounded">
+          </div>
+        </div>
+
+        <!-- Content Side -->
+        <div class="col-lg-6">
+          <div class="b2b-content">
+            <!-- <h4 class="mb-3">B2B Services</h4> -->
+            {% if selected_category.category_about_des %}
+            <p class="text-muted">
+              {{ selected_category.category_about_des }}
+            </p>
+            {% else %}
+            <p class="text-muted">No data found please add data</p>
+            {% endif %}
+            <a href="#listing-services" class="vs-btn mt-3 jd-expl-btn">Explore Services</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!--b2b about end-->
+
+  <!-- listing Area Start-->
+  <div class="listing-sidebar1 space" id="listing-services">
+    <div class="container">
+
+      <h2 class="b2b-heading" style="color: #074c7d;">Services Listing</h2>
+
+      <div class="row g-5">
+
+        <!-- LEFT SIDE (SERVICES) -->
+        <div class="col-xl-8">
+
+          <div class="row g-4">
+            {% for category_service in category_servicess %}
+            <div class="col-xl-4 col-lg-4 col-md-6">
+              <div class="vs-listing listing-style2">
+
+                <div class="listing-img">
+                  <img
+                    src="{% if category_service.image %}{{ category_service.image.url }}{% else %}{% static 'assets/img/listing/b2b/b2b_img_01.webp' %}{% endif %}"
+                    alt="{{ category_service.s_title }}" class="w-100">
+                  <span class="tags">{{ category_service.s_tag }}</span>
+                </div>
+
+                <div class="listing-content">
+                  <h3 class="listing-title">
+                    <a href="#">{{ category_service.s_title }}</a>
+                  </h3>
+                  <p class="listing-text">{{ category_service.s_desc }}</p>
+
+                 
+                  <div class="btn-book">
+                    
+                    <a class="vs-btn jd-expl-btn add-to-cart-btn" href="#" data-service-id="{{ category_service.id }}">Add to Cart</a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            {% empty %}
+            <p class="text-center text-dark">No service listed...</p>
+            {% endfor %}
+          </div>
+
+        </div>
+
+        <!-- RIGHT SIDE (FORM) -->
+        <div class="col-xl-4 col-lg-4">
+          <div class="advance-search list-sidebar wow animate__fadeInUp" data-wow-delay="0.45s">
+
+            <h3 class="widget_title title-shep">Search Here</h3>
+
+            <form class="form-style2  wow animate__fadeInUp" data-wow-delay="0.35s" action="" method="get">
+
+              <div class="row gx-20">
+
+
+
+                <div class="col-md-12 form-group">
+                  <select name="service" class="form-control" onchange="this.form.submit()">
+                    <option value="">--Select Services--</option>
+
+                    {% for service in category_services %}
+                    <option value="{{ service.id }}"
+                     {% if request.GET.service == service.id|stringformat:"s" %}selected{% endif %}>
+                      {{ service.s_title }}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="col-md-12 form-group">
+                  <button class="vs-btn w-100 jd-expl-btn" type="submit">Search</button>
+                </div>
+
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+        <!-- Pagination (unchanged) -->
+        <div class="row justify-content-center wow animate__fadeInUp" data-wow-delay="0.95s">
+          <div class="col-auto">
+            <div class="vs-pagination mb-0">
+
+              <!-- Previous -->
+              {% if category_servicess.has_previous %}
+              <a href="?page={{ category_servicess.previous_page_number }}" class="pagi-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+              </a>
+              {% else %}
+              <a href="#" class="pagi-btn disabled">
+                <i class="fa-solid fa-arrow-left"></i>
+              </a>
+              {% endif %}
+
+              <!-- Page Numbers -->
+              <ul>
+                {% for num in category_servicess.paginator.page_range %}
+
+                {% if category_servicess.number == num %}
+                <li><a href="#" class="active">{{ num }}</a></li>
+
+                {% elif num >= category_servicess.number|add:'-2' and num <= category_servicess.number|add:'2' %} <li>
+                  <a href="?page={{ num }}">{{ num }}</a></li>
+
+                  {% endif %}
+
+                  {% endfor %}
+              </ul>
+
+              <!-- Next -->
+              {% if category_servicess.has_next %}
+              <a href="?page={{ category_servicess.next_page_number }}" class="pagi-btn active">
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+              {% else %}
+              <a href="#" class="pagi-btn disabled">
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+  <!-- listing Area End -->
+{% endblock %}

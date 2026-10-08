@@ -1,0 +1,56 @@
+{% extends 'public_base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="svc-section" id="categories">
+        <div class="jbs-head">
+
+            <h2 class="jbs-title " style="color: #ea6e12;">Category Listing</h2>
+            <p class="jobs-line-cat"> </p>
+        </div>
+        <div class="svc-grid">
+
+            <!-- B2B Services -->
+            {% for category in categories %}
+            <a href="{% url 'category.services.listing' category.pk  %}" class="svc-card c5">
+
+                <div class="svc-arrow">
+                    <span>
+                        <i class="fa-solid fa-arrow-right text-white"></i>
+                    </span>
+                </div>
+
+                <div class="svc-icon-wrap">
+                    {% if category.icon %}
+                    <img src="{{ category.icon.url }}" alt="">
+                    {% else %}
+                    <span>--</span>
+                    {% endif %}
+                </div>
+
+                <p class="svc-card-title">{{ category.title }}</p>
+
+                <p class="svc-card-desc">
+                    {{ category.description }}
+                </p>
+
+                <span class="svc-badge">{{ category.badge }}</span>
+
+                <div class="svc-pill-tag">
+                    {% if category.tags %}
+                    {% for tag in category.get_tags_list %}
+                    <span class="svc-mini-tag">{{ tag }}</span>
+                    {% endfor %}
+                    {% else %}
+                    <span class="svc-mini-tag">No Tags</span>
+                    {% endif %}
+                </div>
+
+            </a>
+            {% endfor %}
+
+
+        </div>
+
+    </section>
+{% endblock %}

@@ -1,0 +1,919 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+
+:root{
+
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --border:#e6e8ec;
+    --text:#111827;
+    --sub:#6b7280;
+    --green:#16a34a;
+    --yellow:#d97706;
+    --blue:#2563eb;
+
+}
+
+/* PAGE */
+
+.page-wrap{
+
+    padding:30px;
+    background:var(--bg);
+    min-height:100vh;
+
+}
+
+
+
+
+/* CARD */
+
+.card{
+
+    margin-top:22px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 4px 14px rgba(15,23,42,.05);
+
+}
+
+/* TOOLBAR */
+
+.toolbar{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:18px;
+    flex-wrap:wrap;
+    border-bottom:1px solid #eef2f7;
+
+}
+
+.card-title{
+
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+
+}
+
+/* FILTER */
+
+.filter-group{
+
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:#f3f4f6;
+    padding:4px;
+    border-radius:10px;
+
+}
+
+.filter-btn{
+
+    border:none;
+    background:transparent;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    color:#374151;
+    transition:.2s ease;
+
+}
+
+.filter-btn.active{
+
+    background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+
+}
+
+/* SEARCH */
+
+.search-container{
+
+    position:relative;
+
+}
+
+.search-icon{
+
+    position:absolute;
+    left:10px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:13px;
+    color:#94a3b8;
+
+}
+
+.search-container input{
+
+    height:40px;
+    width:240px;
+    border:1px solid #dbe1e8;
+    border-radius:10px;
+    padding:0 14px 0 34px;
+    outline:none;
+    font-size:13px;
+
+}
+
+/* DATE */
+
+.date-input{
+
+    height:40px;
+    border:1px solid #dbe1e8;
+    border-radius:10px;
+    padding:0 12px;
+    font-size:13px;
+    outline:none;
+
+}
+
+/* TABLE WRAP */
+
+.table-wrap{
+
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+
+}
+
+/* TABLE */
+
+table{
+
+    width:100%;
+    min-width:1350px;
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:#f8fafc;
+    border-bottom:1px solid #eef2f7;
+
+}
+
+th{
+
+    padding:16px;
+    text-align:left;
+    font-size:11px;
+    text-transform:uppercase;
+    color:#64748b;
+    font-weight:700;
+    letter-spacing:.4px;
+    white-space:nowrap;
+
+}
+
+td{
+
+    padding:16px;
+    border-top:1px solid #eef2f7;
+    font-size:13px;
+    color:#111827;
+    vertical-align:middle;
+    white-space:nowrap;
+
+}
+
+.payment-row{
+
+    transition:.2s ease;
+
+}
+
+.payment-row:hover{
+
+    background:#fafcff;
+
+}
+
+/* CUSTOMER */
+
+.customer-name{
+
+    font-weight:700;
+    color:#111827;
+
+}
+
+.customer-phone{
+
+    margin-top:3px;
+    font-size:12px;
+    color:#6b7280;
+
+}
+
+/* STATUS */
+
+.status{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:85px;
+    height:32px;
+    padding:0 12px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:700;
+
+}
+
+.status.paid{
+
+    background:#ecfdf5;
+    color:#16a34a;
+
+}
+
+.status.pending{
+
+    background:#fffbeb;
+    color:#d97706;
+
+}
+
+/* IMAGE */
+
+.img{
+
+    width:44px;
+    height:44px;
+    border-radius:10px;
+    object-fit:cover;
+    border:1px solid #e5e7eb;
+    cursor:pointer;
+
+}
+
+/* AMOUNT */
+
+.amount-box{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:95px;
+    height:36px;
+    padding:0 14px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+
+}
+
+.amount-box.estimate{
+
+    background:#eff6ff;
+    color:#2563eb;
+
+}
+
+.amount-box.total{
+
+    background:#ecfdf5;
+    color:#16a34a;
+
+}
+
+/* BUTTON */
+
+.btn-invoice{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:95px;
+    height:38px;
+    padding:0 16px;
+    background:#2563eb;
+    color:#fff;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:700;
+    transition:.2s ease;
+
+}
+
+.btn-invoice:hover{
+
+    background:#1d4ed8;
+    color:#fff;
+
+}
+
+/* EMPTY */
+
+.empty{
+
+    text-align:center;
+    padding:45px;
+    color:#6b7280;
+    font-size:14px;
+
+}
+
+/* PAGINATION */
+
+.tbl-footer{
+
+    width:100%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:20px;
+    border-top:1px solid #eef2f7;
+
+}
+
+.page-btns{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+
+}
+
+.pg-btn{
+
+    min-width:40px;
+    height:40px;
+    padding:0 14px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    color:#111827;
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s ease;
+
+}
+
+.pg-btn:hover{
+
+    background:#f3f4f6;
+
+}
+
+.pg-btn.active{
+
+    background:#2563eb;
+    color:#fff;
+    border-color:#2563eb;
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .page-wrap{
+
+        padding:14px;
+
+    }
+
+    .dashboard-heading{
+
+        font-size:22px;
+
+    }
+
+    .toolbar{
+
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+
+    }
+
+    .filter-group{
+
+        width:100%;
+        overflow:auto;
+        justify-content:flex-start;
+
+    }
+
+    .search-container input{
+
+        width:100%;
+
+    }
+
+    .date-input{
+
+        width:100%;
+
+    }
+
+    table{
+
+        min-width:1350px;
+
+    }
+
+    th,td{
+
+        padding:13px;
+
+    }
+
+    .img{
+
+        width:40px;
+        height:40px;
+
+    }
+
+    .tbl-footer{
+
+        justify-content:center;
+        padding:16px;
+
+    }
+
+    .page-btns{
+
+        justify-content:center;
+        width:100%;
+
+    }
+
+}
+
+</style>
+
+<div class="page-wrap">
+
+    <!-- HEADER -->
+
+    <div>
+
+        <h2 class="dashboard-heading">
+
+            All Payments
+
+        </h2>
+
+        <p class="dashboard-subheading">
+
+            Service payment management
+
+        </p>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="card">
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+            <div class="card-title">
+
+                Payments
+
+            </div>
+
+            <!-- FILTER -->
+
+            <div class="filter-group">
+
+                <button
+                    class="filter-btn active"
+                    onclick="setStatus('', this)"
+                >
+                    All
+                </button>
+
+                <button
+                    class="filter-btn"
+                    onclick="setStatus('paid', this)"
+                >
+                    Paid
+                </button>
+
+                <button
+                    class="filter-btn"
+                    onclick="setStatus('pending', this)"
+                >
+                    Pending
+                </button>
+
+            </div>
+
+            <!-- SEARCH -->
+
+            <div class="search-container">
+
+                <span class="search-icon">
+
+                    🔍
+
+                </span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search payments..."
+                    onkeyup="applyFilters()"
+                >
+
+            </div>
+
+            <!-- DATE -->
+
+            <input
+                type="date"
+                id="dateFilter"
+                class="date-input"
+                onchange="applyFilters()"
+            >
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+
+                        <th>Service ID</th>
+
+                        <th>Customer</th>
+
+                        <th>Vendor</th>
+
+                        <th>Service</th>
+
+                        <th>Est.Amount</th>
+
+                        <th>Final.Amount</th>
+
+                        <th>Status</th>
+
+                        <th>Transaction</th>
+
+                        <th>Proof</th>
+
+                        <th>Date</th>
+
+                        <th>Invoice</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for p in payments %}
+
+                    <tr class="payment-row">
+
+                        <!-- SERIAL -->
+
+                        <td>
+
+                            {{ forloop.counter }}
+
+                        </td>
+
+                        <!-- ORDER -->
+
+                        <td>
+
+                            {% if p.booking.order_id %}
+
+                                {{ p.booking.order_id }}
+
+                            {% else %}
+
+                                #{{ p.booking.id }}
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- CUSTOMER -->
+
+                        <td>
+
+                            <div class="customer-name">
+
+                                {{ p.booking.user.first_name|default:p.booking.user.username }}
+
+                            </div>
+
+                            <div class="customer-phone">
+
+                                {{ p.booking.user.phone|default:"-" }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- VENDOR -->
+
+                        <td>
+
+                            {% if p.vendor %}
+
+                                {{ p.vendor.first_name }}
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- SERVICE -->
+
+                        <td>
+
+                            {{ p.service.s_title|default:"-" }}
+
+                        </td>
+
+                        <!-- EST AMOUNT -->
+
+                        <td>
+
+                            <div class="amount-box estimate">
+
+                                ₹{{ p.booking.estimated_amount|default:"0" }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- FINAL AMOUNT -->
+
+                        <td>
+
+                            <div class="amount-box total">
+
+                                ₹{{ p.total_amount }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <span class="status {{ p.status }}">
+
+                                {{ p.status|title }}
+
+                            </span>
+
+                        </td>
+
+                        <!-- TRANSACTION -->
+
+                        <td>
+
+                            {{ p.transaction_id|default:"—" }}
+
+                        </td>
+
+                        <!-- PROOF -->
+
+                        <td>
+
+                            {% if p.screenshot %}
+
+                            <img
+                                src="{{ p.screenshot.url }}"
+                                class="img"
+                                onclick="window.open(this.src)"
+                            >
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- DATE -->
+
+                        <td
+                            class="pay-date"
+                            data-date="{{ p.payment_updated_at|date:'Y-m-d' }}"
+                        >
+
+                            {{ p.payment_updated_at|date:"d M Y" }}
+
+                        </td>
+
+                        <!-- INVOICE -->
+
+                        <td>
+
+                            <a
+                                href="{% url 'payment_invoice' p.id %}"
+                                target="_blank"
+                                class="btn-invoice"
+                            >
+
+                                Invoice
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="12" class="empty">
+
+                            No payments found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+
+                <a
+                    class="pg-btn"
+                    href="?page={{ page_obj.previous_page_number }}"
+                >
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+
+                    {% if page_obj.number == num %}
+
+                    <a
+                        href="?page={{ num }}"
+                        class="pg-btn active"
+                    >
+
+                        {{ num }}
+
+                    </a>
+
+                    {% else %}
+
+                    <a
+                        href="?page={{ num }}"
+                        class="pg-btn"
+                    >
+
+                        {{ num }}
+
+                    </a>
+
+                    {% endif %}
+
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+
+                <a
+                    class="pg-btn"
+                    href="?page={{ page_obj.next_page_number }}"
+                >
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let currentStatus = "";
+
+function setStatus(status, el){
+
+    currentStatus = status;
+
+    document.querySelectorAll(".filter-btn").forEach(btn=>{
+
+        btn.classList.remove("active");
+
+    });
+
+    el.classList.add("active");
+
+    applyFilters();
+
+}
+
+function applyFilters(){
+
+    const q = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const selectedDate = document
+        .getElementById("dateFilter")
+        .value;
+
+    document.querySelectorAll(".payment-row")
+    .forEach(row => {
+
+        const text = row.innerText.toLowerCase();
+
+        const status = row
+            .querySelector(".status")
+            ?.innerText
+            .toLowerCase();
+
+        const date = row
+            .querySelector(".pay-date")
+            ?.dataset.date;
+
+        let show = true;
+
+        if(q && !text.includes(q))
+            show = false;
+
+        if(currentStatus && !status.includes(currentStatus))
+            show = false;
+
+        if(selectedDate && date !== selectedDate)
+            show = false;
+
+        row.style.display = show ? "" : "none";
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

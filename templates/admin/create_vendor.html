@@ -1,0 +1,824 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  .page-wrap {
+    padding: 2rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-header h6 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: #64748b;
+  }
+
+  /* Card */
+  .card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .card-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    background: #fafbfc;
+  }
+
+  .card-body {
+    padding: 24px;
+  }
+
+  /* Section label */
+  .section-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+
+  /* Grid */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  /* Field group */
+  .fg {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .fg label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    letter-spacing: 0.1px;
+  }
+
+  /* Inputs */
+  .form-input {
+    padding: 10px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 9px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: #0f172a;
+    background: #fff;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+    width: 100%;
+  }
+
+  .form-input::placeholder {
+    color: #94a3b8;
+  }
+
+  .form-input:hover {
+    border-color: #cbd5e1;
+  }
+
+  .form-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3.5px rgba(37, 99, 235, .12);
+    background: #fafcff;
+  }
+
+  .form-input.input-err {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3.5px rgba(239, 68, 68, .1);
+    background: #fff8f8;
+  }
+
+  .form-input.input-ok {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3.5px rgba(34, 197, 94, .1);
+  }
+
+  /* Hint */
+  .hint {
+    font-size: 11.5px;
+    min-height: 15px;
+  }
+
+  .hint.err {
+    color: #dc2626;
+  }
+
+  .hint.ok {
+    color: #16a34a;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 22px 0;
+  }
+
+  /* Phone row */
+  .phone-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .phone-row .fg {
+    flex: 1;
+    min-width: 180px;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    padding: 10px 22px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.1px;
+    transition: background .15s, box-shadow .15s, transform .1s;
+  }
+
+  .btn-primary:hover {
+    background: #1d4ed8;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, .25);
+  }
+
+  .btn-primary:active {
+    transform: scale(.97);
+  }
+
+  .btn-primary:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .btn-ghost {
+    padding: 10px 22px;
+    background: transparent;
+    color: #2563eb;
+    border: 1.5px solid #2563eb;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background .15s, box-shadow .15s;
+  }
+
+  .btn-ghost:hover {
+    background: #eff6ff;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, .12);
+  }
+
+  /* OTP section */
+  .otp-section {
+    background: #f8fafc;
+    border: 1.5px solid #e8edf3;
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-top: 18px;
+    display: none;
+  }
+
+  .otp-section.show {
+    display: block;
+  }
+
+  .otp-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 4px;
+  }
+
+  .otp-sub {
+    font-size: 12.5px;
+    color: #64748b;
+    margin-bottom: 20px;
+  }
+
+  /* OTP boxes */
+  .otp-wrap {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .otp-box {
+    width: 56px;
+    height: 58px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    color: #0f172a;
+    background: #fff;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s, transform .1s;
+  }
+
+  .otp-box:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3.5px rgba(37, 99, 235, .12);
+    transform: translateY(-1px);
+  }
+
+  .otp-box.err {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3.5px rgba(239, 68, 68, .1);
+    animation: shake .3s ease;
+  }
+
+  .otp-box.ok {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3.5px rgba(34, 197, 94, .1);
+  }
+
+  @keyframes shake {
+
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    25% {
+      transform: translateX(-5px);
+    }
+
+    75% {
+      transform: translateX(5px);
+    }
+  }
+
+  /* OTP actions */
+  .otp-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .timer-text {
+    font-size: 13px;
+    color: #64748b;
+  }
+
+  .timer-num {
+    color: #2563eb;
+    font-weight: 700;
+  }
+
+  /* Message bars */
+  .msg-bar {
+    padding: 11px 16px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 16px;
+    display: none;
+  }
+
+  .msg-bar.err {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    display: block;
+  }
+
+  .msg-bar.ok {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    display: block;
+  }
+
+  /* Verified badge */
+  .verified-badge {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    background: #f0fdf4;
+    border: 1.5px solid #86efac;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #15803d;
+    margin-top: 16px;
+  }
+
+  .verified-badge.show {
+    display: flex;
+  }
+
+  .dot-ok {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #22c55e;
+    flex-shrink: 0;
+  }
+
+  /* Create bar */
+  .create-bar {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+    display: none;
+  }
+
+  .create-bar.show {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .create-bar .btn-primary {
+    padding: 11px 32px;
+    font-size: 14px;
+  }
+
+  /* Table */
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  thead tr {
+    border-bottom: 1.5px solid #e2e8f0;
+  }
+
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #fafbfc;
+  }
+
+  td {
+    padding: 13px 16px;
+    color: #1e293b;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13.5px;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:hover {
+    background: #f8fafc;
+  }
+
+  .empty-row td {
+    text-align: center;
+    color: #94a3b8;
+    padding: 32px;
+    font-size: 13px;
+  }
+</style>
+
+<div class="page-wrap">
+        <div>
+            <h2 class="dashboard-heading">
+            Create Vendor
+            </h2>
+            <p class="dashboard-subheading">
+            Vendor onboarding with full details
+            </p>
+        </div>
+
+  <div class="card">
+    <div class="card-header">New Vendor</div>
+    <div class="card-body">
+
+      <div class="section-label">Basic Info</div>
+      <div class="form-grid">
+        <div class="fg">
+          <label>First Name</label>
+          <input id="first_name" class="form-input" placeholder="Ravi" oninput="liveCheck(this,'name')">
+          <span class="hint" id="h_first_name"></span>
+        </div>
+        <div class="fg">
+          <label>Last Name</label>
+          <input id="last_name" class="form-input" placeholder="Kumar" oninput="liveCheck(this,'name')">
+          <span class="hint" id="h_last_name"></span>
+        </div>
+        <div class="fg">
+          <label>Email</label>
+          <input id="email" class="form-input" type="email" placeholder="ravi@gmail.com"
+            oninput="liveCheck(this,'email')">
+          <span class="hint" id="h_email"></span>
+        </div>
+        <div class="fg">
+          <label>Experience (Years)</label>
+          <input id="experience" class="form-input" type="number" min="0" max="50" placeholder="3"
+            oninput="liveCheck(this,'exp')">
+          <span class="hint" id="h_experience"></span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="section-label">Location</div>
+      <div class="form-grid">
+        <input id="locality" class="form-input" placeholder="Locality" oninput="liveCheck(this,'req')">
+        <input id="street" class="form-input" placeholder="Street" oninput="liveCheck(this,'req')">
+        <input id="city" class="form-input" placeholder="City" oninput="liveCheck(this,'name')">
+        <input id="pincode" class="form-input" placeholder="Pincode" oninput="liveCheck(this,'pin')">
+      </div>
+
+      <div class="divider"></div>
+
+   
+      <div class="section-label">Category & Company</div>
+
+      <form method="GET">
+      <div class="form-grid">
+
+        <div class="fg">
+          <label>Category</label>
+          <select name="category" class="form-input"
+                  onchange="this.form.submit(); liveCheck(this,'sel')">
+
+            <option value="">Select</option>
+
+            {% for c in categories %}
+            <option value="{{ c.id }}"
+              {% if selected_category == c.id|stringformat:"s" %}selected{% endif %}>
+              {{ c.title }}
+            </option>
+            {% endfor %}
+
+          </select>
+          <span class="hint" id="h_category"></span>
+        </div>
+
+        <div class="fg">
+          <label>Service</label>
+          <select name="service" id="service" class="form-input"
+                  {% if not selected_category %}disabled{% endif %}>
+
+            <option value="">Select</option>
+
+            {% for s in services %}
+            <option value="{{ s.id }}">{{ s.s_title }}</option>
+            {% endfor %}
+
+          </select>
+        </div>
+
+        <div class="fg">
+          <label>Company Name</label>
+          <input id="company_name" class="form-input" placeholder="Company Name"
+            oninput="liveCheck(this,'req')">
+        </div>
+
+        <div class="fg" style="grid-column: span 2;">
+          <label>Company Address</label>
+          <input id="company_address" class="form-input" placeholder="Company Address"
+            oninput="liveCheck(this,'req')">
+        </div>
+
+      </div>
+      </form>
+
+      <div class="divider"></div>
+
+      <!-- PHONE -->
+      <div class="section-label">Phone Verification</div>
+
+      <div class="phone-row">
+        <input id="phone" class="form-input" placeholder="Phone">
+        <button class="btn-primary" onclick="sendOTP()">Send OTP</button>
+      </div>
+
+ <div class="otp-section" id="otpSection">
+
+        <div class="otp-title">Enter OTP</div>
+        <div class="otp-sub" id="otpSub"></div>
+
+        <div class="otp-wrap">
+          <input class="otp-box" maxlength="1">
+          <input class="otp-box" maxlength="1">
+          <input class="otp-box" maxlength="1">
+          <input class="otp-box" maxlength="1">
+        </div>
+
+        <div class="otp-actions">
+          <button class="btn-primary" onclick="verifyOTP()">Verify</button>
+
+          <span class="timer-text" id="timerText">
+            Resend in <span id="timerNum">30</span>s
+          </span>
+
+          <button class="btn-ghost" id="resendBtn" onclick="resendOTP()" style="display:none;">
+            Resend OTP
+          </button>
+        </div>
+
+        <div id="otpMsg" class="msg-bar"></div>
+
+      </div>
+
+    
+      <div class="verified-badge" id="verifiedBadge">
+        <span class="dot-ok"></span>
+        Phone verified successfully
+      </div>
+
+      <div class="create-bar" id="createBar">
+        <button class="btn-primary" onclick="createVendor()">Create Vendor</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">All Vendors</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>City</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in vendors %}
+          <tr>
+            <td>{{ v.first_name }} {{ v.last_name }}</td>
+            <td>{{ v.email }}</td>
+            <td>{{ v.phone }}</td>
+            <td>{{ v.vendor_profile.city }}</td>
+            <td>{{ v.vendor_profile.category.title }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">No vendors yet</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function getCSRF() { return "{{ csrf_token }}"; }
+
+  
+  function loadServices(categoryId) {
+
+    const service = document.getElementById("service");
+
+
+    service.innerHTML = '<option value="">Loading...</option>';
+    service.disabled = true;
+
+    if (!categoryId) {
+      service.innerHTML = '<option value="">Select category first</option>';
+      return;
+    }
+
+    fetch(`/get-services/?category=${categoryId}`)
+      .then(res => res.json())
+      .then(data => {
+
+        console.log("Services:", data.services);
+
+
+        if (!data.services || data.services.length === 0) {
+          service.innerHTML = '<option value="">No services available</option>';
+          service.disabled = true;
+          return;
+        }
+
+
+        service.innerHTML = '<option value="">Select Service</option>';
+
+        data.services.forEach(s => {
+          service.innerHTML += `
+          <option value="${s.id}">
+            ${s.s_title || s.title}
+          </option>
+        `;
+        });
+
+        service.disabled = false;
+      })
+      .catch(() => {
+        service.innerHTML = '<option value="">Error loading services</option>';
+        service.disabled = true;
+      });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //scripts
+  function getCSRF(){ return "{{ csrf_token }}"; }
+
+/* 🔥 FIX: WAIT FOR DOM */
+document.addEventListener("DOMContentLoaded", function(){
+
+  const boxes = document.querySelectorAll('.otp-box');
+
+  boxes.forEach((b, i) => {
+
+    b.addEventListener('input', () => {
+      b.value = b.value.replace(/\D/g,'');
+      if (b.value && i < 3) boxes[i+1].focus();
+    });
+
+    b.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !b.value && i > 0) {
+        boxes[i-1].focus();
+      }
+    });
+
+  });
+
+});
+
+/* OTP MESSAGE */
+function showOtpMsg(text,type){
+  const m = document.getElementById('otpMsg');
+  m.textContent = text;
+  m.className = 'msg-bar ' + (type === 'err' ? 'err' : 'ok');
+}
+
+/* TIMER */
+let countdown;
+function startTimer(){
+  let t = 30;
+
+  document.getElementById('timerText').style.display="inline";
+  document.getElementById('resendBtn').style.display="none";
+
+  clearInterval(countdown);
+
+  countdown = setInterval(()=>{
+    t--;
+    document.getElementById('timerNum').textContent=t;
+
+    if(t<=0){
+      clearInterval(countdown);
+      document.getElementById('timerText').style.display="none";
+      document.getElementById('resendBtn').style.display="inline-block";
+    }
+  },1000);
+}
+
+/* SEND OTP */
+function sendOTP(){
+
+  let phone = document.getElementById("phone").value;
+
+  if(!/^[6-9]\d{9}$/.test(phone)){
+    showOtpMsg("Enter valid phone","err");
+    return;
+  }
+
+  fetch("/send-otp/",{
+    method:"POST",
+    headers:{'X-CSRFToken':getCSRF()},
+    body:new URLSearchParams({phone})
+  })
+  .then(r=>r.json())
+  .then(d=>{
+
+    if(d.error){
+      showOtpMsg(d.error,"err");
+      return;
+    }
+
+    document.getElementById("otpSection").classList.add("show");
+    document.getElementById("otpSub").innerText="OTP sent to +91 "+phone;
+
+    startTimer();
+    showOtpMsg("OTP sent","ok");
+
+    document.querySelectorAll(".otp-box")[0].focus();
+  });
+
+}
+
+/* VERIFY OTP */
+function verifyOTP(){
+
+  let otp="";
+  document.querySelectorAll(".otp-box").forEach(i=>otp+=i.value);
+
+  if(otp.length<4){
+    showOtpMsg("Enter 4 digit OTP","err");
+    return;
+  }
+
+  fetch("/verify-otp/",{
+    method:"POST",
+    headers:{'X-CSRFToken':getCSRF()},
+    body:new URLSearchParams({otp})
+  })
+  .then(r=>r.json())
+  .then(d=>{
+
+    if(d.status==="verified"){
+
+      document.getElementById("verifiedBadge").classList.add("show");
+      document.getElementById("createBar").classList.add("show");
+
+      showOtpMsg("Verified","ok");
+
+    } else {
+      showOtpMsg("Invalid OTP","err");
+    }
+
+  });
+
+}
+
+/* CREATE */
+function createVendor(){
+
+  fetch("/create_vendor/",{
+    method:"POST",
+    headers:{'X-CSRFToken':getCSRF()},
+    body:new URLSearchParams({
+      phone:phone.value
+    })
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    alert("Vendor Created");
+    location.reload();
+  });
+
+}
+
+</script>
+
+{% endblock %}

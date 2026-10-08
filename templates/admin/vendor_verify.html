@@ -1,0 +1,616 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+
+body{
+    background:#f4f7fb;
+    font-family:'Inter',sans-serif;
+}
+
+/* PAGE */
+
+.verify-container{
+    width:100%;
+    max-width:1450px;
+    margin:35px auto;
+    padding:20px;
+}
+
+/* CARD */
+
+.verify-card{
+    background:#fff;
+    border-radius:22px;
+    border:1px solid #e5e7eb;
+    overflow:hidden;
+    box-shadow:0 4px 25px rgba(0,0,0,.04);
+}
+
+/* HEADER */
+
+.card-header{
+    padding:28px 35px;
+    border-bottom:1px solid #eef2f7;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.page-title{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:6px;
+}
+
+.page-sub{
+    font-size:14px;
+    color:#6b7280;
+}
+
+.status-badge{
+    padding:10px 18px;
+    border-radius:40px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.status-verified{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-pending{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* BODY */
+
+.form-body{
+    padding:35px;
+}
+
+/* GRID */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:22px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-label{
+    font-size:12px;
+    font-weight:700;
+    color:#374151;
+    margin-bottom:9px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.form-value{
+    min-height:52px;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    background:#f9fafb;
+    display:flex;
+    align-items:center;
+    padding:14px 16px;
+    font-size:14px;
+    color:#111827;
+    font-weight:500;
+    line-height:1.6;
+    word-break:break-word;
+}
+
+.full-width{
+    grid-column:1/-1;
+}
+
+/* SERVICES */
+
+.services-wrap{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.service-tag{
+    padding:9px 15px;
+    border-radius:30px;
+    background:#eff6ff;
+    color:#2563eb;
+    font-size:12px;
+    font-weight:700;
+}
+
+/* DOCS */
+
+.doc-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:22px;
+}
+
+.doc-card{
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    overflow:hidden;
+    background:#fff;
+}
+
+.doc-head{
+    padding:15px 18px;
+    font-size:13px;
+    font-weight:700;
+    border-bottom:1px solid #eef2f7;
+    background:#f9fafb;
+}
+
+.doc-image{
+    width:100%;
+    height:260px;
+    object-fit:cover;
+}
+
+/* VERIFY */
+
+.verify-box{
+    margin-top:35px;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:24px;
+    background:#f9fafb;
+}
+
+.verify-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.verify-title{
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:6px;
+}
+
+.verify-text{
+    font-size:14px;
+    color:#6b7280;
+    line-height:1.7;
+    max-width:700px;
+}
+
+/* SWITCH */
+
+.switch{
+    position:relative;
+    width:68px;
+    height:36px;
+    display:inline-block;
+    flex-shrink:0;
+}
+
+.switch input{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    cursor:pointer;
+    background:#d1d5db;
+    border-radius:40px;
+    transition:.3s;
+}
+
+.slider:before{
+    position:absolute;
+    content:"";
+    width:28px;
+    height:28px;
+    left:4px;
+    bottom:4px;
+    background:#fff;
+    border-radius:50%;
+    transition:.3s;
+}
+
+.switch input:checked + .slider{
+    background:#16a34a;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(32px);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:992px){
+
+    .verify-container{
+        max-width:100%;
+        padding:15px;
+    }
+
+    .form-body{
+        padding:25px;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .card-header{
+        padding:22px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .verify-top{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .doc-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .page-title{
+        font-size:20px;
+    }
+
+    .form-body{
+        padding:18px;
+    }
+
+    .form-value{
+        font-size:13px;
+    }
+
+}
+
+</style>
+
+<div class="verify-container">
+
+    <div class="verify-card">
+
+        <!-- HEADER -->
+
+        <div class="card-header">
+
+            <div>
+
+                <div class="page-title">
+
+                    Vendor Verification
+
+                </div>
+
+                <div class="page-sub">
+
+                    Review vendor details and manage verification status.
+
+                </div>
+
+            </div>
+
+            {% if profile.is_verified %}
+
+            <div class="status-badge status-verified">
+
+                Verified Account
+
+            </div>
+
+            {% else %}
+
+            <div class="status-badge status-pending">
+
+                Pending Verification
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="form-body">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        Vendor Name
+                    </div>
+
+                    <div class="form-value">
+                        {{ vendor.first_name }}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        Email Address
+                    </div>
+
+                    <div class="form-value">
+                        {{ vendor.email }}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        Phone Number
+                    </div>
+
+                    <div class="form-value">
+                        {{ vendor.phone }}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        Company Name
+                    </div>
+
+                    <div class="form-value">
+                        {{ profile.company_name }}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        Experience
+                    </div>
+
+                    <div class="form-value">
+                        {{ profile.experience }} Years
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        Category
+                    </div>
+
+                    <div class="form-value">
+                        {{ profile.category.title }}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        City
+                    </div>
+
+                    <div class="form-value">
+                        {{ profile.city }}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        Locality
+                    </div>
+
+                    <div class="form-value">
+                        {{ profile.locality }}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        Postal Code
+                    </div>
+
+                    <div class="form-value">
+                        {{ profile.postal_code }}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        PAN Number
+                    </div>
+
+                    <div class="form-value">
+                        {{ profile.pan_number }}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="form-label">
+                        License Number
+                    </div>
+
+                    <div class="form-value">
+                        {{ profile.license_number }}
+                    </div>
+
+                </div>
+
+                <!-- SERVICES -->
+
+                <div class="form-group full-width">
+
+                    <div class="form-label">
+                        Vendor Services
+                    </div>
+
+                    <div class="services-wrap">
+
+                        {% for s in profile.services.all %}
+
+                        <div class="service-tag">
+
+                            {{ s.s_title }}
+
+                        </div>
+
+                        {% empty %}
+
+                        <div class="form-value">
+
+                            No Services Added
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <!-- DOCUMENTS -->
+
+                <div class="form-group full-width">
+
+                    <div class="form-label">
+                        Uploaded Documents
+                    </div>
+
+                    <div class="doc-grid">
+
+                        {% if profile.pan_card %}
+
+                        <div class="doc-card">
+
+                            <div class="doc-head">
+
+                                PAN Card
+
+                            </div>
+
+                            <img
+                                src="{{ profile.pan_card.url }}"
+                                class="doc-image"
+                            >
+
+                        </div>
+
+                        {% endif %}
+
+                        {% if profile.license_file %}
+
+                        <div class="doc-card">
+
+                            <div class="doc-head">
+
+                                License File
+
+                            </div>
+
+                            <img
+                                src="{{ profile.license_file.url }}"
+                                class="doc-image"
+                            >
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- VERIFY -->
+
+            <div class="verify-box">
+
+                <form method="POST" id="verifyForm">
+
+                    {% csrf_token %}
+
+                    <div class="verify-top">
+
+                        <div>
+
+                            <div class="verify-title">
+
+                                Verification Status
+
+                            </div>
+
+                            <div class="verify-text">
+
+                                Turn ON to verify vendor account.
+                                Turn OFF to move vendor back into pending verification status.
+
+                            </div>
+
+                        </div>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                name="verify_status"
+                                onchange="document.getElementById('verifyForm').submit()"
+                                {% if profile.is_verified %}checked{% endif %}
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

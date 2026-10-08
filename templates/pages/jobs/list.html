@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="job-page">
+
+    
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                Job Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Create and manage all job postings
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'add.jobs' %}"
+           class="add-btn">
+
+            <i class="bi bi-plus-circle-fill"></i>
+
+            Add Job
+
+        </a>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="job-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Job / Career List
+
+                </h5>
+
+                <p class="card-desc">
+
+                    View and manage all available jobs
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table class="job-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+                        <th>Icon</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Job Type</th>
+                        <th>Work Mode</th>
+                        <th>Created Date</th>
+                        <th class="text-center">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for job in jobs %}
+
+                    <tr>
+
+                        <!-- SL NO -->
+
+                        <td>
+
+ <div class="sl-no">
+      {{ page_obj.start_index|add:forloop.counter0 }}
+</div>
+
+                        </td>
+
+                        <!-- ICON -->
+
+                        <td>
+
+                            {% if job.icon %}
+
+                            <div class="img-box">
+
+                                <img src="{{ job.icon.url }}">
+
+                            </div>
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- TITLE -->
+
+                        <td>
+
+                            <div class="job-title">
+
+                                {{ job.title }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if job.status == "urgent" %}
+
+                            <span class="status-badge badge-urgent">
+
+                                Urgent
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="status-badge badge-hiring">
+
+                                Hiring
+
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- DESCRIPTION -->
+
+                        <td>
+
+                            <div class="job-desc">
+
+                                {{ job.description|truncatechars:60 }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- JOB TYPE -->
+
+                        <td>
+
+                            {{ job.job_type }}
+
+                        </td>
+
+                        <!-- WORK MODE -->
+
+                        <td>
+
+                            {{ job.work_mode }}
+
+                        </td>
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            <div class="date-text">
+
+                                {{ job.created_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="action-wrap">
+
+                                <a href="{% url 'update.jobs' job.id %}"
+                                   class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                </a>
+
+                                <a href="{% url 'delete.jobs' job.id %}"
+                                   class="action-btn delete-btn"
+                                   onclick="return confirm('Are you sure you want to delete this job?')">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="9"
+                            class="empty-row">
+
+                            No jobs available
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        {% if page_obj %}
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.previous_page_number }}">
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                <span class="pg-btn active">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    {{ page_obj.next_page_number }}
+
+                </a>
+
+                {% endif %}
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

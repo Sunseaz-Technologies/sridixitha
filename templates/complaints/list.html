@@ -1,0 +1,463 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+
+:root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#111827;
+    --sub:#6b7280;
+    --primary:#2563eb;
+}
+
+body{
+    background:var(--bg);
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.dashboard-container{
+    max-width:1300px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+}
+
+.page-title{
+    font-size:30px;
+    font-weight:800;
+    color:var(--text);
+    margin-bottom:6px;
+}
+
+.page-subtitle{
+    font-size:14px;
+    color:var(--sub);
+}
+
+/* =========================
+   CARD
+========================= */
+
+.table-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(15,23,42,.05);
+}
+
+/* =========================
+   CARD TOP
+========================= */
+
+.card-top{
+    padding:22px 24px;
+    border-bottom:1px solid var(--border);
+    background:#fafafa;
+}
+
+.card-title{
+    font-size:18px;
+    font-weight:700;
+    color:var(--text);
+}
+
+.card-desc{
+    font-size:13px;
+    color:var(--sub);
+    margin-top:4px;
+}
+
+/* =========================
+   BODY
+========================= */
+
+.card-body-custom{
+    padding:24px;
+}
+
+/* =========================
+   COMPLAINT ITEM
+========================= */
+
+.complaint-item{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:18px;
+    transition:.2s ease;
+}
+
+.complaint-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(15,23,42,.05);
+}
+
+/* =========================
+   TOP FLEX
+========================= */
+
+.complaint-flex{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.complaint-label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--sub);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    margin-bottom:10px;
+}
+
+.complaint-message{
+    font-size:15px;
+    font-weight:700;
+    color:var(--text);
+    line-height:1.8;
+    margin-bottom:18px;
+    max-width:700px;
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+}
+
+.badge-custom{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:120px;
+    height:34px;
+    padding:0 14px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.priority-low{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.priority-medium{
+    background:#fff7ed;
+    color:#ea580c;
+}
+
+.priority-high{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.status-open{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.status-progress{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.status-resolved{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+/* =========================
+   DATE
+========================= */
+
+.date-text{
+    font-size:12px;
+    font-weight:600;
+    color:var(--sub);
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.action-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.view-btn{
+    height:42px;
+    padding:0 18px;
+    border:none;
+    border-radius:12px;
+    background:var(--primary);
+    color:#fff;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s ease;
+    box-shadow:0 4px 12px rgba(37,99,235,.18);
+}
+
+.view-btn:hover{
+    background:#1d4ed8;
+    color:#fff;
+}
+
+.delete-btn{
+    height:42px;
+    padding:0 30px;
+    border:none;
+    border-radius:12px;
+    background:#fee2e2;
+    color:#dc2626;
+    font-size:13px;
+    font-weight:700;
+    transition:.2s ease;
+}
+
+.delete-btn:hover{
+    background:#fecaca;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty-box{
+    padding:80px 20px;
+    text-align:center;
+}
+
+.empty-text{
+    font-size:15px;
+    font-weight:700;
+    color:#94a3b8;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .dashboard-container{
+        padding:14px;
+    }
+
+    .page-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .complaint-flex{
+        flex-direction:column;
+    }
+
+    .action-wrap{
+        width:100%;
+    }
+
+    .view-btn,
+    .delete-btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+<div class="dashboard-container">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="page-title">
+                Complaints
+            </div>
+
+            <div class="page-subtitle">
+                View and manage all customer complaints
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="table-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <div class="card-title">
+                Complaint List
+            </div>
+
+            <div class="card-desc">
+                Customer complaint records and status management
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            {% for c in complaints %}
+
+            <!-- ITEM -->
+
+            <div class="complaint-item">
+
+                <div class="complaint-flex">
+
+                    <!-- LEFT -->
+
+                    <div>
+
+                        <div class="complaint-label">
+                            Complaint Description
+                        </div>
+
+                        <div class="complaint-message">
+                            {{ c.message|truncatechars:120 }}
+                        </div>
+
+                        <!-- BADGES -->
+
+                        <div class="badge-wrap">
+
+                            <span class="badge-custom
+                            {% if c.priority == 'low' %}
+                                priority-low
+                            {% elif c.priority == 'medium' %}
+                                priority-medium
+                            {% else %}
+                                priority-high
+                            {% endif %}
+                            ">
+
+                                {{ c.priority|title }} Priority
+
+                            </span>
+
+                            <span class="badge-custom
+                            {% if c.status == 'open' %}
+                                status-open
+                            {% elif c.status == 'in_progress' %}
+                                status-progress
+                            {% else %}
+                                status-resolved
+                            {% endif %}
+                            ">
+
+                                {{ c.status|title }}
+
+                            </span>
+
+                        </div>
+
+                        <!-- DATE -->
+
+                        <div class="date-text">
+                            Created :
+                            {{ c.created_at|date:"d M Y, h:i A" }}
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT -->
+
+                    <div class="action-wrap">
+
+                        <a href="{% url 'complaint_detail' c.id %}"
+                           class="view-btn">
+
+                            View Details
+
+                        </a>
+
+                        <form method="post"
+                              action="{% url 'complaint_delete' c.id %}">
+
+                            {% csrf_token %}
+
+                            <button class="delete-btn">
+
+                                Delete
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <!-- EMPTY -->
+
+            <div class="empty-box">
+
+                <div class="empty-text">
+                    No complaints found
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

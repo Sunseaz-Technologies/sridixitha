@@ -1,0 +1,1058 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#111827;
+    --sub:#6b7280;
+    --primary:#2563eb;
+}
+
+body{
+    background:var(--bg);
+}
+
+/* PAGINATION */
+
+.tbl-footer{
+    width:100%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:20px 24px;
+    border-top:1px solid #eef2f7;
+    background:#fff;
+}
+
+.page-btns{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.pg-btn{
+    min-width:40px;
+    height:40px;
+    padding:0 14px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    color:#111827;
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s ease;
+}
+
+.pg-btn:hover{
+    background:#f3f4f6;
+    border-color:#d1d5db;
+    color:#111827;
+}
+
+.pg-btn.active{
+    background:#2563eb;
+    color:#fff;
+    border-color:#2563eb;
+    box-shadow:0 4px 12px rgba(37,99,235,.18);
+}
+
+/* PAGE */
+
+.orders-page{
+    max-width:100%;
+    margin:auto;
+    padding:30px 20px;
+}
+
+/* HEADER */
+
+.page-header{
+    margin-bottom:20px;
+}
+
+.page-header h6{
+    font-size:28px;
+    font-weight:700;
+    color:var(--text);
+    margin:0;
+}
+
+.page-subtitle{
+    font-size:14px;
+    color:var(--sub);
+    margin-top:5px;
+}
+
+/* TABLE CARD */
+
+.table-card{
+    background:#fff;
+    border-radius:20px;
+    border:1px solid var(--border);
+    box-shadow:0 4px 6px -1px rgba(0,0,0,.05);
+}
+
+/* TOOLBAR */
+
+.card-header-flex{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+    padding:16px 20px;
+    border-bottom:1px solid var(--border);
+    background:#fafafa;
+}
+
+.card-title{
+    font-size:16px;
+    font-weight:700;
+    color:var(--text);
+}
+
+.toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+/* INPUTS */
+
+.search-container{
+    position:relative;
+}
+
+.search-container input{
+    padding-left:32px;
+    height:38px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-size:13px;
+    color:var(--text);
+    background:#fff;
+    min-width:220px;
+    outline:none;
+}
+
+.search-icon{
+    position:absolute;
+    left:10px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:13px;
+}
+
+.filter-select{
+    height:38px;
+    padding:7px 12px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-size:13px;
+    background:#fff;
+    min-width:150px;
+    text-align:center;
+    outline:none;
+}
+
+.filter-btn{
+    height:38px;
+    padding:0 16px;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    font-weight:700;
+    font-size:12px;
+    cursor:pointer;
+}
+
+/* TABLE */
+
+.table-wrap{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    display:block;
+    -webkit-overflow-scrolling:touch;
+}
+
+.table-wrap::-webkit-scrollbar{
+    height:10px;
+}
+
+.table-wrap::-webkit-scrollbar-track{
+    background:#eef2f7;
+}
+
+.table-wrap::-webkit-scrollbar-thumb{
+    background:#cbd5e1;
+    border-radius:20px;
+}
+
+table{
+    min-width:1700px;
+    width:max-content;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#f9fafb;
+}
+
+thead th{
+    padding:14px 16px;
+    text-align:left;
+    font-size:11px;
+    color:var(--sub);
+    text-transform:uppercase;
+    font-weight:700;
+    letter-spacing:.5px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+}
+
+tbody td{
+    padding:16px;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+tbody tr:hover{
+    background:#f9fbff;
+}
+
+/* TEXT */
+
+.order-id{
+    font-weight:700;
+    color:var(--primary);
+    margin-bottom:3px;
+}
+
+.small-text{
+    font-size:12px;
+    color:var(--sub);
+    line-height:1.6;
+}
+
+.service-title{
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:3px;
+}
+
+.vendor-name{
+    font-weight:600;
+    margin-bottom:3px;
+}
+
+.amount-text{
+    font-weight:700;
+    color:var(--text);
+}
+
+/* STATUS */
+
+.status-badge{
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+    display:inline-block;
+    text-transform:capitalize;
+}
+
+.paid{
+    background:#ecfdf5;
+    color:#16a34a;
+}
+
+.pending{
+    background:#fff4e5;
+    color:#ea580c;
+}
+
+.failed{
+    background:#fef2f2;
+    color:#dc2626;
+}
+
+/* TRANSACTION */
+
+.transaction-box{
+    font-family:monospace;
+    background:#f3f4f6;
+    padding:4px 8px;
+    border-radius:6px;
+    font-size:12px;
+    color:#4b5563;
+}
+
+/* REQUEST */
+
+.request-btn{
+    height:36px;
+    border:none;
+    background:#2563eb;
+    color:#fff;
+    padding:0 14px;
+    border-radius:10px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.request-form{
+    display:none;
+    margin-top:10px;
+}
+
+.request-textarea{
+    width:220px;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:12px;
+    resize:none;
+    outline:none;
+    font-size:13px;
+}
+
+.submit-btn{
+    margin-top:8px;
+    height:38px;
+    border:none;
+    background:#16a34a;
+    color:#fff;
+    padding:0 14px;
+    border-radius:10px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.request-message{
+    margin-top:10px;
+    background:#eff6ff;
+    color:#1d4ed8;
+    padding:10px;
+    border-radius:10px;
+    font-size:12px;
+    max-width:220px;
+    white-space:normal;
+    line-height:1.7;
+}
+
+.success-message{
+    margin-top:8px;
+    color:#16a34a;
+    font-size:12px;
+    font-weight:700;
+}
+
+.due-date-box{
+    margin-top:10px;
+    background:#fef3c7;
+    color:#92400e;
+    padding:10px;
+    border-radius:10px;
+    font-size:12px;
+    font-weight:700;
+    max-width:220px;
+    white-space:normal;
+}
+
+/* INVOICE */
+
+.invoice-btn{
+    background:#eff6ff;
+    color:#2563eb;
+    padding:8px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:700;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* EMPTY */
+
+.empty-box{
+    text-align:center;
+    padding:60px 20px;
+    color:#6b7280;
+    font-size:14px;
+}
+
+/* NOTIFICATION */
+
+.notification-wrapper{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:18px;
+    margin-bottom:18px;
+}
+
+.due-notification{
+    background:#fffaf0;
+    border-left:4px solid #f59e0b;
+    border-radius:10px;
+    padding:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    transition:0.3s ease;
+}
+
+.notify-left{
+    display:flex;
+    gap:12px;
+}
+
+.notify-icon{
+    font-size:22px;
+}
+
+.notify-title{
+    font-size:15px;
+    font-weight:600;
+    color:#222;
+    margin-bottom:4px;
+}
+
+.notify-text{
+    font-size:14px;
+    color:#666;
+    line-height:1.5;
+}
+
+.close-notify{
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:15px;
+    color:#777;
+    flex-shrink:0;
+    padding:0;
+    margin-left:10px;
+}
+
+.view-more-wrap{
+    display:flex;
+    justify-content:flex-end;
+}
+
+.view-more-btn{
+    color:#2563eb;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:500;
+    background:none;
+    border:none;
+    padding:0;
+}
+
+@media(max-width:768px){
+
+    .orders-page{
+        padding:14px;
+    }
+
+    .dashboard-heading{
+        font-size:24px;
+        line-height:1.3;
+        font-weight:700;
+    }
+
+    .dashboard-subheading{
+        font-size:13px;
+        line-height:1.4;
+        color:#6b7280;
+        margin-top:4px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .due-notification{
+        padding:12px;
+        border-radius:14px;
+        gap:10px;
+        margin-top:0;
+        margin-bottom:0;
+    }
+
+    .notify-icon{
+        font-size:16px;
+    }
+
+    .notify-title{
+        font-size:13px;
+    }
+
+    .notify-text{
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    .table-card{
+        border-radius:16px;
+    }
+
+    .card-header-flex{
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+        padding:14px;
+    }
+
+    .card-title{
+        font-size:15px;
+    }
+
+    .toolbar{
+        display:grid;
+        grid-template-columns:1fr 110px;
+        gap:10px;
+        width:100%;
+    }
+
+    .search-container{
+        grid-column:1 / -1;
+    }
+
+    .search-container input{
+        width:100%;
+        min-width:unset;
+        height:44px;
+        border-radius:12px;
+        font-size:13px;
+    }
+
+    .filter-select{
+        width:100%;
+        min-width:unset;
+        height:44px;
+        border-radius:12px;
+        font-size:12px;
+    }
+
+    .filter-btn{
+        width:100%;
+        height:44px;
+        border-radius:12px;
+        font-size:12px;
+        font-weight:600;
+        padding:0;
+        box-shadow:0 4px 10px rgba(37,99,235,.15);
+    }
+
+    .table-wrap{
+        overflow-x:auto;
+        border-radius:0 0 16px 16px;
+    }
+
+    table{
+        min-width:1450px;
+    }
+
+    thead th{
+        padding:12px;
+        font-size:10px;
+    }
+
+    tbody td{
+        padding:12px;
+        font-size:13px;
+    }
+
+    .request-btn,
+    .submit-btn,
+    .invoice-btn{
+        height:36px;
+        border-radius:10px;
+        font-size:11px;
+        padding:0 12px;
+    }
+
+    .request-textarea{
+        width:180px;
+        font-size:12px;
+    }
+
+    .due-date-box{
+        max-width:180px;
+        font-size:11px;
+        line-height:1.5;
+    }
+
+    .request-message{
+        max-width:180px;
+        font-size:11px;
+        line-height:1.5;
+    }
+
+    .tbl-footer{
+        justify-content:center;
+        padding:14px;
+    }
+
+    .page-btns{
+        justify-content:center;
+    }
+
+    .pg-btn{
+        min-width:36px;
+        height:36px;
+        border-radius:10px;
+        font-size:12px;
+    }
+}
+</style>
+
+<div class="orders-page">
+
+    <!-- HEADER -->
+
+    <div>
+
+        <h2 class="dashboard-heading">
+            Payment History
+        </h2>
+
+        <p class="dashboard-subheading">
+            View all your payment transactions and payment details
+        </p>
+
+    </div>
+
+    <!-- NOTIFICATION SECTION -->
+    <!-- All notifications rendered, JS controls visibility -->
+
+    <div class="notification-wrapper" id="notificationWrapper">
+
+        {% for item in booking_data %}
+            {% if item.payment and item.payment.due_date %}
+            <div
+                class="due-notification"
+                id="payment-alert-{{ item.payment.id }}"
+                style="display:none;"
+            >
+                <div class="notify-left">
+                    <div class="notify-icon">🔔</div>
+                    <div>
+                        <div class="notify-title">Payment Due Reminder</div>
+                        <div class="notify-text">
+                            Your payment due date is
+                            <strong>{{ item.payment.due_date }}</strong>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    class="close-notify"
+                    onclick="closeNotification('{{ item.payment.id }}')"
+                    aria-label="Close notification"
+                >
+                    ✕
+                </button>
+            </div>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
+    <!-- VIEW MORE / VIEW LESS BUTTON -->
+
+    <div class="view-more-wrap" id="toggleWrap" style="display:none; margin-top:4px; margin-bottom:18px;">
+        <button
+            class="view-more-btn"
+            id="toggleNotifyBtn"
+            onclick="toggleNotifications()"
+        >
+            View More
+        </button>
+    </div>
+
+    <!-- CARD -->
+
+    <div class="table-card">
+
+        <!-- TOOLBAR -->
+
+        <form method="GET">
+
+            <div class="card-header-flex">
+
+                <div class="card-title">Transactions</div>
+
+                <div class="toolbar">
+
+                    <div class="search-container">
+
+                        <span class="search-icon">🔍</span>
+
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ request.GET.search }}"
+                            placeholder="Search order or service…"
+                        >
+
+                    </div>
+
+                    <select name="payment_status" class="filter-select">
+
+                        <option value="">All Status</option>
+
+                        <option value="paid"
+                            {% if request.GET.payment_status == "paid" %}selected{% endif %}
+                        >Paid</option>
+
+                        <option value="pending"
+                            {% if request.GET.payment_status == "pending" %}selected{% endif %}
+                        >Pending</option>
+
+                    </select>
+
+                    <button type="submit" class="filter-btn">Apply Filters</button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Sl.No</th>
+                        <th>Service ID</th>
+                        <th>Service</th>
+                        <th>Vendor</th>
+                        <th>Total Amount</th>
+                        <th>Paid Amount</th>
+                        <th>Remaining</th>
+                        <th>Status</th>
+                        <th>Transaction ID</th>
+                        <th>Request</th>
+                        <th>Due Date</th>
+                        <th>Invoice</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in booking_data %}
+
+                    <tr>
+
+                        <!-- SL NO -->
+                        <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+
+                        <!-- ORDER ID -->
+                        <td>
+                            <div class="order-id">{{ item.booking.order_id }}</div>
+                            <div class="small-text">{{ item.booking.created_at|date:"d M Y" }}</div>
+                        </td>
+
+                        <!-- SERVICE -->
+                        <td>
+                            <div class="service-title">{{ item.booking.service.s_title }}</div>
+                            <div class="small-text">{{ item.booking.category }}</div>
+                        </td>
+
+                        <!-- VENDOR -->
+                        <td>
+                            {% if item.booking.vendor %}
+                                <div class="vendor-name">{{ item.booking.vendor.first_name }}</div>
+                                <div class="small-text">{{ item.booking.vendor.mobile }}</div>
+                            {% else %}
+                                <div class="small-text">Not Assigned</div>
+                            {% endif %}
+                        </td>
+
+                        <!-- TOTAL -->
+                        <td class="amount-text">₹{{ item.payment.total_amount|default:"0" }}</td>
+
+                        <!-- PAID -->
+                        <td class="amount-text" style="color:#2563eb;">
+                            ₹{{ item.payment.paid_amount|default:"0" }}
+                        </td>
+
+                        <!-- REMAINING -->
+                        <td class="amount-text" style="color:#dc2626;">
+                            ₹{{ item.payment.remaining_amount|default:"0" }}
+                        </td>
+
+                        <!-- STATUS -->
+                        <td>
+                            <span class="status-badge {% if item.payment %}{{ item.payment.status }}{% else %}pending{% endif %}">
+                                {% if item.payment %}
+                                    {{ item.payment.get_status_display }}
+                                {% else %}
+                                    Pending
+                                {% endif %}
+                            </span>
+                        </td>
+
+                        <!-- TRANSACTION -->
+                        <td>
+                            {% if item.payment.transaction_id %}
+                                <span class="transaction-box">{{ item.payment.transaction_id }}</span>
+                            {% else %}
+                                <span class="small-text">N/A</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- REQUEST -->
+                        <td>
+                            {% if item.payment %}
+
+                            <button
+                                type="button"
+                                class="request-btn"
+                                onclick="toggleRequestBox('{{ forloop.counter }}')"
+                            >
+                                Request
+                            </button>
+
+                            <div id="requestBox_{{ forloop.counter }}" class="request-form">
+
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="payment_id" value="{{ item.payment.id }}">
+                                    <textarea
+                                        name="payment_request"
+                                        rows="3"
+                                        placeholder="Enter payment request..."
+                                        class="request-textarea"
+                                    ></textarea>
+                                    <button type="submit" class="submit-btn">Submit</button>
+                                </form>
+
+                            </div>
+
+                            {% if item.payment.payment_request %}
+                            <div class="request-message">{{ item.payment.payment_request }}</div>
+                            <div class="success-message">Request submitted successfully</div>
+                            {% endif %}
+
+                            {% else %}
+                            <span class="small-text">No Payment</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- DUE DATE -->
+                        <td>
+                            {% if item.payment.due_date %}
+                                <div class="due-date-box">
+                                    Payment Due Date : {{ item.payment.due_date }}
+                                </div>
+                            {% else %}
+                                <span class="small-text">Not Updated</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- INVOICE -->
+                        <td>
+                            {% if item.booking %}
+                                <a href="{% url 'customer_invoice' item.booking.id %}" class="invoice-btn">
+                                    Invoice
+                                </a>
+                            {% else %}
+                                <span class="small-text">No Invoice</span>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="12">
+                            <div class="empty-box">No payment records found</div>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION — outside table-wrap so it never scrolls -->
+
+        {% if page_obj %}
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+                <a class="pg-btn" href="?page={{ page_obj.previous_page_number }}">‹</a>
+                {% endif %}
+
+                <span class="pg-btn active">{{ page_obj.number }}</span>
+
+                {% if page_obj.has_next %}
+                <a class="pg-btn" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                <a class="pg-btn" href="?page={{ page_obj.next_page_number }}">›</a>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    var wrapper = document.getElementById("notificationWrapper");
+    if (!wrapper) return;
+
+    // Get all notification boxes from DOM
+    var all = wrapper.querySelectorAll(".due-notification");
+    if (all.length === 0) return;
+
+    // Filter out permanently dismissed ones
+    var visible = [];
+    all.forEach(function(box) {
+        var key = "dismissed-" + box.id;
+        if (localStorage.getItem(key) === "1") {
+            // Permanently dismissed — remove from DOM silently
+            box.parentNode.removeChild(box);
+        } else {
+            visible.push(box);
+        }
+    });
+
+    if (visible.length === 0) return;
+
+    // Show only the first notification by default
+    visible[0].style.display = "flex";
+
+    // Show "View More" button only if there are more than 1 remaining
+    var toggleWrap = document.getElementById("toggleWrap");
+    var btn = document.getElementById("toggleNotifyBtn");
+
+    if (visible.length > 1) {
+        toggleWrap.style.display = "flex";
+        btn.textContent = "View More";
+    }
+});
+
+
+function closeNotification(paymentId) {
+    var boxId = "payment-alert-" + paymentId;
+    var key = "dismissed-" + boxId;
+
+    // Save as permanently dismissed
+    localStorage.setItem(key, "1");
+
+    var box = document.getElementById(boxId);
+    if (!box) return;
+
+    // Animate out
+    box.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+    box.style.opacity = "0";
+    box.style.transform = "translateX(14px)";
+
+    setTimeout(function() {
+        if (box.parentNode) {
+            box.parentNode.removeChild(box);
+        }
+
+        var wrapper = document.getElementById("notificationWrapper");
+        var toggleWrap = document.getElementById("toggleWrap");
+        var btn = document.getElementById("toggleNotifyBtn");
+
+        if (!wrapper) return;
+
+        var remaining = wrapper.querySelectorAll(".due-notification");
+
+        if (remaining.length === 0) {
+            toggleWrap.style.display = "none";
+            return;
+        }
+
+        // If no notification is currently visible, show the first remaining one
+        var anyVisible = false;
+        remaining.forEach(function(b) {
+            if (b.style.display === "flex") anyVisible = true;
+        });
+
+        if (!anyVisible) {
+            remaining[0].style.display = "flex";
+        }
+
+        // Update toggle button visibility
+        if (remaining.length > 1) {
+            toggleWrap.style.display = "flex";
+        } else {
+            toggleWrap.style.display = "none";
+        }
+
+    }, 260);
+}
+
+
+function toggleNotifications() {
+    var wrapper = document.getElementById("notificationWrapper");
+    var btn = document.getElementById("toggleNotifyBtn");
+    if (!wrapper || !btn) return;
+
+    var all = wrapper.querySelectorAll(".due-notification");
+    var isExpanded = btn.textContent.trim() === "View Less";
+
+    all.forEach(function(box, i) {
+        if (i === 0) {
+            box.style.display = "flex"; // first always stays visible
+        } else {
+            box.style.display = isExpanded ? "none" : "flex";
+        }
+    });
+
+    btn.textContent = isExpanded ? "View More" : "View Less";
+}
+
+
+function toggleRequestBox(id) {
+    var box = document.getElementById("requestBox_" + id);
+    if (!box) return;
+    box.style.display = (box.style.display === "none" || box.style.display === "") ? "block" : "none";
+}
+
+</script>
+
+{% endblock %}

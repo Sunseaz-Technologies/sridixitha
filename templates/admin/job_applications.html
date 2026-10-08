@@ -1,0 +1,673 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+    *{
+        box-sizing:border-box;
+        font-family:'DM Sans',sans-serif;
+    }
+
+    body{
+        background:#f8fafc;
+    }
+
+    .page-wrap{
+        padding:2rem;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .page-header{
+        margin-bottom:1.8rem;
+
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+
+        gap:20px;
+
+        flex-wrap:wrap;
+    }
+
+    .page-header h6{
+        font-size:24px;
+        font-weight:700;
+
+        color:#0f172a;
+
+        margin-bottom:4px;
+
+        letter-spacing:-0.3px;
+    }
+
+    .page-subtitle{
+        font-size:13px;
+        color:#64748b;
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .search-form{
+        display:flex;
+        align-items:center;
+        gap:12px;
+    }
+
+    .search-form input{
+        width:280px;
+        height:46px;
+
+        border:1.5px solid #e2e8f0;
+
+        border-radius:10px;
+
+        padding:0 14px;
+
+        font-size:14px;
+
+        background:#fff;
+
+        outline:none;
+
+        transition:.2s;
+    }
+
+    .search-form input:focus{
+        border-color:#2563eb;
+        box-shadow:0 0 0 3px rgba(37,99,235,.1);
+    }
+
+    .search-form button{
+        height:46px;
+
+        padding:0 18px;
+
+        border:none;
+
+        border-radius:10px;
+
+        background:#2563eb;
+
+        color:#fff;
+
+        font-size:14px;
+        font-weight:600;
+
+        cursor:pointer;
+
+        transition:.2s;
+    }
+
+    .search-form button:hover{
+        background:#1d4ed8;
+    }
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .card{
+        background:#fff;
+
+        border:1px solid #e2e8f0;
+
+        border-radius:14px;
+
+        overflow:hidden;
+
+        box-shadow:0 1px 4px rgba(0,0,0,.04);
+    }
+
+    .card-header{
+        padding:16px 24px;
+
+        border-bottom:1px solid #f1f5f9;
+
+        background:#fafbfc;
+
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+    }
+
+    .card-header-title{
+        font-size:14px;
+        font-weight:700;
+
+        color:#0f172a;
+    }
+
+    .card-header-sub{
+        font-size:12px;
+        color:#64748b;
+
+        margin-top:2px;
+    }
+
+    /* =========================
+       TABLE
+    ========================= */
+
+    .table-wrap{
+        overflow-x:auto;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+    }
+
+    thead tr{
+        border-bottom:1px solid #e2e8f0;
+    }
+
+    th{
+        padding:14px 18px;
+
+        background:#fafbfc;
+
+        text-align:left;
+
+        font-size:11px;
+        font-weight:700;
+
+        color:#64748b;
+
+        text-transform:uppercase;
+
+        letter-spacing:.5px;
+
+        white-space:nowrap;
+    }
+
+    td{
+        padding:16px 18px;
+
+        border-bottom:1px solid #f1f5f9;
+
+        vertical-align:middle;
+    }
+
+    tbody tr:hover{
+        background:#fafcff;
+    }
+
+    /* =========================
+       APPLICANT
+    ========================= */
+
+    .applicant-box{
+        display:flex;
+        align-items:center;
+
+        gap:14px;
+
+        min-width:260px;
+    }
+
+    .applicant-img{
+        width:56px;
+        height:56px;
+
+        border-radius:14px;
+
+        object-fit:cover;
+
+        border:2px solid #eff6ff;
+    }
+
+    .applicant-name{
+        font-size:14px;
+        font-weight:700;
+
+        color:#0f172a;
+
+        margin-bottom:3px;
+    }
+
+    .applicant-email,
+    .applicant-phone{
+        font-size:12px;
+
+        color:#64748b;
+
+        margin-bottom:2px;
+    }
+
+    /* =========================
+       JOB
+    ========================= */
+
+    .job-title{
+        font-size:13px;
+        font-weight:700;
+
+        color:#0f172a;
+
+        min-width:170px;
+    }
+
+    /* =========================
+       BADGES
+    ========================= */
+
+    .exp-badge{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+
+        height:34px;
+
+        padding:0 14px;
+
+        border-radius:999px;
+
+        background:#eff6ff;
+
+        color:#2563eb;
+
+        font-size:12px;
+        font-weight:700;
+    }
+
+    .salary-text{
+        font-size:15px;
+        font-weight:700;
+
+        color:#16a34a;
+
+        white-space:nowrap;
+    }
+
+    /* =========================
+       RESUME BUTTON
+    ========================= */
+
+    .resume-btn{
+        height:38px;
+
+        padding:0 16px;
+
+        border-radius:10px;
+
+        background:#0f172a;
+
+        color:#fff;
+
+        text-decoration:none;
+
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+
+        font-size:12px;
+        font-weight:700;
+
+        transition:.2s;
+    }
+
+    .resume-btn:hover{
+        background:#111827;
+        color:#fff;
+    }
+
+    /* =========================
+       PHOTO
+    ========================= */
+
+    .table-photo{
+        width:54px;
+        height:54px;
+
+        border-radius:12px;
+
+        object-fit:cover;
+    }
+
+    /* =========================
+       DATE
+    ========================= */
+
+    .date-text{
+        font-size:12px;
+        font-weight:600;
+
+        color:#64748b;
+
+        white-space:nowrap;
+    }
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    .empty-data{
+        padding:60px 20px;
+
+        text-align:center;
+
+        color:#94a3b8;
+
+        font-size:14px;
+        font-weight:600;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width:1100px){
+
+        .table-wrap{
+            overflow-x:auto;
+        }
+
+        table{
+            min-width:1050px;
+        }
+
+    }
+
+    @media(max-width:768px){
+
+        .page-wrap{
+            padding:1rem;
+        }
+
+        .page-header{
+            flex-direction:column;
+            align-items:flex-start;
+        }
+
+        .search-form{
+            width:100%;
+        }
+
+        .search-form input{
+            width:100%;
+        }
+
+    }
+
+</style>
+
+
+
+<div class="page-wrap">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+        <div>
+            <h2 class="dashboard-heading">
+         Job Applications
+            </h2>
+            <p class="dashboard-subheading">
+            Manage all candidate applications and resumes
+            </p>
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <form method="GET" class="search-form">
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Search applications..."
+                value="{{ q|default:'' }}">
+
+            <button type="submit">
+
+                Search
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- CARD -->
+
+    <div class="card">
+
+        <!-- CARD HEADER -->
+
+        <div class="card-header">
+
+            <div>
+
+                <div class="card-header-title">
+
+                    All Applications
+
+                </div>
+
+                <div class="card-header-sub">
+
+                    Recent candidate job applications
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Applicant</th>
+
+                        <th>Job Role</th>
+
+                        <th>Experience</th>
+
+                        <th>Expected Salary</th>
+
+                        <th>Resume</th>
+
+                        <th>Photo</th>
+
+                        <th>Applied</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for a in applications %}
+
+                    <tr>
+
+                        <!-- APPLICANT -->
+
+                        <td>
+
+                            <div class="applicant-box">
+
+                                <img
+                                    src="{{ a.photo.url }}"
+                                    class="applicant-img">
+
+                                <div>
+
+                                    <div class="applicant-name">
+
+                                        {{ a.name }}
+
+                                    </div>
+
+                                    <div class="applicant-email">
+
+                                        {{ a.email }}
+
+                                    </div>
+
+                                    <div class="applicant-phone">
+
+                                        {{ a.phone }}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- JOB -->
+
+                        <td>
+
+                            <div class="job-title">
+
+                                {{ a.job.title }}
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- EXPERIENCE -->
+
+                        <td>
+
+                            <span class="exp-badge">
+
+                                {{ a.experience }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- SALARY -->
+
+                        <td>
+
+                            <div class="salary-text">
+
+                                ₹{{ a.expected_salary }}
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- RESUME -->
+
+                        <td>
+
+                            {% if a.resume %}
+
+                            <a
+                                href="{{ a.resume.url }}"
+                                target="_blank"
+                                class="resume-btn">
+
+                                View Resume
+
+                            </a>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- PHOTO -->
+
+                        <td>
+
+                            <img
+                                src="{{ a.photo.url }}"
+                                class="table-photo">
+
+                        </td>
+
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            <div class="date-text">
+
+                                {{ a.created_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7">
+
+                            <div class="empty-data">
+
+                                No applications found
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+        {% if page_obj.has_other_pages %}
+        <div class="tbl-footer">
+            <div class="page-btns">
+                {% if page_obj.has_previous %}
+                <a class="pg-btn" href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}">‹</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <span class="pg-btn active">{{ num }}</span>
+                    {% else %}
+                    <a class="pg-btn" href="?page={{ num }}{% if q %}&q={{ q }}{% endif %}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a class="pg-btn" href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}">›</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

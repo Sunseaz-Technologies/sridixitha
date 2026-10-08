@@ -1,0 +1,579 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    background:#f4f7fb;
+    font-family:'DM Sans',sans-serif;
+}
+
+.page-wrap{
+    max-width:1450px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+.page-header{
+    margin-bottom:24px;
+}
+
+.page-title{
+    font-size:30px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:6px;
+}
+
+.page-subtitle{
+    color:#6b7280;
+    font-size:14px;
+}
+
+.card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:24px;
+    overflow:hidden;
+}
+
+.card-header{
+    padding:22px 26px;
+    border-bottom:1px solid #f1f5f9;
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+}
+
+.card-body{
+    padding:26px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
+
+.full-width{
+    grid-column:1 / -1;
+}
+
+.fg{
+    display:flex;
+    flex-direction:column;
+}
+
+.fg label{
+    font-size:13px;
+    font-weight:700;
+    color:#374151;
+    margin-bottom:8px;
+}
+
+.form-input{
+    width:100%;
+    height:50px;
+    border:1px solid #d1d5db;
+    border-radius:14px;
+    padding:0 16px;
+    font-size:14px;
+    background:#fff;
+}
+
+textarea.form-input{
+    height:120px;
+    padding-top:14px;
+    resize:none;
+}
+
+.form-input:focus{
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.08);
+}
+
+.readonly{
+    background:#f9fafb;
+    color:#6b7280;
+}
+
+.save-btn{
+    margin-top:30px;
+    height:52px;
+    padding:0 28px;
+    border:none;
+    border-radius:14px;
+    background:#2563eb;
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.save-btn:hover{
+    background:#1d4ed8;
+}
+
+.verify-box{
+    margin-top:10px;
+    padding:14px 18px;
+    border-radius:14px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.verify-success{
+    background:#ecfdf5;
+    color:#15803d;
+    border:1px solid #bbf7d0;
+}
+
+.verify-pending{
+    background:#fff7ed;
+    color:#ea580c;
+    border:1px solid #fdba74;
+}
+
+.doc-link{
+    margin-top:10px;
+    color:#2563eb;
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+}
+
+@media(max-width:768px){
+
+    .page-wrap{
+        padding:15px;
+    }
+
+    .page-title{
+        font-size:24px;
+    }
+
+    .card-body{
+        padding:18px;
+    }
+
+}
+
+</style>
+
+<div class="page-wrap">
+    <div>
+        <h2 class="dashboard-heading">
+         Update Vendor Profile
+        </h2>
+
+        <p class="dashboard-subheading">
+          Manage your business profile and verification details
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <div class="card-header">
+            Vendor Information
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="form-grid">
+
+                    <!-- FIRST -->
+
+                    <div class="fg">
+
+                        <label>
+                            First Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="first_name"
+                            class="form-input"
+                            value="{{ vendor.first_name }}"
+                        >
+
+                    </div>
+
+                    <!-- LAST -->
+
+                    <div class="fg">
+
+                        <label>
+                            Last Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="last_name"
+                            class="form-input"
+                            value="{{ vendor.last_name }}"
+                        >
+
+                    </div>
+
+                    <!-- EMAIL -->
+
+                    <div class="fg">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-input"
+                            value="{{ vendor.email }}"
+                        >
+
+                    </div>
+
+                    <!-- MOBILE -->
+
+                    <div class="fg">
+
+                        <label>
+                            Mobile Number
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-input readonly"
+                            value="{{ vendor.phone }}"
+                            readonly
+                        >
+
+                    </div>
+
+                    <!-- EXPERIENCE -->
+
+                    <div class="fg">
+
+                        <label>
+                            Experience
+                        </label>
+
+                        <input
+                            type="number"
+                            name="experience"
+                            class="form-input"
+                            value="{{ profile.experience }}"
+                        >
+
+                    </div>
+
+                    <!-- LOCALITY -->
+
+                    <div class="fg">
+
+                        <label>
+                            Locality
+                        </label>
+
+                        <input
+                            type="text"
+                            name="locality"
+                            class="form-input"
+                            value="{{ profile.locality }}"
+                        >
+
+                    </div>
+
+                    <!-- STREET -->
+
+                    <div class="fg">
+
+                        <label>
+                            Street
+                        </label>
+
+                        <input
+                            type="text"
+                            name="street"
+                            class="form-input"
+                            value="{{ profile.street }}"
+                        >
+
+                    </div>
+
+                    <!-- CITY -->
+
+                    <div class="fg">
+
+                        <label>
+                            City
+                        </label>
+
+                        <input
+                            type="text"
+                            name="city"
+                            class="form-input"
+                            value="{{ profile.city }}"
+                        >
+
+                    </div>
+
+                    <!-- POSTAL -->
+
+                    <div class="fg">
+
+                        <label>
+                            Postal Code
+                        </label>
+
+                        <input
+                            type="text"
+                            name="postal_code"
+                            class="form-input"
+                            value="{{ profile.postal_code }}"
+                        >
+
+                    </div>
+
+                    <!-- COMPANY -->
+
+                    <div class="fg">
+
+                        <label>
+                            Company Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="company_name"
+                            class="form-input"
+                            value="{{ profile.company_name }}"
+                        >
+
+                    </div>
+
+                    <!-- PAN -->
+
+                    <div class="fg">
+
+                        <label>
+                            PAN Number
+                        </label>
+
+                        <input
+                            type="text"
+                            name="pan_number"
+                            class="form-input"
+                            value="{{ profile.pan_number }}"
+                        >
+
+                    </div>
+
+                    <!-- LICENSE -->
+
+                    <div class="fg">
+
+                        <label>
+                            License Number
+                        </label>
+
+                        <input
+                            type="text"
+                            name="license_number"
+                            class="form-input"
+                            value="{{ profile.license_number }}"
+                        >
+
+                    </div>
+
+                    <!-- PAN FILE -->
+
+<!-- PAN CARD -->
+
+<div class="fg">
+
+    <label>
+        Upload PAN Card
+    </label>
+
+    <input
+        type="file"
+        name="pan_card"
+        class="form-input"
+    >
+
+    {% if profile.pan_card %}
+
+    <div style="margin-top:14px;">
+
+        <a
+            href="{{ profile.pan_card.url }}"
+            target="_blank"
+            style="text-decoration:none;"
+        >
+
+            <img
+                src="{{ profile.pan_card.url }}"
+                alt="PAN Card"
+                style="
+                    width:180px;
+                    height:120px;
+                    object-fit:cover;
+                    border-radius:14px;
+                    border:1px solid #e5e7eb;
+                    display:block;
+                "
+            >
+
+        </a>
+
+    </div>
+
+    <a
+        href="{{ profile.pan_card.url }}"
+        target="_blank"
+        class="doc-link"
+        style="
+            display:inline-block;
+            margin-top:10px;
+            color:#2563eb;
+            font-weight:700;
+            text-decoration:none;
+        "
+    >
+
+        View Uploaded PAN
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- LICENSE FILE -->
+
+<div class="fg">
+
+    <label>
+        Upload License
+    </label>
+
+    <input
+        type="file"
+        name="license_file"
+        class="form-input"
+    >
+
+    {% if profile.license_file %}
+
+    <div style="margin-top:14px;">
+
+        <a
+            href="{{ profile.license_file.url }}"
+            target="_blank"
+            style="text-decoration:none;"
+        >
+
+            <img
+                src="{{ profile.license_file.url }}"
+                alt="License File"
+                style="
+                    width:180px;
+                    height:120px;
+                    object-fit:cover;
+                    border-radius:14px;
+                    border:1px solid #e5e7eb;
+                    display:block;
+                "
+            >
+
+        </a>
+
+    </div>
+
+    <a
+        href="{{ profile.license_file.url }}"
+        target="_blank"
+        class="doc-link"
+        style="
+            display:inline-block;
+            margin-top:10px;
+            color:#16a34a;
+            font-weight:700;
+            text-decoration:none;
+        "
+    >
+
+        View Uploaded License
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+                    <!-- ADDRESS -->
+
+                    <div class="fg full-width">
+
+                        <label>
+                            Company Address
+                        </label>
+
+                        <textarea
+                            name="company_address"
+                            class="form-input"
+                        >{{ profile.company_address }}</textarea>
+
+                    </div>
+
+                    <!-- VERIFY -->
+
+                    <div class="fg full-width">
+
+                        {% if profile.is_verified %}
+
+                        <div class="verify-box verify-success">
+
+                            ✅ Verified Account
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="verify-box verify-pending">
+
+                            ⏳ Verification Pending
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <button type="submit" class="save-btn">
+
+                    Save Changes
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

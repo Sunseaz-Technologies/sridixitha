@@ -1,0 +1,481 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background: #f4f7fb;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .payment-page {
+        max-width: 960px;
+        margin: 50px auto;
+        background: #fff;
+        border-radius: 20px;
+        padding: 40px 48px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    /* HEADER */
+
+    .payment-title {
+        font-size: 30px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+
+    .payment-subtitle {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 32px;
+    }
+
+    /* BOOKING BOX */
+
+    .booking-box {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 24px 28px;
+        margin-bottom: 32px;
+    }
+
+    .booking-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 24px;
+    }
+
+    .booking-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        margin-bottom: 8px;
+    }
+
+    .booking-value {
+        font-size: 15px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    /* STATUS */
+
+    .status-wrap {
+        display: flex;
+        align-items: center;
+    }
+
+    .status-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 130px;
+        height: 38px;
+
+        border-radius: 999px;
+
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+
+        margin-top: 4px;
+    }
+
+    .pending {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+
+    .partial_paid {
+        background: #eff6ff;
+        color: #2563eb;
+    }
+
+    .paid {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    /* FORM */
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 22px;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .form-control {
+        width: 100%;
+        height: 52px;
+        border: 1px solid #d1d5db;
+        border-radius: 12px;
+        padding: 0 16px;
+        font-size: 14px;
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        color: #111827;
+        transition: .2s;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.09);
+    }
+
+    .file-input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px dashed #d1d5db;
+        border-radius: 12px;
+        background: #f9fafb;
+        font-size: 14px;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+    }
+
+    .preview-image {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        margin-top: 12px;
+    }
+
+    /* DIVIDER */
+
+    .divider {
+        border: none;
+        border-top: 1px solid #e5e7eb;
+        margin: 0 0 28px;
+    }
+
+    /* BUTTON */
+
+    .btn-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+    }
+
+    .submit-btn {
+        width: 220px;
+        height: 52px;
+        border: none;
+        border-radius: 12px;
+        background: #2563eb;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        transition: .25s;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .submit-btn:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.22);
+    }
+
+    /* NOTE */
+
+    .note-box {
+        margin-top: 25px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 12px;
+        padding: 16px 20px;
+        font-size: 13px;
+        color: #1e40af;
+        line-height: 1.8;
+    }
+
+    .form-control {
+        width: 100%;
+        height: 52px;
+        border: 1px solid #d1d5db;
+        border-radius: 12px;
+        padding: 0 16px;
+        font-size: 14px;
+        font-weight: 500;
+        background: #fff;
+        color: #111827;
+        font-family: 'DM Sans', sans-serif;
+
+        display: flex;
+        align-items: center;
+
+        line-height: 52px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        transition: .2s;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.09);
+    }
+
+    /* MOBILE */
+
+    @media(max-width:768px) {
+
+        .payment-page {
+            margin: 16px;
+            padding: 24px 18px;
+        }
+
+        .booking-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .submit-btn {
+            width: 100%;
+        }
+        
+    }
+</style>
+
+<div class="payment-page">
+
+    <!-- HEADER -->
+    <div>
+
+        <h2 class="dashboard-heading">
+               Update Payment
+        </h2>
+
+        <p class="dashboard-subheading">
+              Vendor can update payment status after customer payment
+        </p>
+
+    </div>
+
+    <!-- BOOKING DETAILS -->
+
+    <div class="booking-box">
+
+        <div class="booking-grid">
+
+            <!-- ORDER -->
+
+            <div>
+
+                <div class="booking-label">
+                   Service ID
+                </div>
+
+                <div class="booking-value">
+                    {{ booking.order_id }}
+                </div>
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div>
+
+                <div class="booking-label">
+                    Current Status
+                </div>
+
+                <div class="status-wrap">
+
+                    {% if payment %}
+
+                    <div class="status-badge {{ payment.status }}">
+
+                        {{ payment.get_status_display }}
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="status-badge pending">
+
+                        Pending
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- CUSTOMER -->
+
+            <div>
+
+                <div class="booking-label">
+                    Customer
+                </div>
+
+                <div class="booking-value">
+                    {{ booking.user.username }}
+                </div>
+
+            </div>
+
+            <!-- SERVICE -->
+
+            <div>
+
+                <div class="booking-label">
+                    Service
+                </div>
+
+                <div class="booking-value">
+                    {{ booking.service }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <!-- FORM -->
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <div class="form-row">
+
+            <!-- STATUS -->
+            <div class="form-group">
+
+                <label class="form-label">
+                    Payment Status
+                </label>
+
+                <select name="status" class="form-control" required>
+
+                    <option value="">
+                        Select Payment Status
+                    </option>
+
+                    <option value="pending" {% if payment.status == "pending" %} selected {% endif %}>
+                        Pending
+                    </option>
+
+                    <option value="partial_paid" {% if payment.status == "partial_paid" %} selected {% endif %}>
+                        Partial Paid
+                    </option>
+
+                    <option value="paid" {% if payment.status == "paid" %} selected {% endif %}>
+                        Paid
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- TRANSACTION -->
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Transaction ID
+                </label>
+
+                <input type="text" name="transaction_id" class="form-control" placeholder="Enter transaction ID"
+                    value="{{ payment.transaction_id }}">
+
+            </div>
+
+        </div>
+
+        <!-- SCREENSHOT -->
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Upload Payment Screenshot
+            </label>
+
+            <input type="file" name="screenshot" class="file-input">
+
+            {% if payment and payment.screenshot %}
+
+            <img src="{{ payment.screenshot.url }}" class="preview-image">
+
+            {% endif %}
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <div class="btn-wrap">
+
+            <button type="submit" class="submit-btn">
+
+                Update Payment
+
+            </button>
+
+        </div>
+
+    </form>
+
+    <!-- NOTE -->
+
+    <div class="note-box">
+
+        Vendor can update payment status after customer payment.
+
+        <br><br>
+
+        • Pending = Payment not received
+
+        <br>
+
+        • Partial Paid = Half payment received
+
+        <br>
+
+        • Paid = Full payment completed
+
+    </div>
+
+</div>
+
+{% endblock %}

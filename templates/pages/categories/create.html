@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="category-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                Category Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Create and manage service categories
+
+            </p>
+
+        </div>
+
+        <div class="header-right">
+
+            <div class="category-badge">
+
+                Add Category
+
+            </div>
+
+            <a href="{% url 'list.category' %}" class="list-btn">
+
+                <i class="bi bi-grid"></i>
+
+                Category List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="category-card">
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Category Information
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Add category details, banners and service images
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="card-body-custom">
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <!-- ICON -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Category Icon
+
+                        </label>
+
+                        <div class="image-box">
+
+                            <img id="preview" src="">
+
+                        </div>
+
+                        <input type="file" name="icon" class="file-input" onchange="previewImage(event, 'preview')"
+                            required>
+
+                    </div>
+
+                    <!-- CONTENT -->
+
+                    <div class="col-md-8">
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Category Title
+
+                            </label>
+
+                            <input type="text" name="title" class="form-control-custom"
+                                placeholder="Enter category title..." required>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Description
+
+                            </label>
+
+                            <textarea name="description" rows="4" class="textarea-custom"
+                                placeholder="Enter category description..." required></textarea>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Badge
+
+                            </label>
+
+                            <input type="text" name="badge" class="form-control-custom"
+                                placeholder="e.g. Trending, Popular">
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Tags
+
+                            </label>
+
+                            <input type="text" name="tags" class="form-control-custom"
+                                placeholder="e.g. Repair, Cleaning, Plumbing">
+
+                            <small class="small-text">
+
+                                Enter comma separated values
+
+                            </small>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Service Page Description
+
+                            </label>
+
+                            <textarea name="category_about_des" rows="5" class="textarea-custom"
+                                placeholder="Enter service page description..."></textarea>
+
+                        </div>
+
+                        <div class="row g-4">
+
+                            <!-- ABOUT IMAGE -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+
+                                    Service About Image
+
+                                </label>
+
+                                <div class="image-box">
+
+                                    <img id="about_preview" src="">
+
+                                </div>
+
+                                <input type="file" name="category_about_img" class="file-input"
+                                    onchange="previewImage(event, 'about_preview')">
+
+                            </div>
+
+                            <!-- BANNER IMAGE -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+
+                                    Banner Image
+
+                                </label>
+
+                                <div class="image-box">
+
+                                    <img id="banner_preview" src="">
+
+                                </div>
+
+                                <input type="file" name="banner_image" class="file-input"
+                                    onchange="previewImage(event, 'banner_preview')">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'list.category' %}" class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit" class="save-btn">
+
+                        Save Category
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    function previewImage(event, previewId = 'preview') {
+
+        const reader = new FileReader();
+
+        reader.onload = function () {
+
+            document.getElementById(
+                previewId
+            ).src = reader.result;
+
+        }
+
+        reader.readAsDataURL(
+            event.target.files[0]
+        );
+
+    }
+
+</script>
+
+{% endblock %}

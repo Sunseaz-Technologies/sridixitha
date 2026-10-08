@@ -1,0 +1,1070 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+
+
+:root {
+    --bg:        #f4f7fb;
+    --card:      #ffffff;
+    --border:    #e8eaf0;
+    --text:      #12172a;
+    --sub:       #7b8299;
+    --primary:   #2563eb;
+    --primary-h: #1d4ed8;
+    --radius:    18px;
+  
+}
+
+body { background: var(--bg);   }
+
+
+/* ALERT GRID */
+
+.lead-alert-grid{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    margin-bottom:12px;
+}
+
+/* ALERT CARD */
+
+.lead-alert-card{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:14px;
+
+    background:#fff;
+
+    border:1px solid #e5e7eb;
+
+    border-left:4px solid #facc15;
+
+    border-radius:12px;
+
+    padding:12px 14px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* COLORS */
+
+.lead-alert-card.waiting{
+
+    border-left-color:#eab308;
+}
+
+.lead-alert-card.urgent{
+
+    border-left-color:#f97316;
+}
+
+.lead-alert-card.delayed{
+
+    border-left-color:#ef4444;
+}
+
+/* LEFT */
+
+.lead-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+/* ICON */
+
+.lead-icon{
+
+    font-size:18px;
+}
+
+/* CONTENT */
+
+.lead-content{
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+/* TITLE */
+
+.lead-alert-title{
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:#111827;
+}
+
+/* ID */
+
+.lead-alert-id{
+
+    margin-top:2px;
+
+    font-size:12px;
+
+    color:#6b7280;
+}
+
+/* HOURS */
+
+.lead-hours{
+
+    font-size:12px;
+
+    font-weight:700;
+
+    color:#111827;
+
+    background:#f3f4f6;
+
+    padding:6px 10px;
+
+    border-radius:20px;
+
+    white-space:nowrap;
+}
+
+/* VIEW MORE */
+
+.view-more-wrap{
+
+    display:flex;
+
+    justify-content:flex-end;
+}
+
+.view-more-btn{
+
+    font-size:13px;
+
+    color:#2563eb;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    user-select:none;
+}
+
+.view-more-btn:hover{
+
+    color:#1d4ed8;
+}
+
+/* MORE ALERTS */
+
+.more-alerts-grid{
+
+    margin-top:-2px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .lead-alert-card{
+
+        padding:12px;
+    }
+
+    .lead-alert-title{
+
+        font-size:13px;
+    }
+
+    .lead-alert-id{
+
+        font-size:11px;
+    }
+
+    .lead-hours{
+
+        font-size:11px;
+    }
+
+}
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .lead-alert-card{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+    }
+
+    .lead-hours{
+
+        align-self:flex-end;
+    }
+}
+
+/* end-alert */
+/* ── LAYOUT ── */
+.pg-wrap {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 32px 28px;
+}
+
+/* ── PAGE HEADER ── */
+
+.pg-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+}
+.pg-header p {
+    font-size: 13px;
+    color: var(--sub);
+    margin-top: 4px;
+}
+
+/* ── CARD ── */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 2px 16px rgba(18,23,42,.05);
+    overflow: hidden;
+}
+
+/* ── CARD TOP BAR ── */
+.card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+}
+.card-top-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* ── TOOLBAR ── */
+.toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.inp {
+    height: 40px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    font-family: var(--font);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+.inp::placeholder { color: #adb5c8; }
+.inp:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.09);
+}
+.inp-search { width: 230px; }
+.inp-select { min-width: 155px; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237b8299'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px; }
+
+.btn {
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: background .2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-h); }
+.btn-filter { background: #eef2ff; color: var(--primary); }
+.btn-filter:hover { background: #dde6ff; }
+
+/* ── FILTER PANEL ── */
+.filter-panel {
+    display: none;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px 24px;
+    background: #fafbff;
+    border-bottom: 1px solid var(--border);
+}
+.filter-panel.open { display: flex; }
+
+/* ── TABLE ── */
+.tbl-scroll { width: 100%; overflow-x: auto; }
+
+table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+thead { background: #f7f8fc; }
+thead th {
+    padding: 13px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--sub);
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 14px 16px;
+    font-size: 13.5px;
+    color: var(--text);
+    border-bottom: 1px solid #f0f2f8;
+    vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #fafbff; }
+
+/* COL WIDTHS */
+table colgroup col:nth-child(1)  { width: 52px; }
+table colgroup col:nth-child(2)  { width: 130px; }
+table colgroup col:nth-child(3)  { width: 170px; }
+table colgroup col:nth-child(4)  { width: 160px; }
+table colgroup col:nth-child(5)  { width: 200px; }
+table colgroup col:nth-child(6)  { width: 200px; }
+table colgroup col:nth-child(7)  { width: 110px; }
+table colgroup col:nth-child(8)  { width: auto; }
+
+/* ── CELLS ── */
+.order-id {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 8px;
+    display: inline-block;
+    font-family: monospace;
+    letter-spacing: .3px;
+}
+.c-name { font-size: 13.5px; font-weight: 700; }
+.c-phone { font-size: 12px; color: var(--sub); margin-top: 3px; }
+.c-city {
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary);
+    background: #eef2ff;
+    padding: 3px 9px;
+    border-radius: 20px;
+}
+.s-title { font-size: 13.5px; font-weight: 700; }
+.s-cat { font-size: 12px; color: var(--sub); margin-top: 3px; }
+
+/* ── ACTION ROW ── */
+.action-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    background: #f7f8fc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    max-width: 210px;
+}
+.action-select {
+    flex: 1;
+    min-width: 0;
+    height: 32px;
+    border: none;
+    outline: none;
+    background: #fff;
+    border-radius: 7px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    font-family: var(--font);
+    cursor: pointer;
+    appearance: none;
+}
+.action-select:focus { box-shadow: 0 0 0 2px rgba(37,99,235,.1); border-radius: 7px; }
+
+.act-btn {
+    height: 32px;
+    border: none;
+    border-radius: 7px;
+    padding: 0 11px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: background .2s;
+    white-space: nowrap;
+}
+.act-btn-blue { background: var(--primary); color: #fff; }
+.act-btn-blue:hover { background: var(--primary-h); }
+.act-btn-dark { background: #1e2336; color: #fff; }
+.act-btn-dark:hover { background: #111827; }
+
+/* ── VENDOR / STATUS BADGE ── */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    width: fit-content;
+}
+.badge-blue   { background: #eef2ff; color: var(--primary); }
+.badge-gray   { background: #f3f4f6; color: var(--sub); }
+
+.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* STATUS COLORS */
+.st-pending    { background: #fef9ec; color: #92400e; }
+.st-pending    .dot { background: #f59e0b; }
+.st-assigned   { background: #ede9fe; color: #5b21b6; }
+.st-assigned   .dot { background: #7c3aed; }
+.st-accepted   { background: #d1fae5; color: #065f46; }
+.st-accepted   .dot { background: #10b981; }
+.st-in_progress { background: #dbeafe; color: #1e40af; }
+.st-in_progress .dot { background: var(--primary); }
+.st-completed  { background: #dcfce7; color: #166534; }
+.st-completed  .dot { background: #22c55e; }
+.st-cancelled  { background: #ffe4e6; color: #9f1239; }
+.st-cancelled  .dot { background: #f43f5e; }
+
+/* ── PAYMENT CELL ── */
+.pay-wrap { display: flex; flex-direction: column; gap: 8px; }
+
+.pay-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.pay-input {
+    width: 130px;
+    height: 38px;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: var(--font);
+    background: #fff;
+    outline: none;
+    transition: border-color .2s;
+}
+.pay-input:focus { border-color: var(--primary); }
+.pay-input.saved { border-color: #16a34a; background: #f0fdf4; }
+
+.pay-saved-label {
+    font-size: 11px;
+    color: #16a34a;
+    font-weight: 700;
+}
+
+.pay-detail-box {
+    background: #f7f8fc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.pay-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+}
+.pay-row .lbl { color: var(--sub); }
+.pay-row.paid .val { color: #16a34a; }
+.pay-row.paid .lbl { color: #16a34a; }
+.pay-row.balance .val { color: #dc2626; }
+.pay-row.balance .lbl { color: #dc2626; }
+
+.amt { font-weight: 700; color: var(--text); }
+
+/* ── EMPTY ── */
+.empty-row td {
+    text-align: center;
+    padding: 60px !important;
+    color: var(--sub);
+    font-size: 14px;
+}
+
+/* ── PAGINATION ── */
+.card-foot {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 18px 24px;
+    border-top: 1px solid var(--border);
+}
+.pg-list {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+}
+.pg-list a,
+.pg-list span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    transition: .2s ease;
+    font-family: var(--font);
+}
+.pg-list a:hover { background: #f3f4f6; border-color: #d1d5db; }
+.pg-list .active span,
+.pg-list span.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(37,99,235,.2);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+    .pg-wrap { padding: 16px 14px; }
+    .card-top { padding: 16px; }
+    .toolbar { gap: 8px; }
+    .inp-search { width: 100%; }
+    .inp-select { width: 100%; }
+    .btn { width: 100%; justify-content: center; }
+    .filter-panel { padding: 14px 16px; }
+    .card-foot { padding: 14px; justify-content: center; }
+}
+
+</style>
+{% if lead_notifications %}
+
+<div class="lead-alert-grid">
+
+    <!-- FIRST ALERT -->
+
+    {% for lead in lead_notifications|slice:":1" %}
+
+    <div class="lead-alert-card {{ lead.alert_type }}">
+
+        <div class="lead-left">
+
+            <div class="lead-icon">
+
+                {% if lead.alert_type == "waiting" %}
+                    🟡
+                {% elif lead.alert_type == "urgent" %}
+                    🟠
+                {% else %}
+                    🔴
+                {% endif %}
+
+            </div>
+
+            <div class="lead-content">
+
+                <div class="lead-alert-title">
+
+                    {{ lead.alert_title }}
+
+                </div>
+
+                <div class="lead-alert-id">
+
+                    {{ lead.order_id }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="lead-hours">
+
+            {{ lead.pending_hours }} hrs
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    <!-- VIEW MORE -->
+
+    {% if lead_notifications|length > 1 %}
+
+    <div class="view-more-wrap">
+
+        <span
+
+            class="view-more-btn"
+
+            onclick="toggleMoreLeads()"
+
+            id="leadToggleBtn"
+
+        >
+
+            View More
+
+        </span>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<!-- MORE LEADS -->
+
+<div
+    id="moreLeadNotifications"
+    style="display:none;"
+>
+
+    <div class="lead-alert-grid more-alerts-grid">
+
+        {% for lead in lead_notifications|slice:"1:" %}
+
+        <div class="lead-alert-card {{ lead.alert_type }}">
+
+            <div class="lead-left">
+
+                <div class="lead-icon">
+
+                    {% if lead.alert_type == "waiting" %}
+                        🟡
+                    {% elif lead.alert_type == "urgent" %}
+                        🟠
+                    {% else %}
+                        🔴
+                    {% endif %}
+
+                </div>
+
+                <div class="lead-content">
+
+                    <div class="lead-alert-title">
+
+                        {{ lead.alert_title }}
+
+                    </div>
+
+                    <div class="lead-alert-id">
+
+                        {{ lead.order_id }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="lead-hours">
+
+                {{ lead.pending_hours }} hrs
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endif %}
+    <div class="pg-wrap">
+
+    <!-- PAGE HEADER -->
+        <h2 class="dashboard-heading">
+            Admin Orders Management
+        </h2>
+
+        <p class="dashboard-subheading">
+            View and manage all customer service orders, bookings, and vendor assignments
+        </p>
+
+      
+    </div>
+    <!-- CARD -->
+    <div class="card">
+
+        <!-- TOP BAR -->
+        <div class="card-top">
+        
+                   
+               <div class="card-title">
+               All Bookings
+            </div>
+
+            <form method="GET" style="display:contents;">
+                <div class="toolbar">
+                    <input type="text"
+                           name="q"
+                           class="inp inp-search"
+                           placeholder="🔍  Search customer or phone…"
+                           value="{{ q|default:'' }}">
+
+                    <button type="button"
+                            class="btn btn-filter"
+                            onclick="toggleFilters()">
+                        ⚙&nbsp; Filters
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- FILTER PANEL -->
+        <form method="GET">
+            <div class="filter-panel" id="filterPanel">
+
+                <select name="category" class="inp inp-select">
+                    <option value="">All Categories</option>
+                    {% for c in categories %}
+                    <option value="{{ c.id }}" {% if selected_category == c.id|stringformat:"s" %}selected{% endif %}>
+                        {{ c.title }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <select name="service" class="inp inp-select">
+                    <option value="">All Services</option>
+                    {% for s in services %}
+                    <option value="{{ s.id }}" {% if selected_service == s.id|stringformat:"s" %}selected{% endif %}>
+                        {{ s.s_title }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <select name="city" class="inp inp-select">
+                    <option value="">All Cities</option>
+                    {% for c in cities %}
+                    <option value="{{ c }}" {% if selected_city == c %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                </select>
+
+                <input type="text"
+                       name="postal_code"
+                       class="inp"
+                       placeholder="Postal Code"
+                       value="{{ postal_code|default:'' }}"
+                       style="width:140px;">
+
+                <button type="submit" class="btn btn-primary">Apply</button>
+            </div>
+        </form>
+
+        <!-- TABLE -->
+        <div class="tbl-scroll">
+            <table>
+                <colgroup>
+                    <col><col><col><col><col><col><col><col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Sl.No</th>
+                        <th>Service ID</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Vendor</th>
+                        <th>Status</th>
+                        <th>Est. Amount</th>
+                        <th>Payment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in bookings %}
+                    <tr>
+                        <!-- SL NO -->
+                        <td style="font-weight:700;color:var(--sub);">
+                            {{ page_obj.start_index|add:forloop.counter0 }}
+                        </td>
+
+                        <!-- ORDER ID -->
+                        <td>
+                            <span class="order-id">{{ b.order_id }}</span>
+                        </td>
+
+                        <!-- CUSTOMER -->
+                        <td>
+                            <div class="c-name">{{ b.name }}</div>
+                            <div class="c-phone">{{ b.phone }}</div>
+                            {% if b.city %}
+                            <div class="c-city">📍 {{ b.city }}</div>
+                            {% endif %}
+                        </td>
+
+                        <!-- SERVICE -->
+                        <td>
+                            <div class="s-title">{{ b.service.s_title }}</div>
+                            <div class="s-cat">{{ b.service.category.title|default:"" }}</div>
+                        </td>
+
+                        <!-- VENDOR -->
+                        <td>
+                            {% if b.vendor %}
+                            <span class="badge badge-blue">✓ {{ b.vendor.first_name }}</span>
+                            {% else %}
+                            <span class="badge badge-gray">No Vendor</span>
+                            {% endif %}
+
+                            <div class="action-row">
+                                <select id="vendor-{{ b.id }}" class="action-select">
+                                    <option value="">Select Vendor</option>
+                                    {% for v in vendors %}
+                                    <option value="{{ v.id }}" {% if b.vendor and b.vendor.id == v.id %}selected{% endif %}>
+                                        {{ v.first_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <button type="button"
+                                        class="act-btn act-btn-blue"
+                                        onclick="assignVendor('{{ b.id }}')">
+                                    {% if b.vendor %}Reassign{% else %}Assign{% endif %}
+                                </button>
+                            </div>
+                        </td>
+
+                        <!-- STATUS -->
+                        <td>
+                            <span class="badge st-{{ b.status }}">
+                                <span class="dot"></span>
+                                {{ b.get_status_display }}
+                            </span>
+
+                            <div class="action-row">
+                                <select id="status-{{ b.id }}" class="action-select">
+                                    <option value="pending"      {% if b.status == "pending" %}selected{% endif %}>Pending</option>
+                                    <option value="assigned"     {% if b.status == "assigned" %}selected{% endif %}>Assigned</option>
+                                    <option value="accepted"     {% if b.status == "accepted" %}selected{% endif %}>Accepted</option>
+                                    <option value="in_progress"  {% if b.status == "in_progress" %}selected{% endif %}>In Progress</option>
+                                    <option value="completed"    {% if b.status == "completed" %}selected{% endif %}>Completed</option>
+                                    <option value="cancelled"    {% if b.status == "cancelled" %}selected{% endif %}>Cancelled</option>
+                                </select>
+                                <button type="button"
+                                        class="act-btn act-btn-dark"
+                                        onclick="updateStatus('{{ b.id }}')">
+                                    Save
+                                </button>
+                            </div>
+                        </td>
+
+                        <!-- ESTIMATED AMOUNT -->
+                        <td>
+                            <span class="amt">₹{{ b.estimated_amount }}</span>
+                        </td>
+
+                        <!-- PAYMENT -->
+                        <td>
+                            {% with payment=b.payment_set.first %}
+                            <div class="pay-wrap">
+                                <div class="pay-input-row">
+                                    <input type="number"
+                                           id="amount-{{ b.id }}"
+                                           class="pay-input {% if payment %}saved{% endif %}"
+                                           value="{% if payment %}{{ payment.total_amount|floatformat:0 }}{% endif %}"
+                                           placeholder="Enter amount">
+
+                                    <button type="button"
+                                            class="act-btn act-btn-blue"
+                                            onclick="savePayment('{{ b.id }}')">
+                                        {% if payment %}Update{% else %}Save{% endif %}
+                                    </button>
+                                </div>
+
+                                {% if payment %}
+                                <div class="pay-saved-label">✓ Saved: ₹{{ payment.total_amount|floatformat:0 }}</div>
+
+                                <div class="pay-detail-box">
+                                    <div class="pay-row">
+                                        <span class="lbl">Total</span>
+                                        <span class="val">₹{{ payment.total_amount|floatformat:0 }}</span>
+                                    </div>
+                                    <div class="pay-row paid">
+                                        <span class="lbl">Paid</span>
+                                        <span class="val">₹{{ payment.paid_amount|floatformat:0 }}</span>
+                                    </div>
+                                    <div class="pay-row balance">
+                                        <span class="lbl">Balance</span>
+                                        <span class="val">₹{{ payment.remaining_amount|floatformat:0 }}</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endwith %}
+                        </td>
+
+                    </tr>
+                    {% empty %}
+                    <tr class="empty-row">
+                        <td colspan="8">No orders found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PAGINATION -->
+        {% if page_obj %}
+        <div class="card-foot">
+            <ul class="pg-list">
+                {% if page_obj.has_previous %}
+                <li>
+                    <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}&category={{ selected_category }}&service={{ selected_service }}&city={{ selected_city }}&postal_code={{ postal_code }}">‹</a>
+                </li>
+                {% endif %}
+
+                <li><span class="active">{{ page_obj.number }}</span></li>
+
+                {% if page_obj.has_next %}
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}&q={{ q }}&category={{ selected_category }}&service={{ selected_service }}&city={{ selected_city }}&postal_code={{ postal_code }}">{{ page_obj.next_page_number }}</a>
+                </li>
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}&q={{ q }}&category={{ selected_category }}&service={{ selected_service }}&city={{ selected_city }}&postal_code={{ postal_code }}">›</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </div><!-- /card -->
+
+</div><!-- /pg-wrap -->
+
+<script>
+function getCSRF() {
+    let v = "";
+    document.cookie.split(";").forEach(c => {
+        c = c.trim();
+        if (c.startsWith("csrftoken=")) v = c.slice(10);
+    });
+    return v;
+}
+
+function post(url, body) {
+    return fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-CSRFToken": getCSRF() },
+        body: JSON.stringify(body)
+    }).then(r => r.json());
+}
+
+function savePayment(id) {
+    const inp = document.getElementById("amount-" + id);
+    if (!inp.value) { alert("Enter amount"); return; }
+    post(window.location.href, { booking_id: id, total_amount: inp.value })
+        .then(d => d.success ? location.reload() : alert(d.error || "Error"));
+}
+
+function updateStatus(id) {
+    const status = document.getElementById("status-" + id).value;
+    post(window.location.href, { booking_id: id, status })
+        .then(d => d.success ? location.reload() : alert(d.error || "Error"));
+}
+
+function assignVendor(id) {
+    const vendor = document.getElementById("vendor-" + id).value;
+    if (!vendor) { alert("Please select a vendor"); return; }
+    post("/assign-vendor/", { booking_id: id, vendor_id: vendor })
+        .then(d => d.success ? location.reload() : alert(d.error || "Error"));
+}
+
+function toggleFilters() {
+    document.getElementById("filterPanel").classList.toggle("open");
+}
+
+function toggleMoreLeads(){
+
+    const box = document.getElementById(
+
+        "moreLeadNotifications"
+
+    );
+
+    const btn = document.getElementById(
+
+        "leadToggleBtn"
+
+    );
+
+    if(box.style.display === "none"){
+
+        box.style.display = "block";
+
+        btn.innerText = "Show Less";
+
+    }else{
+
+        box.style.display = "none";
+
+        btn.innerText = "View More";
+
+    }
+
+}
+</script>
+
+{% endblock %}

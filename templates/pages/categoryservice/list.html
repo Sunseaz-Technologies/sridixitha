@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="service-page">
+
+    
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                Service Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Manage category services and service information
+
+            </p>
+
+        </div>
+
+        <div class="header-right">
+
+            <a href="{% url 'add.categories.service' %}"
+               class="add-btn">
+
+                <i class="bi bi-plus-circle-fill"></i>
+
+                Add Service
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="service-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <form method="GET"
+                  class="filter-form">
+
+                <select name="category"
+                        onchange="this.form.submit()"
+                        class="select-custom">
+
+                    <option value="">
+
+                        -- Select Category --
+
+                    </option>
+
+                    {% for cat in categories %}
+
+                    <option value="{{ cat.id }}"
+                        {% if selected_category and selected_category.id == cat.id %}selected{% endif %}>
+
+                        {{ cat.title }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </form>
+
+        </div>
+
+        <!-- BODY -->
+
+        {% if selected_category %}
+
+        <h5 class="list-title">
+
+            {{ selected_category.title }} - Services List
+
+        </h5>
+
+        <div class="table-wrap">
+
+            <table class="service-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+                        <th>Service Title</th>
+                        <th>Tag</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>Created Date</th>
+                        <th class="text-center">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for service in services %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="sl-no">
+
+                              {{ page_obj.start_index|add:forloop.counter0 }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="service-title">
+
+                                {{ service.s_title }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="tag-badge">
+
+                                {{ service.s_tag }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="service-desc">
+
+                                {{ service.s_desc|truncatechars:60 }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            {% if service.image %}
+
+                            <img src="{{ service.image.url }}"
+                                 class="service-image">
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <div class="service-date">
+
+                                {{ service.created_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-wrap">
+
+                                <a href="{% url 'update.category.services' service.id %}"
+                                   class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                </a>
+
+                                <a href="{% url 'delete.category.services' service.id %}"
+                                   class="action-btn delete-btn">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7"
+                            class="empty-text">
+
+                            No services found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-text">
+
+            Please select a category
+
+        </div>
+
+        {% endif %}
+
+        <!-- PAGINATION -->
+
+        {% if page_obj.has_other_pages %}
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+
+                <a class="pg-btn"
+                   href="?category={{ selected_category.id }}&page={{ page_obj.previous_page_number }}">
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                <span class="pg-btn active">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?category={{ selected_category.id }}&page={{ page_obj.next_page_number }}">
+
+                    {{ page_obj.next_page_number }}
+
+                </a>
+
+                {% endif %}
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?category={{ selected_category.id }}&page={{ page_obj.next_page_number }}">
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

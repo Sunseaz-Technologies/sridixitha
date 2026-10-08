@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.13.1/font/bootstrap-icons.min.css"
+        integrity="sha512-t7Few9xlddEmgd3oKZQahkNI4dS6l80+eGEzFQiqtyVYdvcSG2D3Iub77R20BdotfRPA9caaRkg1tyaJiPmO0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .bg-light {
+            background: #dbdbdb !important;
+        }
+
+        .nav-link {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand ms-3" href="#">Admin Dashboard</a>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+
+            <div class="col-md-2 bg-light vh-100 p-3">
+                <h5>Manage</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a href="{% url 'news.list' %}" class="nav-link">News</a>
+                    </li>
+                    <li class="nav-item"><a href="{% url 'list.banner' %}" class="nav-link">Hero Section</a>
+                    </li>
+                    <li class="nav-item"><a href="{% url 'list.category' %}" class="nav-link">Categories</a></li>
+                  
+                    <li class="nav-item"><a href="{% url 'list.category.services'  %}" class="nav-link">Categories Services</a></li>
+                    
+                    <li class="nav-item"><a href="{% url 'services.list' %}" class="nav-link">Services</a></li>
+
+                    <li class="nav-item"><a href="{% url 'list.jobs' %}" class="nav-link">Jobs</a></li>
+
+                    
+                    <li class="nav-item"><a href="{% url 'list.feedback' %}" class="nav-link">Feedback</a></li>
+                    <li class="nav-item"><a href="{% url 'list.contact' %}" class="nav-link">Contact</a></li>
+
+                    <li class="nav-item"><a href="{% url 'list.footer' %}" class="nav-link">Footer</a></li>
+
+
+                </ul>
+            </div>
+
+
+            <div class="col-md-10 p-4">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

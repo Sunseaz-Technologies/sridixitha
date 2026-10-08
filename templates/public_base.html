@@ -1,0 +1,932 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link rel="icon" type="image/x-icon" href="{% static 'assets/images/logo/top_serdixitha_logo.png' %}">
+  <title>SriDixitha Enterprises</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css/animate.min.css" />
+  <!--==============================
+	  Google Fonts
+	============================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Miranda+Sans:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playwrite+AU+NSW+Guides&family=Playwrite+NZ+Guides&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <!--==============================
+	    All CSS File
+	============================== -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+  <!-- Fontawesome Icon -->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}">
+  <!-- Magnific Popup -->
+  <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.min.css' %}">
+  <!-- Slick Slider -->
+  <link rel="stylesheet" href="{% static 'assets/css/slick.min.css' %}">
+  <!-- nice-select -->
+  <link rel="stylesheet" href="{% static 'assets/css/nice-select.min.css' %}">
+  <!-- animate js -->
+  <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+  <!-- nouislider js -->
+  <link rel="stylesheet" href="{% static 'assets/css/nouislider.css' %}">
+  <!-- Theme Custom CSS -->
+  <link rel="stylesheet" href="{% static 'assets/css/style1.css' %}">
+
+  <style>
+    /* Compact mobile action buttons (Cart, Profile, Toggle) in header */
+    
+    /* Global Profile Circle Style (Desktop & Mobile) */
+    .profile-circle-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50% !important;
+      padding: 0 !important;
+      font-weight: bold;
+      font-size: 20px !important;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent !important;
+      color: #fff !important;
+      border: 2px solid #074c7d !important;
+      flex-shrink: 0;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .profile-circle-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+    .profile-circle-btn::after {
+      display: none !important;
+    }
+    .profile-circle-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .profile-circle-btn .letter-avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background-color: #074c7d;
+      color: white;
+    }
+
+    /* Desktop Hover Dropdown for Profile */
+    @media (min-width: 992px) {
+        .account-dropdown {
+            position: relative;
+        }
+        /* Invisible bridge to prevent hover loss */
+        .account-dropdown::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: -10px;
+            right: -10px;
+            height: 15px;
+            background: transparent;
+            z-index: 999;
+        }
+        .account-dropdown:hover .dropdown-menu {
+            display: block;
+            animation: dropFade 0.2s ease forwards;
+        }
+        .account-dropdown .dropdown-menu {
+            top: calc(100% + 10px) !important;
+            right: 0 !important;
+            left: auto !important;
+            border: none;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            padding: 10px 0;
+            margin-top: 0;
+        }
+        .account-dropdown .dropdown-item {
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .account-dropdown .dropdown-item:hover {
+            background-color: #f4f6f8;
+            color: #074c7d;
+            padding-left: 25px;
+        }
+        @keyframes dropFade {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    }
+
+    @media (max-width: 1199px) {
+      .header-logo {
+        max-width: 50vw; /* Ensure logo scales down on small screens */
+        display: block;
+      }
+      .header-logo a {
+        display: block;
+      }
+      .header-logo img {
+        width: 100% !important;
+        max-width: 220px !important;
+        height: auto !important;
+        display: block;
+      }
+      .mobile-action-btn {
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+        border-radius: 8px !important; 
+        margin: 0 !important;
+        line-height: 1.2 !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        background-color: #074c7d !important; /* Theme dark blue */
+        color: #fff !important;
+        border: none !important;
+        flex-shrink: 0;
+        position: relative !important;
+        left: 0 !important; /* Neutralize the theme's left: -5px */
+      }
+      .mobile-action-btn i {
+        margin-right: 3px;
+      }
+      
+      /* Perfect square for Toggle to match Profile circle */
+      .vs-menu-toggle.mobile-action-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0 !important; /* Reset padding for perfect centering */
+        font-size: 15px;
+        position: static !important;
+        float: none !important;
+      }
+      .vs-menu-toggle.mobile-action-btn i {
+        margin: 0 !important;
+        font-size: 16px;
+      }
+      .gap-2 {
+        gap: 0.5rem !important; /* Proper gap between buttons */
+      }
+
+      /* Prevent dropdown arrow from squishing on other buttons */
+      .mobile-action-btn.dropdown-toggle:not(.profile-circle-btn)::after {
+        margin-left: 0.3em;
+        vertical-align: middle;
+      }
+      /* Reset specific dropdown spacing that causes weird gaps on mobile */
+      .mobile-profile-dropdown {
+        padding: 0 !important;
+        margin: 0 !important;
+        position: relative !important;
+      }
+    }
+  </style>
+
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+  <!-- vendor button -->
+<a href="{% url 'register' %}" class="vendor-fab">
+  <div class="vendor-pill">
+    <div class="vendor-icon">
+      <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
+        <rect x="2" y="7" width="20" height="14" rx="2"/>
+        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+      </svg>
+    </div>
+    <div class="vendor-texts">
+      <span class="vendor-sub" style="font-weight: bold;">Earn with us</span>
+      <span class="vendor-main">Join as Vendor</span>
+    </div>
+  </div>
+  <div class="vendor-dot"></div>
+</a>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to Top">
+    <span class="progress-circle">
+      <svg viewBox="0 0 100 100">
+        <circle class="bg" cx="50" cy="50" r="40"></circle>
+        <circle class="progress" cx="50" cy="50" r="40"></circle>
+      </svg>
+      <span class="progress-percentage" id="progressPercentage">0%</span>
+    </span>
+  </button>
+  <!--==============================
+    	Mobile Menu
+  	============================== -->
+  <div class="vs-menu-wrapper">
+    <div class="vs-menu-area text-center">
+      <div class="mobile-logo">
+        <a href="#"><img
+            src="{% if footer.logo_image %} {{ footer.logo_image.url }} {% else %} {% static 'assets/images/logo/sridixitha_logo.gif' %} {% endif %}"
+            alt="Sridixitha" class="logo logo_news"></a>
+        <button class="vs-menu-toggle"><i class="fal fa-times"></i></button>
+      </div>
+      
+      <div class="vs-mobile-menu">
+        <ul>
+          <li class="">
+            <a href="{% url 'indexpage' %}">Home</a>
+          </li>
+          <li class="">
+            <a href="#categories">categories </a>
+          </li>
+          <li class="">
+            <a href="#services">Services </a>
+          </li>
+          <li>
+            <a href="#jobs">Careers </a>
+          </li>
+          <li>
+            <a href="#Testimonials">Testimonials </a>
+          </li>
+          <li>
+            <a href="{% url 'feedbackform' %}" style="color: #ea6e12 !important;">Feedback & Suggestions</a>
+          </li>
+          <li>
+            <a href="{% url 'contact' %}">Contact</a>
+          </li>
+        </ul>
+      </div>
+                      <div class="header-buttons d-inline-block d-xl-none me-2 dropdown">
+
+                  {% if not user.is_authenticated %}
+                  <button class="vs-btn dropdown-toggle" data-bs-toggle="dropdown">
+                    Account
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
+                    <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+                  </ul>
+                  {% endif %}
+
+                </div>
+    </div>
+  </div>
+  <!--==============================
+	Sidemenu
+	============================== -->
+  <div class="sidemenu-wrapper d-none d-lg-block">
+    <div class="sidemenu-content">
+      <button class="closeButton sideMenuCls"><i class="far fa-times"></i></button>
+      <div class="widget">
+        <div class="vs-widget-about">
+          <div class="mb-4">
+            <a href="#"><img src="{% static 'assets/images/logo/sridixitha_logo.gif' %}" alt="logo"
+                class="logo"></a>
+          </div>
+          <p class="sidemenu-text">
+     
+          </p>
+          <ul class="social-links">
+            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+          </ul>
+
+
+        </div>
+      </div>
+      <div class="widget  ">
+        <h4 class="widget_title">Recent Posts</h4>
+        <div class="widget footer-widget">
+          <div class="recent-post-wrap">
+            <div class="recent-post">
+              <div class="media-img">
+                <a href="blog-details.html"><img src="{% static 'assets/img/blog/recent-post-1-1.jpg' %}"
+                    alt="Blog Image"></a>
+              </div>
+              <div class="media-body">
+                <h4 class="post-title"><a href="blog-details.html">How to Improve Your Riding...</a>
+                </h4>
+                <div class="recent-post-meta">
+                  <i class="fas fa-calendar-alt"></i> 09 Aug, 2025
+                </div>
+              </div>
+            </div>
+            <div class="recent-post">
+              <div class="media-img">
+                <a href="blog-details.html"><img src="{% static 'assets/img/blog/recent-post-1-2.jpg' %}"
+                    alt="Blog Image"></a>
+              </div>
+              <div class="media-body">
+                <h4 class="post-title"><a href="blog-details.html">Choosing the Right Gear...</a>
+                </h4>
+                <div class="recent-post-meta">
+                  <i class="fas fa-calendar-alt"></i> 09 Aug, 2025
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="widget  ">
+        <h3 class="widget_title">Office Maps</h3>
+        <div class="footer-map">
+          <iframe title="office location map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d163720.11965853968!2d8.496481908353967!3d50.121347879150306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47bd096f477096c5%3A0x422435029b0c600!2sFrankfurt%2C%20Germany!5e0!3m2!1sen!2sbd!4v1651732317319!5m2!1sen!2sbd"
+            width="200" height="150" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--==============================
+    Popup Search Box
+    ============================== -->
+
+  <!--==============================
+        Header Area
+    ==============================-->
+  <header class="vs-header header-layout2">
+    <!--contact numbers-->
+    <div class="header-top">
+      <div class="top-container">
+        <div class="social-media-header">
+          <div class="">
+            <div class="header-links ">
+              <ul>
+                <li class="contact-info">
+
+                  <span class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+91{{ footer.phone_num }}">+91 {{ footer.phone_num }}</a>
+                  </span>
+
+                  <span class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <a href="https://wa.me/91{{ footer.whatsapp_num }}" target="_blank">+91 {{ footer.whatsapp_num }}</a>
+                  </span>
+
+                </li>
+
+              </ul>
+            </div>
+          </div>
+          <div class="">
+            <div class="header-right">
+
+              <div class="header-social">
+                {% if footer.facebook %}
+                <a href="{{ footer.facebook }}"><i class="fab fa-facebook-f"></i></a>
+                {% else %}
+                <a href=""><i class="fab fa-facebook-f"></i></a>
+                {% endif %}
+                {% if footer.twitter %}
+                <a href="{% url 'footer.twitter' %}"><i class="fa-brands fa-x-twitter"></i></a>
+                {% else %}
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                {% endif %}
+                {% if footer.instagram %}
+                <a href="{% url 'footer.instagram' %}"><i class="fab fa-instagram"></i></a>
+                {% else %}
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--news area-->
+    <div class="news-ticker">
+      <div class="news-track">
+        {% for i in news %}
+        <span> <i class="fa-solid fa-circle dot-icon"></i> {{ i.content }}</span>
+        {% empty %}
+        <span>No latest updates available</span>
+        {% endfor %}
+
+      </div>
+    </div>
+
+    <!-- <!-nav area-> -->
+      <div class="sticky-wrapper">
+        <div class="sticky-active">
+          <div class="container-fluid">
+            <div class="row justify-content-between align-items-center gx-0 flex-nowrap">
+              <div class="col-auto">
+                <div class="header-logo">
+                  <a href="{% url 'indexpage' %}">
+
+                    {% if footer.logo_image %}
+                    <img src="{{ footer.logo_image.url }}" alt="Logo" class="logo logo_news">
+                    {% else %}
+                    <img src="{% static 'assets/images/logo/sridixitha_logo.gif' %}" alt="Logo" class="logo logo_news">
+                    {% endif %}
+
+                  </a>
+                </div>
+              </div>
+              <div class="col-auto d-inline-flex align-items-center">
+                <nav class="main-menu menu-style1 d-none d-xl-block">
+                  <ul>
+
+                    <li>
+                      <a href="{% url 'indexpage' %}">Home</a>
+                    </li>
+
+                    <li>
+                      <a href="#categories">categories </a>
+
+                    </li>
+                    <li>
+                      <a href="#services">Services </a>
+                    </li>
+
+                    <li>
+                      <a href="#jobs">Careers </a>
+                    </li>
+                    <li>
+                      <a href="#Testimonials">Testimonials </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'feedbackform' %}" style="color: #ea6e12;">Feedback & Suggestions</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'contact' %}">Contact</a>
+                    </li>
+
+                  </ul>
+                </nav>
+                <!-- Mobile specific actions -->
+                <div class="d-flex align-items-center d-xl-none gap-2">
+                  
+                  {% if not request.user.is_authenticated or request.user.role == 'customer' %}
+                      <a href="{% url 'cart_view' %}" class="vs-btn mobile-action-btn">
+                          <i class="fas fa-shopping-cart"></i> (<span id="cart-count-badge-mobile">{{ cart_count|default:0 }}</span>)
+                      </a>
+                  {% endif %}
+                  {% if user.is_authenticated %}
+                      <div class="dropdown mobile-profile-dropdown">
+                        <button class="vs-btn dropdown-toggle mobile-action-btn profile-circle-btn" data-bs-toggle="dropdown">
+                          {% if user.profile_image %}
+                            <img src="{{ user.profile_image.url }}" alt="Profile">
+                          {% else %}
+                            <span class="letter-avatar">{{ user.first_name|default:user.username|make_list|first|upper }}</span>
+                          {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                          {% if request.user.role == 'admin' %}
+                          <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                          {% elif request.user.role == 'vendor' %}
+                          <li><a class="dropdown-item" href="{% url 'vendor_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                          {% elif request.user.role == 'superadmin' %}
+                          <li><a class="dropdown-item" href="{% url 'superadmin_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                          {% else %}
+                          <li><a class="dropdown-item" href="{% url 'customer_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                          <li><a class="dropdown-item" href="{% url 'customer_orders' %}"><i class="fas fa-calendar-check me-2"></i> My Bookings</a></li>
+                          {% endif %}
+                          <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fa-regular fa-user me-2"></i> Profile</a></li>
+                          <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa-solid fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                      </div>
+                  {% else %}
+                      <div class="dropdown mobile-profile-dropdown">
+                        <button class="vs-btn dropdown-toggle mobile-action-btn" data-bs-toggle="dropdown">
+                          Account
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                          <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                          <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+                        </ul>
+                      </div>
+                  {% endif %}
+
+                  <!-- Hamburger Toggle -->
+                  <button class="vs-btn vs-menu-toggle mobile-action-btn d-xl-none">
+                    <i class="fal fa-bars"></i>
+                  </button>
+
+                </div>
+
+              </div>
+              <div class="col-auto d-xl-block d-none">
+                <div class="header-buttons d-flex align-items-center">
+
+                  {% if not request.user.is_authenticated or request.user.role == 'customer' %}
+                      <a href="{% url 'cart_view' %}" class="vs-btn me-3">
+                          <i class="fas fa-shopping-cart"></i> Cart (<span id="cart-count-badge">{{ cart_count|default:0 }}</span>)
+                      </a>
+                  {% endif %}
+                  {% if user.is_authenticated %}
+                      
+                      <div class="dropdown account-dropdown">
+                          <button class="vs-btn dropdown-toggle profile-circle-btn" data-bs-toggle="dropdown">
+                            {% if user.profile_image %}
+                              <img src="{{ user.profile_image.url }}" alt="Profile">
+                            {% else %}
+                              <span class="letter-avatar">{{ user.first_name|default:user.username|make_list|first|upper }}</span>
+                            {% endif %}
+                          </button>
+    
+                          <!-- Dropdown -->
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            {% if request.user.role == 'admin' %}
+                            <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                            {% elif request.user.role == 'vendor' %}
+                            <li><a class="dropdown-item" href="{% url 'vendor_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                            {% elif request.user.role == 'superadmin' %}
+                            <li><a class="dropdown-item" href="{% url 'superadmin_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                            {% else %}
+                            <li><a class="dropdown-item" href="{% url 'customer_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{% url 'customer_orders' %}"><i class="fas fa-calendar-check me-2"></i> My Bookings</a></li>
+                            {% endif %}
+                            <li>
+                              <a class="dropdown-item" href="{% url 'profile' %}">
+                                <i class="fa-regular fa-user me-2"></i> Profile
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="{% url 'logout' %}">
+                                <i class="fa-solid fa-sign-out-alt me-2"></i> Logout
+                              </a>
+                            </li>
+                          </ul>
+                      </div>
+                  {% else %}
+                      <div class="dropdown account-dropdown">
+                          <!-- Account Button -->
+                          <button class="vs-btn dropdown-toggle ">
+                            Account
+                          </button>
+    
+                          <!-- Dropdown -->
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                              <a class="dropdown-item" href="{% url 'login' %}">
+                                <i class="fa-regular fa-user me-2"></i> Login
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="{% url 'register' %}">
+                                <i class="fa-regular fa-user-plus me-2"></i> Register
+                              </a>
+                            </li>
+                          </ul>
+                      </div>
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </header>
+
+
+
+{% block content %}
+{% endblock %}
+
+
+  <!--==============================
+	  Footer Area
+	============================== -->
+  <footer class="footer-layout1 bg-body z-index-common" data-bg-src="assets/img/bg/">
+    <!-- Cta Area -->
+
+    <!-- Cta Area End -->
+    <div class="footer-top">
+      <div class="container">
+        <div class="row g-5 justify-content-between">
+          <div class="col-md-6 col-lg-6 col-xl-auto">
+            <div class="newsletter-area">
+              <div class="footer-logo">
+                <a href="{% url 'indexpage' %}">
+                  <img
+                    src="{% if footer.logo_image  %} {{ footer.logo_image.url }} {% else %} {% static 'assets/images/logo/sridixitha_logo.gif' %} {% endif %}"
+                    alt="Sridixitha" class="logo logo_news">
+                </a>
+              </div>
+              <p class="footer-text">{{ footer.footer_description }}</p>
+              <div class="footer-social-media">
+                {% if footer.whatsapp %}
+                <a href="{{ footer.whatsapp }}" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                {% elif footer.whatsapp_num %}
+                <a href="https://wa.me/91{{ footer.whatsapp_num }}" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                {% else %}
+                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                {% endif %}
+                {% if footer.facebook %}
+                <a href="{{ footer.facebook }}"><i class="fa-brands fa-facebook-f"></i></a>
+                {% else %}
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                {% endif %}
+                {% if footer.instagram %}
+                <a href="{{ footer.instagram }}"><i class="fa-brands fa-instagram"></i></a>
+                {% else %}
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                {% endif %}
+                {% if footer.twitter %}
+                <a href="{{ footer.twitter }}"><i class="fa-brands fa-x-twitter"></i></a>
+                {% else %}
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6 col-xl-auto">
+            <div class="widget widget_nav_menu footer-widget">
+              <h3 class="widget_title">Company<span class="title-shape"><img
+                    src="{% static 'assets/images/shapes/footer-line-shape.svg' %}" alt="Shape Image"></span></h3>
+              <ul class="menu">
+                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Our Services</a></li>
+                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Careers</a></li>
+                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i> Contact Us</a></li>
+                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Join as Vendor</a></li>
+                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i> Client Reviews</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6 col-xl-auto">
+            <div class="widget widget_nav_menu footer-widget">
+              <h3 class="widget_title"> Our Services <span class="title-shape"><img
+                    src="{% static 'assets/images/shapes/footer-line-shape.svg' %}" alt="Shape Image"></span></h3>
+              <ul class="menu">
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Baby Care</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Brahmin Cook</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Catering Services</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Female Cook</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Japa Maid</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Patient Care</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6 col-xl-auto">
+            <div class="widget widget_nav_menu footer-widget">
+              <h3 class="widget_title"> Need Help?<span class="title-shape"><img
+                    src="{% static 'assets/images/shapes/footer-line-shape.svg' %}" alt="line footer"></span></h3>
+              <ul class="menu footer-menu">
+
+                <li><a href="tel:+91{{ footer.phone_num }}"><i style="color: #ea6e12" class="fa-solid fa-phone"></i>+91 {{ footer.phone_num }}</a>
+                </li>
+                <li><a href="https://wa.me/91{{ footer.whatsapp_num }}" target="_blank"><i style="color: #ea6e12" class="fa-brands fa-square-whatsapp"></i>+91 {{ footer.whatsapp_num }}</a>
+                </li>
+                <li><a href="mailto:{{ footer.email }}" style="text-transform: lowercase !important;"><i style="color: #ea6e12" class="fa-solid fa-envelope"></i>{{ footer.email|lower }}</a>
+                </li>
+                <li><a href="#"><i style="color: #ea6e12" class="fa-solid fa-location-dot"></i>{{ footer.address }}</a>
+                </li>
+
+
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright-wrap">
+        <div class="row g-2  justify-content-center">
+          <div class="col-xl-6">
+            <p class="copyright-text">
+              Copyright <i class="fal fa-copyright"></i> 2010 - 
+              <script>
+                document.write(new Date().getFullYear())
+              </script>
+              <a href="{% url 'indexpage' %}">Sri Dixitha </a>.
+              All Rights Reserved.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!--********************************
+			Code End  Here 
+	******************************** -->
+  <!--==============================
+        All Js File
+    ============================== -->
+  <!-- Jquery -->
+  <script src="{% static 'assets/js/vendor/jquery-3.7.1.min.js' %}"></script>
+  <!-- Bootstrap -->
+  <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+  <!-- Slick Slider -->
+  <script src="{% static 'assets/js/slick.min.js' %}"></script>
+  <!-- Magnific Popup -->
+  <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+  <!-- imagesloaded -->
+  <script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+  <!-- Isotope Filter -->
+  <script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+  <!-- Gsap -->
+  <script src="{% static 'assets/js/gsap.min.js' %}"></script>
+  <!-- ScrollTrigger -->
+  <script src="{% static  'assets/js/ScrollTrigger.min.js' %}"></script>
+  <!-- Gsap ScrollTo Plugin -->
+  <script src="{% static 'assets/js/gsap-scroll-to-plugin.js' %}"></script>
+  <!-- Split Text -->
+  <script src="{% static 'assets/js/SplitText.js' %}"></script>
+  <!-- lenis -->
+  <script src="{% static 'assets/js/lenis.min.js' %}"></script>
+  <!-- wow js -->
+  <script src="{% static 'assets/js/wow.min.js' %}"></script>
+  <!-- nice-select -->
+  <script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+  <!-- nouislider -->
+  <script src="{% static 'assets/js/nouislider.min.js' %}"></script>
+  <!-- Main Js File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+  <script src="{% static 'assets/js/main1.js' %}"></script>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/wowjs/dist/wow.min.js"></script>
+
+  <!-- SweetAlert2 for nice popups -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+
+    window.onload = function () {
+
+      const form =
+        document.getElementById(
+          "heroSearchForm"
+        );
+
+      const categorySelect =
+        document.getElementById(
+          "category-select"
+        );
+
+      const serviceSelect =
+        document.getElementById(
+          "service-select"
+        );
+
+      // CATEGORY CHANGE (AJAX)
+      if(categorySelect) {
+        categorySelect.addEventListener('change', function() {
+            const categoryId = this.value;
+            if (!categoryId) {
+                serviceSelect.innerHTML = '<option value="">All Services</option>';
+                return;
+            }
+            
+            // AJAX Fetch Services
+            fetch(`/api/category/${categoryId}/services/`)
+            .then(response => response.json())
+            .then(data => {
+                serviceSelect.innerHTML = '<option value="">Select Service</option>';
+                data.services.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.id;
+                    option.textContent = service.s_title;
+                    serviceSelect.appendChild(option);
+                });
+            })
+            .catch(err => console.error("Error fetching services:", err));
+        });
+      }
+
+      // FORM SUBMIT
+      form.onsubmit =
+        function (e) {
+
+          e.preventDefault();
+
+          const categoryId =
+            categorySelect.value;
+
+          const serviceId =
+            serviceSelect.value;
+
+          // CHECK
+          if (
+            !categoryId ||
+            !serviceId
+          ) {
+
+            alert(
+              "Please select category and service"
+            );
+
+            return false;
+
+          }
+
+          // REDIRECT
+          window.location.href =
+            "/sridixitha/servicespagelist/" +
+            categoryId +
+            "/?service=" +
+            serviceId;
+
+        };
+
+    };
+
+
+  </script>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  {% if messages %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      {% for message in messages %}
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: "{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}",
+          title: "{{ message|escapejs }}",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        });
+      {% endfor %}
+    });
+  </script>
+  {% endif %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find all "Add to Cart" buttons
+        const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
+        
+        addToCartBtns.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const serviceId = this.getAttribute('data-service-id');
+                
+                fetch("{% url 'add_to_cart' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}' // Standard Django CSRF token
+                    },
+                    body: JSON.stringify({'service_id': serviceId})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status === 'redirect') {
+                        window.location.href = data.url;
+                    }
+                    else if(data.status === 'success') {
+                        // Show success alert
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        
+                        // Update the Cart count in navbar
+                        const cartBadge = document.getElementById('cart-count-badge');
+                        if (cartBadge) {
+                            cartBadge.innerText = data.cart_count;
+                        }
+                    } else {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+  </script>
+
+{% block scripts %}
+{% endblock %}
+</body>
+
+
+
+</html>

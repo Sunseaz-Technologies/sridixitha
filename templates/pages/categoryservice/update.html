@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="service-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                Service Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Update and manage service information
+
+            </p>
+
+        </div>
+
+        <div class="header-right">
+
+            <div class="service-badge">
+
+                Update Service
+
+            </div>
+
+            <a href="{% url 'list.category.services' %}"
+               class="list-btn">
+
+                <i class="bi bi-grid"></i>
+
+                Service List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="service-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Update Service Information
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Edit and update service details and images
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <!-- IMAGE -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Upload Image
+
+                        </label>
+
+                        <div class="image-box">
+
+                            {% if services.image %}
+
+                            <img id="preview"
+                                 src="{{ services.image.url }}">
+
+                            {% else %}
+
+                            <img id="preview"
+                                 src="">
+
+                            {% endif %}
+
+                        </div>
+
+                        <input type="file"
+                               name="image"
+                               class="file-input"
+                               onchange="previewImage(event)">
+
+                        <small class="small-text">
+
+                            Leave empty to keep old image
+
+                        </small>
+
+                    </div>
+
+                    <!-- CONTENT -->
+
+                    <div class="col-md-8">
+
+                        <!-- TAG -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Update Service Tag
+
+                            </label>
+
+                            <input type="text"
+                                   name="s_tag"
+                                   class="form-control-custom"
+                                   value="{{ services.s_tag }}">
+
+                        </div>
+
+                        <!-- TITLE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Update Service Title
+
+                            </label>
+
+                            <input type="text"
+                                   name="s_title"
+                                   class="form-control-custom"
+                                   value="{{ services.s_title }}">
+
+                        </div>
+
+                        <!-- DESCRIPTION -->
+
+                        <div>
+
+                            <label class="form-label">
+
+                                Update Short Description
+
+                            </label>
+
+                            <textarea name="s_desc"
+                                      rows="4"
+                                      class="textarea-custom">{{ services.s_desc }}</textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'list.category.services' %}"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="update-btn">
+
+                        Update Service
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- IMAGE PREVIEW -->
+
+<script>
+
+function previewImage(event){
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+
+        document.getElementById(
+            "preview"
+        ).src = reader.result;
+
+    }
+
+    reader.readAsDataURL(
+        event.target.files[0]
+    );
+
+}
+
+</script>
+
+{% endblock %}

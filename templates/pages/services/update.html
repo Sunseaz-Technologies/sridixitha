@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="service-page">
+
+    <!-- PAGE HEADER -->
+
+   <div class="page-header">
+
+        <div>
+
+            <h6 class="fw-semibold mb-0">
+
+              Update Service
+
+            </h6>
+
+            <p class="page-subtitle">
+
+                Create and publish latest news updates
+
+            </p>
+
+        </div>
+
+                <div class="header-right">
+
+            <div class="banner-badge">
+                Update Service
+
+            </div>
+
+            <a href="{% url 'services.list' %}"
+               class="list-btn">
+
+                <i class="bi bi-images"></i>
+
+               Service List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="service-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Update Service
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Edit service details and update images
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <!-- ICON -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Update Service Icon Image
+
+                        </label>
+
+                        <div class="image-box">
+
+                            <img id="iconPreview"
+                                 src="{% if services.serviceicon %}{{ services.serviceicon.url }}{% endif %}">
+
+                        </div>
+
+                        <input type="file"
+                               name="serviceicon"
+                               class="file-input"
+                               onchange="previewIcon(event)">
+
+                        <small class="small-text">
+
+                            Leave empty to keep old icon image
+
+                        </small>
+
+                    </div>
+
+                    <!-- BACKGROUND -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Update Background Image
+
+                        </label>
+
+                        <div class="image-box">
+
+                            <img id="bgPreview"
+                                 src="{% if services.service_image %}{{ services.service_image.url }}{% endif %}">
+
+                        </div>
+
+                        <input type="file"
+                               name="service_image"
+                               class="file-input"
+                               onchange="previewBg(event)">
+
+                        <small class="small-text">
+
+                            Leave empty to keep old background image
+
+                        </small>
+
+                    </div>
+
+                    <!-- SERVICE NAME -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Update Service Name
+
+                        </label>
+
+                        <input type="text"
+                               name="servicename"
+                               class="form-control-custom"
+                               value="{{ services.servicename }}">
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'services.list' %}"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="update-btn">
+
+                        Update Service
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- JS -->
+
+<script>
+
+function previewIcon(event){
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+
+        document.getElementById(
+            'iconPreview'
+        ).src = reader.result;
+
+    }
+
+    reader.readAsDataURL(
+        event.target.files[0]
+    );
+
+}
+
+function previewBg(event){
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+
+        document.getElementById(
+            'bgPreview'
+        ).src = reader.result;
+
+    }
+
+    reader.readAsDataURL(
+        event.target.files[0]
+    );
+
+}
+
+</script>
+
+{% endblock %}

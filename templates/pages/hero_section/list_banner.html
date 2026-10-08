@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible fade show mt-3 auto-hide d-flex justify-content-between align-items-center">
+                <span>{{ message }}</span>
+                <button type="button"
+                        class="btn-close"
+                        onclick="closeAlert(this)"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+<div class="banner-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+                Banner Management
+            </h5>
+
+            <p class="page-subtitle">
+                Manage all homepage banners and slider content
+            </p>
+
+        </div>
+
+        <div class="header-right">
+
+            <a href="{% url 'create.banner' %}"
+               class="add-btn">
+
+                <i class="bi bi-plus-circle-fill"></i>
+
+                Add Banner
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="banner-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+                    Banner List
+                </h5>
+
+                <p class="card-desc">
+                    View, edit and manage all banner information
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table class="banner-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+                        <th>Heading</th>
+                        <th>Sub Heading</th>
+                        <th>Banner Image</th>
+                        <th>Created Date</th>
+                        <th class="text-center">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for baner in banner %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="sl-no">
+
+                                {{ page_obj.start_index|add:forloop.counter0 }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="banner-heading">
+
+                                {{ baner.heading }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="banner-sub">
+
+                                {{ baner.sub_heading }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            {% if baner.image %}
+
+                            <img src="{{ baner.image.url }}"
+                                 class="banner-image">
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <div class="banner-date">
+
+                                {{ baner.created_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-wrap">
+
+                                <a href="{% url 'update.banner' baner.pk %}"
+                                   class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                </a>
+
+                                <a href="{% url 'delete.banner' baner.pk %}"
+                                   class="action-btn delete-btn"
+                                   onclick="return confirm('Are you sure you want to delete this?')">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="6"
+                            class="empty-row">
+
+                            No banner records available
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        {% if page_obj.has_other_pages %}
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                <!-- PREVIOUS -->
+
+                {% if page_obj.has_previous %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.previous_page_number }}">
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                <!-- PAGE NUMBERS -->
+
+                {% for num in page_obj.paginator.page_range %}
+
+                    {% if page_obj.number == num %}
+
+                        <span class="pg-btn active">
+
+                            {{ num }}
+
+                        </span>
+
+                    {% else %}
+
+                        <a class="pg-btn"
+                           href="?page={{ num }}">
+
+                            {{ num }}
+
+                        </a>
+
+                    {% endif %}
+
+                {% endfor %}
+
+                <!-- NEXT -->
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,828 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+
+/* PAGE */
+
+.permission-page{
+
+    padding:30px;
+
+    background:#f3f5f9;
+
+    min-height:100vh;
+}
+
+/* WRAPPER */
+
+.permission-wrapper{
+
+    max-width:1050px;
+
+    margin:auto;
+
+    background:#ffffff;
+
+    border:1px solid #e7ebf3;
+
+    border-radius:18px;
+
+    padding:28px;
+
+    box-shadow:
+    0 2px 12px rgba(15,23,42,0.04);
+}
+
+/* TOPBAR */
+
+.permission-topbar{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    margin-bottom:28px;
+
+    flex-wrap:wrap;
+}
+
+/* TITLE */
+
+.permission-heading h2{
+
+    font-size:25px !important;
+
+    font-weight:700;
+
+    color:#111827;
+
+    margin:0;
+}
+
+.permission-heading p{
+
+    margin-top:6px;
+
+    font-size:13px;
+
+    color:#64748b;
+}
+
+/* RIGHT */
+
+.topbar-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    flex-wrap:wrap;
+}
+
+/* SEARCH */
+
+.search-wrapper{
+
+    position:relative;
+
+    width:260px;
+}
+
+.search-input{
+
+    width:100%;
+
+    height:44px;
+
+    border:1px solid #dbe2ea;
+
+    border-radius:12px;
+
+    padding:0 16px;
+
+    font-size:13px;
+
+    background:#fff;
+
+    outline:none;
+
+    transition:.2s;
+}
+
+.search-input:focus{
+
+    border-color:#4f7cff;
+
+    box-shadow:
+    0 0 0 4px rgba(79,124,255,0.08);
+}
+
+/* DROPDOWN */
+
+.admin-dropdown{
+
+    position:absolute;
+
+    width:100%;
+
+    top:52px;
+
+    left:0;
+
+    background:#fff;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    display:none;
+
+    max-height:260px;
+
+    overflow-y:auto;
+
+    z-index:999;
+
+    box-shadow:
+    0 10px 25px rgba(15,23,42,0.08);
+}
+
+/* ADMIN ITEM */
+
+.admin-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:14px 16px;
+
+    cursor:pointer;
+
+    border-bottom:1px solid #f1f5f9;
+
+    transition:.2s;
+}
+
+.admin-item:last-child{
+
+    border-bottom:none;
+}
+
+.admin-item:hover{
+
+    background:#f8fbff;
+}
+
+/* AVATAR */
+
+.admin-avatar{
+
+    width:36px;
+
+    height:36px;
+
+    border-radius:50%;
+
+    background:#4f7cff;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    flex-shrink:0;
+}
+
+/* NAME */
+
+.admin-name{
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#111827;
+}
+
+.admin-email{
+
+    margin-top:4px;
+
+    font-size:11px;
+
+    color:#64748b;
+}
+
+/* SELECTED ADMIN */
+
+.selected-admin-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:8px 14px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:14px;
+
+    background:#fff;
+
+    min-height:44px;
+}
+
+.selected-avatar{
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    background:#4f7cff;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:13px;
+
+    font-weight:700;
+}
+
+.selected-admin-name{
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#111827;
+}
+
+.selected-admin-email{
+
+    margin-top:3px;
+
+    font-size:11px;
+
+    color:#64748b;
+}
+
+/* MODULE */
+
+.permission-module{
+
+    border:1px solid #e7ebf3;
+
+    border-radius:14px;
+
+    margin-bottom:16px;
+
+    overflow:hidden;
+
+    background:#fff;
+}
+
+/* HEADER */
+
+.module-header{
+
+    padding:18px 20px;
+
+    background:#fcfcfd;
+}
+
+.module-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+/* TITLE */
+
+.module-title{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#0f172a;
+}
+
+/* BODY */
+
+.module-body{
+
+    display:none;
+
+    padding:0 20px 14px 52px;
+
+    border-top:1px solid #eef2f7;
+
+    background:#fff;
+}
+
+/* ITEM */
+
+.permission-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:14px 0;
+
+    border-bottom:1px solid #f5f7fb;
+}
+
+.permission-item:last-child{
+
+    border-bottom:none;
+}
+
+/* NAME */
+
+.permission-name{
+
+    font-size:13px;
+
+    font-weight:500;
+
+    color:#475569;
+}
+
+/* CHECKBOX */
+
+.modern-checkbox{
+
+    position:relative;
+
+    width:18px;
+
+    height:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    flex-shrink:0;
+}
+
+.modern-checkbox input{
+
+    position:absolute;
+
+    opacity:0;
+}
+
+.checkmark{
+
+    width:18px;
+
+    height:18px;
+
+    border:1.5px solid #cbd5e1;
+
+    border-radius:6px;
+
+    background:#fff;
+
+    transition:.2s ease;
+
+    position:relative;
+}
+
+.modern-checkbox input:checked
++ .checkmark{
+
+    background:#4f7cff;
+
+    border-color:#4f7cff;
+}
+
+.checkmark::after{
+
+    content:"";
+
+    position:absolute;
+
+    display:none;
+}
+
+.modern-checkbox input:checked
++ .checkmark::after{
+
+    display:block;
+}
+
+.modern-checkbox .checkmark::after{
+
+    left:6px;
+
+    top:2px;
+
+    width:4px;
+
+    height:9px;
+
+    border:solid white;
+
+    border-width:0 2px 2px 0;
+
+    transform:rotate(45deg);
+}
+
+/* BUTTON */
+
+.save-btn{
+
+    margin-top:26px;
+
+    height:48px;
+
+    padding:0 24px;
+
+    border:none;
+
+    background:#4f7cff;
+
+    color:#fff;
+
+    border-radius:12px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.save-btn:hover{
+
+    background:#3c69f5;
+}
+
+</style>
+
+<div class="permission-page">
+
+    <div class="permission-wrapper">
+
+        <!-- TOPBAR -->
+
+        <div class="permission-topbar">
+
+            <div class="permission-heading">
+
+                <h2>
+                    Admin Permissions
+                </h2>
+
+                <p>
+                    Manage admin access permissions
+                </p>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <!-- SEARCH -->
+
+                <div class="search-wrapper">
+
+                    <input
+                        type="text"
+                        id="adminSearch"
+                        class="search-input"
+                        placeholder="Search admin..."
+                        autocomplete="off">
+
+                    <div
+                        class="admin-dropdown"
+                        id="adminDropdown">
+
+                        {% for admin in admins %}
+
+                        <div
+                            class="admin-item"
+                            onclick="window.location.href='?admin={{ admin.id }}'">
+
+                            <div class="admin-avatar">
+
+                                {{ admin.first_name|slice:":1" }}
+
+                            </div>
+
+                            <div>
+
+                                <div class="admin-name">
+
+                                    {{ admin.first_name }}
+                                    {{ admin.last_name }}
+
+                                </div>
+
+                                <div class="admin-email">
+
+                                    {{ admin.email }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <!-- SELECTED -->
+
+                {% if selected_admin %}
+
+                <div class="selected-admin-box">
+
+                    <div class="selected-avatar">
+
+                        {{ selected_admin.first_name|slice:":1" }}
+
+                    </div>
+
+                    <div>
+
+                        <div class="selected-admin-name">
+
+                            {{ selected_admin.first_name }}
+                            {{ selected_admin.last_name }}
+
+                        </div>
+
+                        <div class="selected-admin-email">
+
+                            {{ selected_admin.email }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% if selected_admin %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="admin_id"
+                value="{{ selected_admin.id }}">
+
+            <!-- DYNAMIC PERMISSIONS -->
+
+            {% for module_name, module_permissions in grouped_permissions.items %}
+
+            <div class="permission-module">
+
+                <div class="module-header">
+
+                    <div class="module-left">
+
+                        {% for permission in module_permissions %}
+
+                            {% if "view_" in permission.codename %}
+
+                            <label class="modern-checkbox">
+
+                                <input
+                                    type="checkbox"
+                                    name="permissions"
+                                    value="{{ permission.id }}"
+                                    class="main-checkbox"
+
+                                    {% if permission in selected_admin.user_permissions.all %}
+                                    checked
+                                    {% endif %}
+
+                                    onchange="togglePermissionDropdown(this)"
+                                >
+
+                                <span class="checkmark"></span>
+
+                            </label>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        <span class="module-title">
+
+                            {{ module_name|title }} List
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- BODY -->
+
+                <div class="module-body">
+
+                    {% for permission in module_permissions %}
+
+                        {% if "view_" not in permission.codename %}
+
+                        <div class="permission-item">
+
+                            <label class="modern-checkbox">
+
+                                <input
+                                    type="checkbox"
+                                    name="permissions"
+                                    value="{{ permission.id }}"
+
+                                    {% if permission in selected_admin.user_permissions.all %}
+                                    checked
+                                    {% endif %}
+                                >
+
+                                <span class="checkmark"></span>
+
+                            </label>
+
+                            <span class="permission-name">
+
+                                {{ permission.name }}
+
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+            <button
+                type="submit"
+                class="save-btn">
+
+                Apply Permissions
+
+            </button>
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script>
+
+/* SEARCH */
+
+const searchInput =
+document.getElementById(
+    "adminSearch"
+);
+
+const dropdown =
+document.getElementById(
+    "adminDropdown"
+);
+
+searchInput.addEventListener(
+    "focus",
+    function(){
+
+        dropdown.style.display =
+        "block";
+    }
+);
+
+searchInput.addEventListener(
+    "keyup",
+    function(){
+
+        let value =
+        this.value.toLowerCase();
+
+        let items =
+        document.querySelectorAll(
+            ".admin-item"
+        );
+
+        items.forEach(item => {
+
+            let text =
+            item.innerText.toLowerCase();
+
+            item.style.display =
+            text.includes(value)
+            ? "flex"
+            : "none";
+        });
+    }
+);
+
+document.addEventListener(
+    "click",
+    function(e){
+
+        if(
+            !e.target.closest(
+                ".search-wrapper"
+            )
+        ){
+
+            dropdown.style.display =
+            "none";
+        }
+    }
+);
+
+/* OPEN CLOSE */
+
+function togglePermissionDropdown(
+    checkbox
+){
+
+    const module =
+    checkbox.closest(
+        ".permission-module"
+    );
+
+    const body =
+    module.querySelector(
+        ".module-body"
+    );
+
+    if(checkbox.checked){
+
+        body.style.display =
+        "block";
+
+    }else{
+
+        body.style.display =
+        "none";
+    }
+}
+
+</script>
+
+{% endblock %}

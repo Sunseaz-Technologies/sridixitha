@@ -1,0 +1,575 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+
+body{
+    background:#f5f7fb;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.complaint-page{
+    padding:30px 20px;
+    max-width:1100px;
+    margin:auto;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.page-header{
+    margin-bottom:24px;
+}
+
+.page-title{
+    font-size:28px;
+    font-weight:800;
+    color:#111827;
+    margin-bottom:6px;
+}
+
+.page-subtitle{
+    font-size:14px;
+    color:#6b7280;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.complaint-card{
+    background:#fff;
+    border-radius:18px;
+    border:1px solid #e5e7eb;
+    overflow:hidden;
+    box-shadow:0 4px 20px rgba(15,23,42,.04);
+}
+
+/* =========================
+   TOP
+========================= */
+
+.card-top{
+    padding:20px 24px;
+    border-bottom:1px solid #eef2f7;
+    background:#fafafa;
+}
+
+.card-title{
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+}
+
+.card-desc{
+    font-size:13px;
+    color:#6b7280;
+    margin-top:4px;
+}
+
+/* =========================
+   BODY
+========================= */
+
+.card-body{
+    padding:26px;
+}
+
+/* =========================
+   ROW
+========================= */
+
+.info-row{
+    display:flex;
+    align-items:flex-start;
+    padding:18px 0;
+    border-bottom:1px solid #f1f5f9;
+}
+
+.info-row:last-child{
+    border-bottom:none;
+}
+
+/* =========================
+   LABEL
+========================= */
+
+.info-label{
+    width:220px;
+    font-size:13px;
+    font-weight:700;
+    color:#6b7280;
+}
+
+/* =========================
+   VALUE
+========================= */
+
+.info-value{
+    flex:1;
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+    line-height:1.8;
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message-box{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:18px;
+    line-height:1.9;
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge-custom{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.priority-low{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.priority-medium{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.priority-high{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.status-open{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.status-progress{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.status-resolved{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+/* =========================
+   ACTION AREA
+========================= */
+
+.action-box{
+    margin-top:28px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+/* =========================
+   SELECT
+========================= */
+
+.status-select{
+    flex:1;
+    min-width:220px;
+    height:48px;
+    border:1px solid #dbe1ea;
+    border-radius:12px;
+    padding:0 16px;
+    font-size:13px;
+    font-weight:600;
+    background:#fff;
+}
+
+.status-select:focus{
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.08);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.update-btn{
+    height:48px;
+    padding:0 22px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    transition:.2s ease;
+}
+
+.update-btn:hover{
+    background:#1d4ed8;
+}
+
+.back-btn{
+    height:48px;
+    padding:0 22px;
+    border:none;
+    border-radius:12px;
+    background:#eef2ff;
+    color:#2563eb;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.back-btn:hover{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+/* =========================
+   SUCCESS
+========================= */
+
+.success-msg{
+    margin-top:14px;
+    font-size:13px;
+    font-weight:700;
+    color:#16a34a;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .complaint-page{
+        padding:14px;
+    }
+
+    .card-body{
+        padding:18px;
+    }
+
+    .info-row{
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .info-label{
+        width:100%;
+    }
+
+    .action-box{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .status-select,
+    .update-btn,
+    .back-btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+<div class="complaint-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div class="page-title">
+            Complaint Details
+        </div>
+
+        <div class="page-subtitle">
+            Manage complaint status and customer issue details
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="complaint-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <div class="card-title">
+                Complaint Information
+            </div>
+
+            <div class="card-desc">
+                Review and update complaint status
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body">
+
+            <!-- VENDOR -->
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Vendor
+                </div>
+
+                <div class="info-value">
+                    {{ complaint.vendor.first_name|default:complaint.vendor.username }}
+                </div>
+
+            </div>
+
+            <!-- CUSTOMER -->
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Customer
+                </div>
+
+                <div class="info-value">
+                    {{ complaint.user.first_name|default:complaint.user.username }}
+                </div>
+
+            </div>
+
+            <!-- PRIORITY -->
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Priority
+                </div>
+
+                <div class="info-value">
+
+                    <span class="badge-custom
+                    {% if complaint.priority == 'low' %}
+                        priority-low
+                    {% elif complaint.priority == 'medium' %}
+                        priority-medium
+                    {% else %}
+                        priority-high
+                    {% endif %}
+                    ">
+
+                        {{ complaint.priority|title }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Status
+                </div>
+
+                <div class="info-value">
+
+                    <span id="status-text"
+                    class="badge-custom
+                    {% if complaint.status == 'open' %}
+                        status-open
+                    {% elif complaint.status == 'in_progress' %}
+                        status-progress
+                    {% else %}
+                        status-resolved
+                    {% endif %}
+                    ">
+
+                        {{ complaint.status|title }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- CREATED -->
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Created Date
+                </div>
+
+                <div class="info-value">
+                    {{ complaint.created_at|date:"d M Y, h:i A" }}
+                </div>
+
+            </div>
+
+            <!-- MESSAGE -->
+
+            <div class="info-row">
+
+                <div class="info-label">
+                    Complaint Message
+                </div>
+
+                <div class="info-value">
+
+                    <div class="message-box">
+                        {{ complaint.message }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ACTION -->
+
+            <div class="action-box">
+
+                <select id="status-select"
+                        class="status-select">
+
+                    <option value="open"
+                    {% if complaint.status == "open" %}selected{% endif %}>
+                        Open
+                    </option>
+
+                    <option value="in_progress"
+                    {% if complaint.status == "in_progress" %}selected{% endif %}>
+                        In Progress
+                    </option>
+
+                    <option value="resolved"
+                    {% if complaint.status == "resolved" %}selected{% endif %}>
+                        Resolved
+                    </option>
+
+                </select>
+
+                <button class="update-btn"
+                        onclick="updateStatus()">
+
+                    Update Status
+
+                </button>
+
+                <a href="{% url 'complaint_list' %}"
+                   class="back-btn">
+
+                    Back
+
+                </a>
+
+            </div>
+
+            <div id="update-msg"
+                 class="success-msg"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function updateStatus(){
+
+    let status = document.getElementById(
+        "status-select"
+    ).value;
+
+    fetch("{% url 'complaint_ajax_update' complaint.id %}",{
+
+        method:"POST",
+
+        headers:{
+            "X-CSRFToken":"{{ csrf_token }}",
+            "Content-Type":"application/x-www-form-urlencoded"
+        },
+
+        body:"status=" + status
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if(data.success){
+
+            let badge = document.getElementById(
+                "status-text"
+            );
+
+            badge.innerText = data.status
+                .replace("_"," ")
+                .replace(/\b\w/g,c => c.toUpperCase());
+
+            badge.classList.remove(
+                "status-open",
+                "status-progress",
+                "status-resolved"
+            );
+
+            if(data.status === "open"){
+
+                badge.classList.add("status-open");
+
+            }
+
+            else if(data.status === "in_progress"){
+
+                badge.classList.add("status-progress");
+
+            }
+
+            else{
+
+                badge.classList.add("status-resolved");
+
+            }
+
+            document.getElementById(
+                "update-msg"
+            ).innerHTML =
+            "✔ Complaint status updated successfully";
+
+        }
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

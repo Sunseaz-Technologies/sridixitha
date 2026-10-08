@@ -1,0 +1,327 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="job-page">
+
+    <!-- PAGE HEADER -->
+
+   <div class="page-header">
+
+        <div>
+
+            <h6 class="fw-semibold mb-0">
+
+                Update Jobs
+
+            </h6>
+
+            <p class="page-subtitle">
+
+                Create and publish latest Jobs updates
+
+            </p>
+
+        </div>
+
+                <div class="header-right">
+
+            <div class="banner-badge">
+                Update Jobs
+
+            </div>
+
+            <a href="{% url 'list.jobs' %}"
+               class="list-btn">
+
+                <i class="bi bi-images"></i>
+
+               Jobs List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="job-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Update Job / Career
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Edit job details, descriptions and job icon
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <!-- ICON -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Job Icon
+
+                        </label>
+
+                        <div class="image-box">
+
+                            {% if job.icon %}
+
+                            <img id="preview"
+                                 src="{{ job.icon.url }}">
+
+                            {% else %}
+
+                            <img id="preview"
+                                 src="">
+
+                            {% endif %}
+
+                        </div>
+
+                        <input type="file"
+                               name="icon"
+                               class="file-input"
+                               onchange="previewImage(event)">
+
+                        <small class="small-text">
+
+                            Leave empty to keep old image
+
+                        </small>
+
+                    </div>
+
+                    <!-- CONTENT -->
+
+                    <div class="col-md-8">
+
+                        <!-- TITLE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Job Title
+
+                            </label>
+
+                            <input type="text"
+                                   name="title"
+                                   class="form-control-custom"
+                                   value="{{ job.title }}"
+                                   required>
+
+                        </div>
+
+                        <!-- STATUS -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Status
+
+                            </label>
+
+                            <select name="status"
+                                    class="form-control-custom">
+
+                                <option value="hiring"
+                                    {% if job.status == "hiring" %}selected{% endif %}>
+
+                                    Hiring
+
+                                </option>
+
+                                <option value="urgent"
+                                    {% if job.status == "urgent" %}selected{% endif %}>
+
+                                    Urgent
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Description
+
+                            </label>
+
+                            <textarea name="description"
+                                      class="textarea-custom"
+                                      rows="4"
+                                      required>{{ job.description }}</textarea>
+
+                        </div>
+
+                        <!-- JOB TYPE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Job Type
+
+                            </label>
+
+                            <select name="job_type"
+                                    class="form-control-custom">
+
+                                <option value="full_time"
+                                    {% if job.job_type == "full_time" %}selected{% endif %}>
+
+                                    Full-time
+
+                                </option>
+
+                                <option value="part_time"
+                                    {% if job.job_type == "part_time" %}selected{% endif %}>
+
+                                    Part-time
+
+                                </option>
+
+                                <option value="contract"
+                                    {% if job.job_type == "contract" %}selected{% endif %}>
+
+                                    Contract
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- WORK MODE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Work Mode
+
+                            </label>
+
+                            <select name="work_mode"
+                                    class="form-control-custom">
+
+                                <option value="on_site"
+                                    {% if job.work_mode == "on_site" %}selected{% endif %}>
+
+                                    On-site
+
+                                </option>
+
+                                <option value="residential"
+                                    {% if job.work_mode == "residential" %}selected{% endif %}>
+
+                                    Residential
+
+                                </option>
+
+                                <option value="remote"
+                                    {% if job.work_mode == "remote" %}selected{% endif %}>
+
+                                    Remote
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'list.jobs' %}"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="update-btn">
+
+                        Update Job
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- IMAGE PREVIEW -->
+
+<script>
+
+function previewImage(event){
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+
+        document.getElementById(
+            'preview'
+        ).src = reader.result;
+
+    }
+
+    reader.readAsDataURL(
+        event.target.files[0]
+    );
+
+}
+
+</script>
+
+{% endblock %}

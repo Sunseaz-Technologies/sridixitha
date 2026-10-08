@@ -1,0 +1,803 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    background:#f4f7fb;
+    font-family:'DM Sans',sans-serif;
+}
+
+.orders-page{
+    max-width:1750px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+/* HEADER */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.page-title{
+    font-size:30px;
+    font-weight:700;
+    color:#111827;
+}
+
+.page-sub{
+    font-size:14px;
+    color:#6b7280;
+    margin-top:5px;
+}
+
+/* CARD */
+
+.table-card{
+    background:#fff;
+    border-radius:24px;
+    border:1px solid #e5e7eb;
+    overflow:hidden;
+    box-shadow:0 4px 20px rgba(0,0,0,.04);
+}
+
+/* HEADER BAR */
+
+.card-header{
+    padding:18px 22px;
+    border-bottom:1px solid #e5e7eb;
+    background:#fafafa;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.card-title{
+    font-size:17px;
+    font-weight:700;
+    color:#111827;
+}
+
+.toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+/* SEARCH */
+
+.search-input{
+    height:42px;
+    border:1px solid #dbe1ea;
+    border-radius:12px;
+    padding:0 14px;
+    font-size:13px;
+    min-width:220px;
+    background:#fff;
+}
+
+.search-input:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+/* FILTER */
+
+.filter-select{
+    height:42px;
+    border:1px solid #dbe1ea;
+    border-radius:12px;
+    padding:0 12px;
+    font-size:13px;
+    background:#fff;
+}
+
+.filter-select:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+/* BUTTONS */
+
+.filter-btn{
+    height:42px;
+    padding:0 18px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.filter-btn:hover{
+    background:#1d4ed8;
+}
+
+/* TABLE */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1700px;
+}
+
+thead{
+    background:#f8fafc;
+}
+
+thead th{
+    padding:15px 16px;
+    text-align:left;
+    font-size:11px;
+    color:#6b7280;
+    text-transform:uppercase;
+    font-weight:700;
+    letter-spacing:.5px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+tbody td{
+    padding:16px;
+    border-bottom:1px solid #edf1f5;
+    vertical-align:top;
+}
+
+tbody tr:hover{
+    background:#fbfdff;
+}
+
+/* COMMON */
+
+.order-id{
+    color:#2563eb;
+    font-weight:700;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.small-text{
+    font-size:12px;
+    color:#6b7280;
+    line-height:1.6;
+}
+
+.service-title{
+    font-weight:700;
+    color:#111827;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+/* SCHEDULE */
+
+.schedule-box{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.schedule-date{
+    font-size:13px;
+    font-weight:700;
+    color:#111827;
+}
+
+.schedule-time{
+    width:fit-content;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    padding:7px 12px;
+    border-radius:10px;
+    font-size:12px;
+    font-weight:700;
+    color:#475569;
+}
+
+/* STATUS */
+
+.status-badge{
+    padding:7px 14px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:700;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+}
+
+.status-pending{
+    background:#fff7ed;
+    color:#ea580c;
+}
+
+.status-accepted{
+    background:#ecfeff;
+    color:#0891b2;
+}
+
+.status-in_progress{
+    background:#f5f3ff;
+    color:#7c3aed;
+}
+
+.status-completed{
+    background:#ecfdf5;
+    color:#16a34a;
+}
+
+.status-cancelled{
+    background:#fef2f2;
+    color:#dc2626;
+}
+
+/* TRACK BOX */
+
+.track-box{
+    padding:11px 12px;
+    border-radius:12px;
+    font-size:11px;
+    font-weight:700;
+    line-height:1.7;
+    margin-bottom:8px;
+}
+
+.track-warning{
+    background:#fef3c7;
+    border:1px solid #fcd34d;
+    color:#92400e;
+}
+
+.track-success{
+    background:#dcfce7;
+    border:1px solid #86efac;
+    color:#166534;
+}
+
+.track-primary{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    color:#1d4ed8;
+}
+
+.track-gray{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    color:#334155;
+}
+
+/* ACTIONS */
+
+.action-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.action-select{
+    height:38px;
+    border:1px solid #dbe1ea;
+    border-radius:10px;
+    padding:0 10px;
+    font-size:12px;
+}
+
+.action-btn{
+    height:38px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.action-btn:hover{
+    opacity:.95;
+}
+
+.edit-btn{
+    background:#111827;
+}
+
+.accept-btn{
+    background:#d97706;
+}
+
+/* EMPTY */
+
+.empty-box{
+    padding:70px 20px;
+    text-align:center;
+    color:#6b7280;
+    font-size:14px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .orders-page{
+        padding:15px;
+    }
+
+    .card-header{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .toolbar{
+        flex-direction:column;
+    }
+
+    .search-input,
+    .filter-select,
+    .filter-btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+<div class="orders-page">
+
+    <div class="page-header">
+       
+        <div>
+
+            <h2 class="dashboard-heading">
+           Admin Lead Tracking
+            </h2>
+
+            <p class="dashboard-subheading">
+                 Track customer bookings, renewals, vendor approvals and complete service lifecycle
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="table-card">
+
+        <form method="GET">
+
+            <div class="card-header">
+
+                <div class="card-title">
+                    All Leads
+                </div>
+
+                <div class="toolbar">
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="search-input"
+                        placeholder="Search customer, service, vendor..."
+                    >
+
+                    <select
+                        name="status"
+                        class="filter-select"
+                    >
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="pending">
+                            Pending
+                        </option>
+
+                        <option value="accepted">
+                            Accepted
+                        </option>
+
+                        <option value="completed">
+                            Completed
+                        </option>
+
+                    </select>
+
+                    <button
+                        type="submit"
+                        class="filter-btn"
+                    >
+
+                        Apply Filters
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Order</th>
+
+                        <th>Customer</th>
+
+                        <th>Vendor</th>
+
+                        <th>Service</th>
+
+                        <th>Schedule</th>
+
+                        <th>Status</th>
+
+                        <th>Renewal</th>
+
+                        <th>Vendor Tracking</th>
+
+                        <th>Lifecycle</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for booking in bookings %}
+
+                <tr>
+
+                    <!-- ORDER -->
+
+                    <td>
+
+                        <div class="order-id">
+                            #{{ booking.order_id }}
+                        </div>
+
+                        <div class="small-text">
+                            {{ booking.created_at|date:"d M Y" }}
+                        </div>
+
+                    </td>
+
+                    <!-- CUSTOMER -->
+
+                    <td>
+
+                        <div class="service-title">
+                            {{ booking.user.first_name }}
+                        </div>
+
+                        <div class="small-text">
+                            {{ booking.phone }}
+                        </div>
+
+                    </td>
+
+                    <!-- VENDOR -->
+
+                    <td>
+
+                        {% if booking.vendor %}
+
+                        <div class="service-title">
+                            {{ booking.vendor.first_name }}
+                        </div>
+
+                        <div class="small-text">
+                            Assigned Vendor
+                        </div>
+
+                        {% else %}
+
+                        <div class="small-text">
+                            Vendor Not Assigned
+                        </div>
+
+                        {% endif %}
+
+                    </td>
+
+                    <!-- SERVICE -->
+
+                    <td>
+
+                        <div class="service-title">
+                            {{ booking.service.s_title }}
+                        </div>
+
+                        <div class="small-text">
+                            {{ booking.category }}
+                        </div>
+
+                    </td>
+
+                    <!-- SCHEDULE -->
+
+                    <td>
+
+                        <div class="schedule-box">
+
+                            {% if booking.scheduled_date %}
+
+                                <div class="schedule-date">
+
+                                    📅 {{ booking.scheduled_date }}
+
+                                </div>
+
+                                <div class="schedule-time">
+
+                                    ⏰ {{ booking.scheduled_time }}
+
+                                </div>
+
+                                <div class="small-text">
+
+                                    Single Booking
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="schedule-date">
+
+                                    📅 {{ booking.start_date }}
+                                    →
+                                    {{ booking.end_date }}
+
+                                </div>
+
+                                <div class="schedule-time">
+
+                                    ⏳ {{ booking.total_days }} Days
+
+                                </div>
+
+                                <div class="small-text">
+
+                                    Multi Day Booking
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </td>
+
+                    <!-- STATUS -->
+
+                    <td>
+
+                        <span class="status-badge status-{{ booking.status|lower }}">
+
+                            {{ booking.get_status_display }}
+
+                        </span>
+
+                    </td>
+
+                    <!-- RENEWAL -->
+
+                    <td>
+
+                        {% if booking.renewal_requested %}
+
+                            <div class="track-box track-warning">
+
+                                🔔 Customer
+
+                                <strong>
+                                    {{ booking.user.first_name }}
+                                </strong>
+
+                                requested renewal.
+
+                            </div>
+
+                            <button
+                                class="action-btn accept-btn"
+                                onclick="acceptRenewal('{{ booking.id }}')"
+                            >
+
+                                Accept Renewal
+
+                            </button>
+
+                        {% elif booking.is_renewed %}
+
+                            <div class="track-box track-success">
+
+                                ✅ Renewal Approved Successfully
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="small-text">
+
+                                No Renewal
+
+                            </div>
+
+                        {% endif %}
+
+                    </td>
+
+                    <!-- VENDOR TRACK -->
+
+                    <td>
+
+                        {% if booking.vendor %}
+
+                        <div class="track-box track-primary">
+
+                            👨‍🔧 Vendor:
+                            {{ booking.vendor.first_name }}
+
+                        </div>
+
+                        {% endif %}
+
+                        {% if booking.is_renewed %}
+
+                        <div class="track-box track-success">
+
+                            ✅ Vendor Accepted Renewal
+
+                        </div>
+
+                        {% endif %}
+
+                    </td>
+
+                    <!-- LIFECYCLE -->
+
+                    <td>
+
+                        <div class="track-box track-gray">
+
+                            📌 Created:
+                            {{ booking.created_at|date:"d M Y" }}
+
+                        </div>
+
+                        {% if booking.renewal_requested %}
+
+                        <div class="track-box track-warning">
+
+                            🔄 Renewal Requested
+
+                        </div>
+
+                        {% endif %}
+
+                        {% if booking.is_renewed %}
+
+                        <div class="track-box track-success">
+
+                            ✅ Renewal Completed
+
+                        </div>
+
+                        {% endif %}
+
+                    </td>
+
+                    <!-- ACTIONS -->
+
+                    <td>
+
+                        <div class="action-group">
+
+                            <select
+                                id="status-{{ booking.id }}"
+                                class="action-select"
+                            >
+
+                                <option value="pending">
+                                    Pending
+                                </option>
+
+                                <option value="accepted">
+                                    Accepted
+                                </option>
+
+                                <option value="in_progress">
+                                    In Progress
+                                </option>
+
+                                <option value="completed">
+                                    Completed
+                                </option>
+
+                                <option value="cancelled">
+                                    Cancelled
+                                </option>
+
+                            </select>
+
+                            <button
+                                class="action-btn"
+                                onclick="updateStatus('{{ booking.id }}')"
+                            >
+
+                                Update Status
+
+                            </button>
+
+                            <button
+                                class="action-btn edit-btn"
+                                onclick="openEditModal(
+                                    '{{ booking.id }}',
+                                    '{{ booking.scheduled_date|default:'' }}',
+                                    '{{ booking.scheduled_time|default:'' }}',
+                                    '{{ booking.start_date|default:'' }}',
+                                    '{{ booking.end_date|default:'' }}'
+                                )"
+                            >
+
+                                Edit Slot
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="10">
+
+                        <div class="empty-box">
+
+                            No leads found
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

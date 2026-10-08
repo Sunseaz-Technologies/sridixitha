@@ -1,0 +1,1083 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+:root {
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --text: #111827;
+    --sub: #6b7280;
+    --primary: #2563eb;
+    --primary-light: #eff6ff;
+    --primary-dark: #1d4ed8;
+}
+
+.tc-page {
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 28px 24px;
+}
+
+.tc-wrap {
+    max-width: 1450px;
+    margin: auto;
+}
+
+.page-header {
+    margin-bottom: 22px;
+}
+
+.page-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+.page-sub {
+    font-size: 13px;
+    color: var(--sub);
+    margin-top: 4px;
+}
+
+/* ORDER CARD */
+.order-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.order-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--border);
+}
+
+.oitem {
+    padding: 18px 24px;
+    border-right: 1px solid var(--border);
+}
+
+.oitem:last-child {
+    border-right: none;
+}
+
+.olbl {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--sub);
+    margin-bottom: 6px;
+}
+
+.oval {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.oval.blue {
+    color: var(--primary);
+}
+
+/* SECTION HEADER */
+.sec-head {
+    padding: 15px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fafafa;
+}
+
+.sec-head svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--primary);
+    fill: none;
+    stroke-width: 1.8;
+    flex-shrink: 0;
+}
+
+.sec-head span {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* TERMS BLOCK */
+.terms-body {
+    padding: 24px;
+}
+
+.terms-intro {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.85;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.pts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.pt {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.pt:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.pt:first-child {
+    padding-top: 0;
+}
+
+.pnum {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.ptxt {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.75;
+    flex: 1;
+}
+
+/* ACCEPT CONTAINER */
+.accept-row {
+    display: flex;
+    align-items: center;
+    padding: 18px 24px;
+    background: #f8fafc;
+    border-top: 1px solid var(--border);
+}
+
+.accept-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.6;
+    cursor: pointer;
+    user-select: none;
+}
+
+.accept-label input[type=checkbox] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--primary);
+}
+
+/* BOTTOM GRID */
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+/* SIGNATURE BOX */
+.sig-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.sig-inner {
+    padding: 22px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+.sig-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sig-icon-box svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--primary);
+    fill: none;
+    stroke-width: 1.8;
+}
+
+.sig-info {
+    flex: 1;
+}
+
+.sig-info h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 4px;
+}
+
+.sig-info p {
+    font-size: 12px;
+    color: var(--sub);
+    line-height: 1.6;
+    margin: 0 0 16px;
+}
+
+.upload-zone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 28px 18px;
+    text-align: center;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    display: block;
+}
+
+.upload-zone:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.upload-zone .uz-icon {
+    width: 36px;
+    height: 36px;
+    stroke: #94a3b8;
+    fill: none;
+    stroke-width: 1.6;
+    margin-bottom: 10px;
+}
+
+.uz-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 4px;
+}
+
+.uz-sub {
+    font-size: 12px;
+    color: var(--sub);
+    margin-bottom: 14px;
+}
+
+.uz-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    background: #fff;
+}
+
+input[type=file] {
+    display: none;
+}
+
+.preview-wrap {
+    display: none;
+    text-align: center;
+    padding: 4px 0;
+}
+
+.preview-clickable-area {
+    cursor: pointer;
+    display: inline-block;
+    width: auto;
+    margin-bottom: 12px;
+}
+
+.preview-wrap img {
+    max-width: 200px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 6px;
+    background: #fff;
+    display: block;
+    margin: 0 auto 8px;
+    transition: border-color 0.2s;
+}
+
+.preview-clickable-area:hover img {
+    border-color: var(--primary);
+}
+
+.pname {
+    font-size: 12px;
+    color: var(--sub);
+    word-break: break-all;
+}
+
+.remove-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 16px;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #dc2626;
+    background: #fef2f2;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background: #fee2e2;
+}
+
+/* INFO CARD */
+.info-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.info-inner {
+    padding: 22px 24px;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.info-row:first-child {
+    padding-top: 0;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.info-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.info-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: #6b7280;
+    fill: none;
+    stroke-width: 1.8;
+}
+
+.info-lbl {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--sub);
+    margin-bottom: 3px;
+}
+
+.info-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* SUBMIT */
+.submit-btn {
+    width: 100%;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: not-allowed;
+    opacity: .38;
+    transition: opacity .2s, background .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.submit-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2.5;
+}
+
+.submit-btn.active {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.submit-btn.active:hover {
+    background: var(--primary-dark);
+}
+
+/* SUCCESS BOXES */
+.success-card {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 18px;
+}
+
+.success-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #86efac;
+    font-size: 11px !important;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 30px;
+    margin-bottom: 14px;
+}
+
+.success-card h3 {
+    font-size: 17px !important;
+    font-weight: 700;
+    color: #166534;
+    margin-bottom: 12px;
+}
+
+.success-row {
+    font-size: 13px;
+    color: #166534;
+    margin-bottom: 8px;
+    line-height: 1.7;
+}
+
+.sig-preview-img {
+    width: 200px;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+    margin-top: 14px;
+    padding: 6px;
+    background: #fff;
+    display: block;
+}
+
+/* ERROR BOX */
+.error-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 14px 20px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* MEDIA QUERIES */
+@media(max-width:1024px) {
+    .order-strip {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .bottom-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media(max-width:768px){
+
+    .tc-page{
+        padding:14px;
+    }
+
+    /* HEADER */
+
+    .dashboard-heading{
+        font-size:24px;
+        line-height:1.3;
+        font-weight:700;
+        color:#111827;
+    }
+
+    .dashboard-subheading{
+        font-size:13px;
+        line-height:1.4;
+        color:#6b7280;
+        margin-top:4px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    /* ORDER CARD */
+
+    .order-card,
+    .sig-card,
+    .info-card,
+    .success-card{
+        border-radius:16px;
+    }
+
+    .order-strip{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .oitem{
+        padding:14px;
+    }
+
+    .olbl{
+        font-size:10px;
+    }
+
+    .oval{
+        font-size:13px;
+        line-height:1.4;
+        word-break:break-word;
+    }
+
+    /* SECTION */
+
+    .sec-head{
+        padding:14px;
+    }
+
+    .sec-head span{
+        font-size:13px;
+    }
+
+    .terms-body{
+        padding:16px;
+    }
+
+    .terms-intro{
+        font-size:13px;
+        line-height:1.7;
+        margin-bottom:16px;
+    }
+
+    .pt{
+        gap:10px;
+        padding:12px 0;
+    }
+
+    .pnum{
+        width:24px;
+        height:24px;
+        font-size:11px;
+    }
+
+    .ptxt{
+        font-size:13px;
+        line-height:1.7;
+    }
+
+    /* ACCEPT */
+
+    .accept-row{
+        padding:14px;
+    }
+
+    .accept-label{
+        font-size:13px;
+        gap:10px;
+    }
+
+    /* BOTTOM GRID */
+
+    .bottom-grid{
+        grid-template-columns:1fr;
+        gap:14px;
+    }
+
+    /* SIGNATURE */
+
+    .sig-inner{
+        padding:16px;
+        flex-direction:column;
+        gap:14px;
+    }
+
+    .sig-icon-box{
+        width:42px;
+        height:42px;
+        border-radius:10px;
+    }
+
+    .sig-info h4{
+        font-size:13px;
+    }
+
+    .sig-info p{
+        font-size:12px;
+        line-height:1.6;
+    }
+
+    /* UPLOAD */
+
+    .upload-zone{
+        padding:22px 14px;
+        border-radius:12px;
+    }
+
+    .uz-title{
+        font-size:13px;
+    }
+
+    .uz-sub{
+        font-size:11px;
+    }
+
+    .uz-btn{
+        font-size:12px;
+        padding:8px 14px;
+        border-radius:10px;
+    }
+
+    .preview-wrap img{
+        max-width:150px;
+    }
+
+    .remove-btn{
+        margin-top:4px;
+        height:36px;
+        padding:0 14px;
+        border-radius:10px;
+        font-size:11px;
+    }
+
+    /* INFO */
+
+    .info-inner{
+        padding:16px;
+    }
+
+    .info-row{
+        gap:10px;
+        padding:12px 0;
+    }
+
+    .info-icon{
+        width:34px;
+        height:34px;
+        border-radius:10px;
+    }
+
+    .info-lbl{
+        font-size:10px;
+    }
+
+    .info-val{
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    /* BUTTON */
+
+    .submit-btn{
+        height:50px;
+        border-radius:12px;
+        font-size:14px;
+    }
+
+    /* SUCCESS */
+
+    .success-card{
+        padding:18px;
+    }
+
+    .success-card h3{
+        font-size:15px !important;
+    }
+
+    .success-row{
+        font-size:12px;
+        line-height:1.6;
+    }
+
+    .sig-preview-img{
+        width:150px;
+    }
+}
+</style>
+
+<div class="tc-page">
+    <div class="tc-wrap">
+
+    <div>
+
+        <h2 class="dashboard-heading">
+         Terms &amp; Conditions
+        </h2>
+
+        <p class="dashboard-subheading">
+            Read all company service policies carefully before submitting approval
+        </p>
+
+    </div>
+
+        {% if error %}
+        <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        {% if booking %}
+        <div class="order-card">
+
+            <div class="order-strip">
+                <div class="oitem">
+                    <div class="olbl">Order ID</div>
+                    <div class="oval blue">ORD-{{ booking.id }}</div>
+                </div>
+                <div class="oitem">
+                    <div class="olbl">Customer</div>
+                    <div class="oval">{{ request.user.first_name}}</div>
+                </div>
+                <div class="oitem">
+                    <div class="olbl">Email</div>
+                    <div class="oval">{{ request.user.email }}</div>
+                </div>
+                <div class="oitem">
+                    <div class="olbl">Booking Date</div>
+                    <div class="oval">{{ booking.booking_created_at|date:"d M Y" }}</div>
+                </div>
+            </div>
+
+            <div class="sec-head">
+                <svg viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <span>Company Service Agreement</span>
+            </div>
+
+            <div class="terms-body">
+                <p class="terms-intro">
+                    By accepting these terms and conditions, the customer agrees to all service policies,
+                    operational procedures, payment conditions, and company rules mentioned below.
+                </p>
+
+                <div class="pts-list">
+                    <div class="pt">
+                        <div class="pnum">1</div>
+                        <div class="ptxt">Customer must provide accurate and complete information regarding the requested home service.</div>
+                    </div>
+                    <div class="pt">
+                        <div class="pnum">2</div>
+                        <div class="ptxt">Any additional service charges will be communicated and approved before final completion of work.</div>
+                    </div>
+                    <div class="pt">
+                        <div class="pnum">3</div>
+                        <div class="ptxt">Customer must inspect and verify all completed work before giving final approval.</div>
+                    </div>
+                    <div class="pt">
+                        <div class="pnum">4</div>
+                        <div class="ptxt">The uploaded signature will be treated as official digital consent and approval for the service.</div>
+                    </div>
+                    <div class="pt">
+                        <div class="pnum">5</div>
+                        <div class="ptxt">The company is not responsible for any pre-existing damages or issues present before the service begins.</div>
+                    </div>
+                    <div class="pt">
+                        <div class="pnum">6</div>
+                        <div class="ptxt">Payment must be completed immediately after successful service completion.</div>
+                    </div>
+                    <div class="pt">
+                        <div class="pnum">7</div>
+                        <div class="ptxt">Any misuse, false complaint, or policy violation may result in immediate cancellation of service.</div>
+                    </div>
+                    <div class="pt">
+                        <div class="pnum">8</div>
+                        <div class="ptxt">Customer agrees to comply with all company operational guidelines and support procedures throughout the service.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accept-row">
+                {% if already_accepted %}
+                <label class="accept-label" style="cursor: default;">
+                    <input type="checkbox" checked disabled>
+                    <span>I have completely read, understood and agreed to all the Terms &amp; Conditions mentioned above.</span>
+                </label>
+                {% else %}
+                <label class="accept-label" for="acceptCheck">
+                    <input type="checkbox" id="acceptCheck" name="accepted">
+                    <span>I have completely read, understood and agreed to all the Terms &amp; Conditions mentioned above.</span>
+                </label>
+                {% endif %}
+            </div>
+
+        </div>
+        {% endif %}
+
+        {% if already_accepted %}
+        <div class="success-card">
+            <div class="success-badge">&#10003; Accepted</div>
+            <h3>Terms Already Accepted</h3>
+            <div class="success-row"><strong>Accepted on :</strong> {{ already_accepted.accepted_at }}</div>
+            <div class="success-row"><strong>Customer Signature :</strong></div>
+            <img src="{{ already_accepted.signature.url }}" class="sig-preview-img" alt="Customer Signature">
+        </div>
+        {% else %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="bottom-grid">
+                <div class="sig-card">
+                    <div class="sec-head">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 20H4"/>
+                            <path d="m6.5 14.5 8-8a2.121 2.121 0 0 1 3 3l-8 8-4 1 1-4z"/>
+                        </svg>
+                        <span>Upload Signature</span>
+                    </div>
+                    <div class="sig-inner">
+                        <div class="sig-icon-box">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20 20H4"/>
+                                <path d="m6.5 14.5 8-8a2.121 2.121 0 0 1 3 3l-8 8-4 1 1-4z"/>
+                            </svg>
+                        </div>
+                        <div class="sig-info">
+                            <h4>Customer Signature</h4>
+                            <p>Signature upload is mandatory for approval. Upload a clear image of your signature.</p>
+
+                            <label for="sigFile" style="display: block; cursor: pointer;">
+                                <div class="upload-zone" id="uploadZone">
+                                    <svg class="uz-icon" viewBox="0 0 24 24">
+                                        <polyline points="16 16 12 12 8 16"/>
+                                        <line x1="12" y1="12" x2="12" y2="21"/>
+                                        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                                    </svg>
+                                    <div class="uz-title">Click to upload signature</div>
+                                    <div class="uz-sub">PNG, JPG or JPEG supported</div>
+                                    <span class="uz-btn">&#8593; &nbsp; Choose File</span>
+                                </div>
+
+                                <div class="preview-wrap" id="prevWrap">
+                                    <div class="preview-clickable-area" title="Click to replace image" onclick="document.getElementById('sigFile').click()">
+                                        <img id="prevImg" src="" alt="Signature preview">
+                                        <div class="pname" id="pname"></div>
+                                    </div>
+                                    <div>
+                                        <button type="button" onclick="removeFile(event)" class="remove-btn">
+                                            &#10005; &nbsp; Clear File
+                                        </button>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <input type="file" name="signature" id="sigFile" accept="image/*" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="sec-head">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <span>Important Information</span>
+                    </div>
+                    <div class="info-inner">
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="info-lbl">Digital Consent</div>
+                                <div class="info-val">Signature acts as legal digital approval</div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="info-lbl">Secure &amp; Encrypted</div>
+                                <div class="info-val">Your data is stored safely and securely</div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="info-lbl">One-time Process</div>
+                                <div class="info-val">Accept once — applies to this booking only</div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                    <line x1="1" y1="10" x2="23" y2="10"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="info-lbl">Payment Terms</div>
+                                <div class="info-val">Payment due after service completion</div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.55 5.55l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="info-lbl">Need Help?</div>
+                                <div class="info-val">Contact support before submitting</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="submit-btn" disabled>
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Accept &amp; Submit
+            </button>
+        </form>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+const chk = document.getElementById('acceptCheck');
+const sigFile = document.getElementById('sigFile');
+const submitBtn = document.getElementById('submitBtn');
+const prevWrap = document.getElementById('prevWrap');
+const prevImg = document.getElementById('prevImg');
+const pname = document.getElementById('pname');
+const uploadZone = document.getElementById('uploadZone');
+
+function updateSubmitState() {
+    const isChecked = chk ? chk.checked : false;
+    const hasFile = sigFile && sigFile.files.length > 0;
+    const isValid = isChecked && hasFile;
+
+    if (submitBtn) {
+        submitBtn.disabled = !isValid;
+        submitBtn.classList.toggle('active', isValid);
+    }
+}
+
+if (chk) {
+    chk.addEventListener('change', updateSubmitState);
+}
+
+if (sigFile) {
+    sigFile.addEventListener('change', function() {
+        if (this.files.length) {
+            const file = this.files[0];
+            if (pname) pname.textContent = file.name;
+            
+            const reader = new FileReader();
+            reader.onload = e => {
+                if (prevImg) prevImg.src = e.target.result;
+                if (prevWrap) prevWrap.style.display = 'block';
+                if (uploadZone) uploadZone.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            resetPreviews();
+        }
+        updateSubmitState();
+    });
+}
+
+function removeFile(event) {
+    // Stop event propagation so clicking the button doesn't trigger the label's input box
+    if (event) event.stopPropagation();
+    
+    if (sigFile) sigFile.value = '';
+    resetPreviews();
+    updateSubmitState();
+}
+
+function resetPreviews() {
+    if (prevImg) prevImg.src = '';
+    if (pname) pname.textContent = '';
+    if (prevWrap) prevWrap.style.display = 'none';
+    if (uploadZone) uploadZone.style.display = 'block';
+}
+</script>
+
+{% endblock %}

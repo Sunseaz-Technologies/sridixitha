@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ld-wrap {
+    max-width: 860px;
+    margin: auto;
+    padding: 28px 16px;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .ld-card {
+    background: #fff;
+    border: 0.5px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .ld-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    font-weight: 600;
+  }
+
+  .ld-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* header */
+  .ld-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 0.5px solid #e5e7eb;
+  }
+
+  .ld-header-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .ld-header-sub {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 2px;
+  }
+
+  .ld-back {
+    font-size: 12px;
+    font-weight: 600;
+    color: #2563eb;
+    background: #eff6ff;
+    border: 0.5px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 5px 12px;
+    text-decoration: none;
+  }
+
+  .ld-back:hover {
+    background: #2563eb;
+    color: #fff;
+  }
+
+  /* sections */
+  .ld-section {
+    padding: 16px 20px;
+    border-bottom: 0.5px solid #e5e7eb;
+  }
+
+  .ld-section:last-child {
+    border-bottom: none;
+  }
+
+  .ld-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 10px;
+  }
+
+  /* avatar row */
+  .ld-avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .ld-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .ld-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .ld-phone {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+
+  /* info chip */
+  .ld-chip {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+
+  .ld-chip-label {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-bottom: 2px;
+  }
+
+  .ld-chip-value {
+    font-size: 13px;
+    color: #111827;
+  }
+
+  /* action buttons */
+  .ld-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .ld-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+
+  .ld-btn-green {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 0.5px solid #bbf7d0;
+  }
+
+  .ld-btn-blue {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 0.5px solid #bfdbfe;
+  }
+
+  /* service grid */
+  .ld-service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .ld-service-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* status badge */
+  .ld-status {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 0.5px solid #bbf7d0;
+  }
+
+  /* problem */
+  .ld-problem {
+    background: #f9fafb;
+    border-left: 2px solid #d1d5db;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #374151;
+  }
+</style>
+
+<div class="ld-wrap">
+  <div class="ld-card">
+
+    <!-- Header -->
+    <div class="ld-header">
+      <div>
+        <div class="ld-header-title">Lead details</div>
+        <div class="ld-header-sub">Customer & service information</div>
+      </div>
+      <a href="javascript:history.back()" class="ld-back">← Back</a>
+    </div>
+
+    <!-- Customer -->
+    <div class="ld-section">
+      <div class="ld-section-label">Customer</div>
+
+      <div class="ld-avatar-row">
+        <div class="ld-avatar">
+
+          {% if booking.user.profile_image %}
+
+          <img src="{{ booking.user.profile_image.url }}" alt="Profile" class="ld-avatar-img">
+
+          {% else %}
+
+          {{ booking.user.first_name|slice:":2"|upper }}
+
+          {% endif %}
+
+        </div>
+        <div>
+          <div class="ld-name">{{ booking.user.first_name }}</div>
+          <div class="ld-phone">{{ booking.phone }}</div>
+        </div>
+      </div>
+
+      <div class="ld-chip">
+        <div class="ld-chip-label">Address</div>
+        <div class="ld-chip-value">{{ booking.address }}</div>
+      </div>
+
+      <div class="ld-actions">
+        <a href="tel:{{ booking.phone }}" class="ld-btn ld-btn-green">📞 Call</a>
+        <a href="https://wa.me/{{ booking.phone }}" target="_blank" class="ld-btn ld-btn-green">💬 WhatsApp</a>
+        <a href="https://www.google.com/maps?q={{ booking.address }}" target="_blank" class="ld-btn ld-btn-blue">📍
+          Map</a>
+      </div>
+    </div>
+
+    <!-- Service -->
+    <div class="ld-section">
+      <div class="ld-section-label">Service</div>
+
+      <div class="ld-service-grid">
+        <div class="ld-chip">
+          <div class="ld-chip-label">Service ID</div>
+          <div class="ld-chip-value">{{ booking.order_id }}</div>
+        </div>
+        <div class="ld-chip">
+          <div class="ld-chip-label">Service</div>
+          <div class="ld-chip-value">{{ booking.service.s_title }}</div>
+        </div>
+        <div class="ld-chip">
+          <div class="ld-chip-label">Status</div>
+          <div class="ld-chip-value">
+            <span class="ld-status">{{ booking.status|title }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problem -->
+    <div class="ld-section">
+      <div class="ld-section-label">Problem description</div>
+      <div class="ld-problem">{{ booking.problem }}</div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

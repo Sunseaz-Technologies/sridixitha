@@ -1,0 +1,765 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    :root {
+        --primary: #2563eb;
+        --bg: #f4f7fb;
+        --card: #ffffff;
+        --border: #e5e7eb;
+        --text: #111827;
+        --sub: #6b7280;
+    }
+
+    body {
+        background: var(--bg);
+    }
+
+    /* PAGE */
+
+    .page-wrap {
+        max-width: 1200px;
+        margin: auto;
+        padding: 30px 20px;
+    }
+
+    /* HEADER */
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .page-header h6 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+        color: var(--sub);
+    }
+
+    /* CARD */
+
+    .table-card {
+        background: #fff;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        box-shadow: 0 6px 24px rgba(15, 23, 42, .05);
+    }
+
+    .card-header-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--border);
+        background: #f9fafb;
+    }
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    /* TOOLBAR */
+
+    .toolbar {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    /* FILTER */
+
+    .filter-group {
+        display: flex;
+        background: #eef2f7;
+        padding: 4px;
+        border-radius: 10px;
+        gap: 4px;
+    }
+
+    .filter-btn {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+    .filter-btn.active {
+        background: #fff;
+        color: #2563eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+    }
+
+    /* SEARCH */
+
+    .search-container {
+        position: relative;
+    }
+
+    .search-container input {
+        padding-left: 34px;
+        height: 40px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 13px;
+        min-width: 220px;
+        background: #fff;
+    }
+
+    .search-container input:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, .08);
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+    }
+
+    /* TABLE */
+
+    .table-wrap {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead th {
+        background: #f8fafc;
+        padding: 14px;
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #6b7280;
+        text-align: left;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    tbody td {
+        padding: 16px 14px;
+        border-top: 1px solid var(--border);
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    tbody tr:hover {
+        background: #f9fafb;
+    }
+
+    /* STATUS */
+
+    .status {
+        padding: 7px 14px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .status.active {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .status.pending {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    /* BUTTONS */
+
+    .action-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: nowrap;
+    }
+
+    .action-btn {
+        min-width: 95px;
+        height: 38px;
+        padding: 0 16px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: .2s ease;
+        white-space: nowrap;
+    }
+
+    .approve {
+        background: #16a34a;
+    }
+
+    .approve:hover {
+        background: #15803d;
+    }
+
+    .deactivate {
+        background: #f59e0b;
+    }
+
+    .deactivate:hover {
+        background: #d97706;
+    }
+
+    .delete {
+        background: #ef4444;
+    }
+
+    .delete:hover {
+        background: #dc2626;
+    }
+
+    /* PROFILE */
+
+    .profile-btn {
+        height: 38px;
+        padding: 0 16px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+    .profile-btn:hover {
+        background: #dbeafe;
+    }
+
+    /* EMPTY */
+
+    .empty-box {
+        text-align: center;
+        padding: 40px;
+        color: var(--sub);
+        font-size: 14px;
+    }
+
+    /* PAGINATION */
+
+    .tbl-footer {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 20px 24px;
+        border-top: 1px solid #eef2f7;
+        background: #fff;
+    }
+
+    .page-btns {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .pg-btn {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 14px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #111827;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: .2s ease;
+    }
+
+    .pg-btn:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+        color: #111827;
+    }
+
+    .pg-btn.active {
+        background: #2563eb;
+        color: #fff;
+        border-color: #2563eb;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, .18);
+    }
+
+    /* MOBILE */
+
+    @media(max-width:768px) {
+
+        .page-wrap {
+            padding: 14px;
+        }
+
+        .card-header-flex {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .toolbar {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-container {
+            width: 100%;
+        }
+
+        .search-container input {
+            width: 100%;
+            min-width: 100%;
+        }
+
+        .action-group {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .action-btn {
+            width: 100%;
+        }
+
+        .tbl-footer {
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .page-btns {
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .pg-btn {
+            min-width: 34px;
+            height: 34px;
+            padding: 0 10px;
+            font-size: 12px;
+            border-radius: 10px;
+        }
+
+    }
+</style>
+
+<div class="page-wrap">
+
+
+    <div class="page-header">
+
+        <div>
+
+            <h2 class="dashboard-heading">
+                Admin Approved Vendors
+            </h2>
+
+            <p class="dashboard-subheading">
+                View and manage vendor accounts available only in your assigned city.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="table-card">
+
+        <div class="card-header-flex">
+
+            <div class="card-title">
+                Vendors
+            </div>
+
+            <div class="toolbar">
+
+                <div class="filter-group">
+
+                    <button class="filter-btn active" onclick="setStatus('',this)">
+
+                        All
+
+                    </button>
+
+                    <button class="filter-btn" onclick="setStatus('active',this)">
+
+                        Active
+
+                    </button>
+
+                    <button class="filter-btn" onclick="setStatus('pending',this)">
+
+                        Pending
+
+                    </button>
+
+                </div>
+
+                <div class="search-container">
+
+                    <span class="search-icon">
+                        🔍
+                    </span>
+
+                    <input type="text" id="searchInput" placeholder="Search vendor..." onkeyup="applyFilters()">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Sl.No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Category</th>
+                        <th>Services</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                        <th>Profile</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tableBody">
+
+                    {% for v in vendors %}
+
+                    <tr>
+                        <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+                        <td>
+                            {{ v.first_name }}
+                        </td>
+
+                        <td>
+                            {{ v.email }}
+                        </td>
+
+                        <td>
+                            {{ v.phone }}
+                        </td>
+
+                        <td>
+                            {{ v.vendor_profile.category.title|default:"-" }}
+                        </td>
+
+                        <td>
+
+                            {% for s in v.vendor_profile.services.all %}
+
+                            {{ s.s_title }}
+
+                            {% if not forloop.last %}, {% endif %}
+
+                            {% empty %}
+
+                            -
+
+                            {% endfor %}
+
+                        </td>
+
+                        <td>
+
+                            <span class="status {% if v.is_active %}active{% else %}pending{% endif %}">
+
+                                {{ v.is_active|yesno:"Active,Pending" }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-group">
+
+                                {% if not v.is_active %}
+
+                                <button type="button" class="action-btn approve" onclick="action('{{v.id}}','approve')">
+
+                                    Approve
+
+                                </button>
+
+                                {% else %}
+
+                                <button type="button" class="action-btn deactivate"
+                                    onclick="action('{{v.id}}','deactivate')">
+
+                                    Deactivate
+
+                                </button>
+
+                                {% endif %}
+
+                                <button type="button" class="action-btn delete" onclick="action('{{v.id}}','delete')">
+
+                                    Delete
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <a href="{% url 'admin_vendor_verify' v.id %}" class="profile-btn">
+
+                                Profile
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="8">
+
+                            <div class="empty-box">
+
+                                No vendors found
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+
+                <a class="pg-btn" href="?page={{ page_obj.previous_page_number }}">
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                {% if page_obj.number == 1 %}
+
+                <span class="pg-btn active">
+
+                    1
+
+                </span>
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn" href="?page=2">
+
+                    2
+
+                </a>
+
+                {% endif %}
+
+                {% else %}
+
+                {% if page_obj.number|add:'-1' > 0 %}
+
+                <a class="pg-btn" href="?page={{ page_obj.number|add:'-1' }}">
+
+                    {{ page_obj.number|add:'-1' }}
+
+                </a>
+
+                {% endif %}
+
+                <span class="pg-btn active">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn" href="?page={{ page_obj.number|add:'1' }}">
+
+                    {{ page_obj.number|add:'1' }}
+
+                </a>
+
+                {% endif %}
+
+                {% endif %}
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn" href="?page={{ page_obj.next_page_number }}">
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    let currentStatus = "";
+
+    function setStatus(status, el) {
+
+        currentStatus = status;
+
+        document.querySelectorAll(".filter-btn")
+            .forEach(btn => btn.classList.remove("active"));
+
+        el.classList.add("active");
+
+        applyFilters();
+
+    }
+
+    function applyFilters() {
+
+        const query = document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase();
+
+        document.querySelectorAll("#tableBody tr")
+            .forEach(row => {
+
+                const text = row.innerText.toLowerCase();
+
+                const status = row.querySelector(".status")
+                    ?.innerText.toLowerCase() || "";
+
+                let show = true;
+
+                if (query && !text.includes(query)) {
+
+                    show = false;
+
+                }
+
+                if (currentStatus && !status.includes(currentStatus)) {
+
+                    show = false;
+
+                }
+
+                row.style.display = show ? "" : "none";
+
+            });
+
+    }
+
+    function getCSRF() {
+
+        return document.cookie
+            .split('; ')
+            .find(r => r.startsWith('csrftoken='))
+            ?.split('=')[1];
+
+    }
+
+    function action(id, type) {
+
+        fetch("/vendor-action/", {
+
+            method: "POST",
+
+            headers: {
+                "X-CSRFToken": getCSRF()
+            },
+
+            body: new URLSearchParams({
+
+                user_id: id,
+
+                action: type
+
+            })
+
+        })
+
+            .then(r => r.json())
+
+            .then(data => {
+
+                alert(data.msg || data.error);
+
+                location.reload();
+
+            });
+
+    }
+
+</script>
+
+{% endblock %}

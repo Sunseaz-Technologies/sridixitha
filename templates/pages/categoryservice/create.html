@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="service-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                Service Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Create and manage category services
+
+            </p>
+
+        </div>
+
+        <div class="header-right">
+
+            <div class="service-badge">
+
+                Add Service
+
+            </div>
+
+            <a href="{% url 'list.category.services' %}"
+               class="list-btn">
+
+                <i class="bi bi-grid"></i>
+
+                Service List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="service-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Service Information
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Add new services with category and image details
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <!-- IMAGE -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Service About Image
+
+                        </label>
+
+                        <div class="image-box">
+
+                            <img id="preview"
+                                 src=""
+                                 alt="Preview">
+
+                        </div>
+
+                        <input type="file"
+                               name="image"
+                               class="file-input"
+                               onchange="previewImage(event)"
+                               required>
+
+                    </div>
+
+                    <!-- CONTENT -->
+
+                    <div class="col-md-8">
+
+                        <!-- CATEGORY -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Select Category
+
+                            </label>
+
+                            <select name="category"
+                                    class="form-control-custom"
+                                    required>
+
+                                <option value="">
+
+                                    -- Select Category --
+
+                                </option>
+
+                                {% for cat in categories %}
+
+                                <option value="{{ cat.id }}">
+
+                                    {{ cat.title }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                        <!-- TAG -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Service Tag
+
+                            </label>
+
+                            <input type="text"
+                                   name="s_tag"
+                                   class="form-control-custom"
+                                   required>
+
+                        </div>
+
+                        <!-- TITLE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Service Title
+
+                            </label>
+
+                            <input type="text"
+                                   name="s_title"
+                                   class="form-control-custom"
+                                   required>
+
+                        </div>
+
+                        <!-- DESCRIPTION -->
+
+                        <div>
+
+                            <label class="form-label">
+
+                                Short Description
+
+                            </label>
+
+                            <textarea name="s_desc"
+                                      rows="4"
+                                      class="textarea-custom"
+                                      required></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'list.category.services' %}"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <div class="right-btns">
+
+                        <button type="submit"
+                                name="save_add_more"
+                                class="save-more-btn">
+
+                            Save & Add More
+
+                        </button>
+
+                        <button type="submit"
+                                name="save"
+                                class="save-btn">
+
+                            Save
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- IMAGE PREVIEW -->
+
+<script>
+
+function previewImage(event){
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+
+        document.getElementById(
+            "preview"
+        ).src = reader.result;
+
+    }
+
+    reader.readAsDataURL(
+        event.target.files[0]
+    );
+
+}
+
+</script>
+
+{% endblock %}

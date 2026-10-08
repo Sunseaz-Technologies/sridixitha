@@ -1,0 +1,403 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.logo-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+}
+.logo-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+</style>
+
+
+<div class="footer-page">
+
+    
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+            <h5 class="fw-bold mb-0">
+                Footer Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Add footer details, logo and social media links
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'create.footer' %}"
+           class="add-btn">
+
+            <i class="bi bi-plus-circle-fill"></i>
+
+            Add Footer
+
+        </a>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="footer-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Footer List
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Footer content, contacts and social media links
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table class="footer-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+                        <th>Logo</th>
+                        <th>Cart Image</th>
+                        <th>Description</th>
+                        <th>Phone</th>
+                        <th>WhatsApp</th>
+                        <th>Email</th>
+                        <th>Location</th>
+                        <th>Social Links</th>
+                        <th>Created</th>
+                        <th class="text-center">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for footer in footers %}
+
+                    <tr>
+
+                        <!-- SL NO -->
+
+                        <td>
+
+                            <div class="sl-no">
+
+                               {{ forloop.counter }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- LOGO -->
+
+                        <td>
+
+                            {% if footer.logo_image %}
+
+                            <div class="logo-box">
+
+                                <img src="{{ footer.logo_image.url }}">
+
+                            </div>
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- CART IMAGE -->
+
+                        <td>
+
+                            {% if footer.cart_image %}
+
+                            <div class="logo-box">
+
+                                <img src="{{ footer.cart_image.url }}">
+
+                            </div>
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- DESCRIPTION -->
+
+                        <td>
+
+                            <div class="footer-desc">
+
+                                {{ footer.footer_description|truncatechars:60 }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- PHONE -->
+
+                        <td>
+
+                            <div class="phone-text">
+
+                                {{ footer.phone_num }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- WHATSAPP -->
+
+                        <td>
+
+                            <div class="phone-text">
+
+                                {{ footer.whatsapp_num }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- EMAIL -->
+
+                        <td>
+
+                            <div class="email-text">
+
+                                {{ footer.email }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- ADDRESS -->
+
+                        <td>
+
+                            <div class="address-text">
+
+                                {{ footer.address|truncatechars:50 }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- SOCIAL -->
+
+                        <td>
+
+                            <div class="social-links">
+
+                                {% if footer.facebook %}
+
+                                <a href="{{ footer.facebook }}"
+                                   target="_blank"
+                                   class="social-badge fb">
+
+                                    FB
+
+                                </a>
+
+                                {% endif %}
+
+                                {% if footer.instagram %}
+
+                                <a href="{{ footer.instagram }}"
+                                   target="_blank"
+                                   class="social-badge ig">
+
+                                    IG
+
+                                </a>
+
+                                {% endif %}
+
+                                {% if footer.twitter %}
+
+                                <a href="{{ footer.twitter }}"
+                                   target="_blank"
+                                   class="social-badge tw">
+
+                                    TW
+
+                                </a>
+
+                                {% endif %}
+
+                                {% if footer.whatsapp %}
+
+                                <a href="{{ footer.whatsapp }}"
+                                   target="_blank"
+                                   class="social-badge wa">
+
+                                    WA
+
+                                </a>
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+                        <!-- CREATED -->
+
+                        <td>
+
+                            <div class="date-text">
+
+                                {{ footer.created_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="action-wrap">
+
+                                <a href="{% url 'update.footer' footer.id %}"
+                                   class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                </a>
+
+                                <a href="{% url 'delete.footer' footer.id %}"
+                                   class="action-btn delete-btn"
+                                   onclick="return confirm('Are you sure you want to delete this footer?')">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="10"
+                            class="empty-row">
+
+                            No footer data available
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        {% if page_obj %}
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.previous_page_number }}">
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                <span class="pg-btn active">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    {{ page_obj.next_page_number }}
+
+                </a>
+
+                {% endif %}
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

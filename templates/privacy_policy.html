@@ -1,0 +1,611 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Inter Font for that premium technical feel -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --bg-body: #f8fafc;
+        --bg-card: #ffffff;
+        --border-color: #e9eef5;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --text-sub: #475569;
+        --accent: #2563eb;
+        --accent-soft: #eff6ff;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background: var(--bg-body);
+        color: var(--text-main);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .doc-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 40px 20px 80px;
+    }
+
+    .doc-section {
+        scroll-margin-top: 50px;
+    }
+
+    /* --- Header Section --- */
+    .doc-header {
+        margin-bottom: 32px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .doc-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-radius: 4px;
+        margin-bottom: 16px;
+    }
+
+    .doc-header h1 {
+        font-size: 24px !important;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        margin-bottom: 12px;
+    }
+
+    .doc-header p {
+        font-size: 14px !important;
+        color: var(--text-muted);
+        max-width: 600px;
+        line-height: 1.6;
+    }
+
+    .doc-meta {
+        margin-top: 16px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #94a3b8;
+    }
+
+    /* --- Layout Structure --- */
+    .doc-grid {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 48px;
+        align-items: start;
+    }
+
+    /* --- Sticky Sidebar --- */
+    .doc-sidebar {
+        position: sticky;
+        top: 24px;
+        background-color: white !important;
+        padding:25px 20px;
+    }
+
+    .doc-sidebar h5 {
+        font-size: 11px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #2a2b2d;
+        margin-bottom: 16px;
+        padding-left: 12px;
+    }
+
+    .doc-sidebar ul {
+        list-style: none;
+    }
+
+    .doc-sidebar li {
+        margin-bottom: 2px;
+    }
+
+    .doc-sidebar a {
+        display: block;
+        padding: 8px 12px;
+        font-size: 14px !important;
+        font-weight: 500;
+        color: var(--text-sub);
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+
+    .doc-sidebar a:hover {
+        background: #fff;
+        color: var(--accent);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    /* --- Content Section --- */
+
+    .doc-nav a {
+        transition: .2s ease;
+    }
+
+    .doc-content {
+        background: #fff;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 40px;
+    }
+
+    .doc-section {
+        margin-bottom: 48px;
+        scroll-margin-top: 24px;
+    }
+
+    .doc-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .doc-section h2 {
+        font-size: 18px !important;
+        font-weight: 500;
+        margin-bottom: 16px;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .doc-section p {
+        font-size: 15px !important;
+        color: var(--text-sub);
+        line-height: 1.7;
+        margin-bottom: 16px;
+    }
+
+    /* --- Styled Lists --- */
+    .doc-list {
+        list-style: none;
+        margin-bottom: 20px;
+    }
+
+    .doc-list li {
+        font-size: 14px !important;
+        color: var(--text-sub);
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 10px;
+    }
+
+    .doc-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 8px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        opacity: 0.6;
+    }
+
+    /* --- Highlight Boxes --- */
+    .doc-note {
+        background: var(--bg-body);
+        border-left: 3px solid var(--accent);
+        padding: 16px;
+        border-radius: 0 8px 8px 0;
+        margin: 20px 0;
+    }
+
+    .doc-note h4 {
+        font-size: 14px !important;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .doc-note p {
+        font-size: 12px;
+        margin-bottom: 0;
+        color: var(--text-muted);
+    }
+
+    /* --- Contact Grid --- */
+    .contact-footer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    .contact-card {
+        padding: 16px;
+        background: var(--bg-body);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+    }
+
+    .contact-card label {
+        display: block;
+        font-size: 12px !important;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .contact-card span {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-main);
+    }
+
+    /* --- Mobile Responsiveness --- */
+    @media (max-width: 992px) {
+        .doc-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .doc-sidebar {
+            display: none;
+            /* Simplifies mobile reading */
+        }
+
+        .doc-content {
+            padding: 24px;
+        }
+    }
+</style>
+
+<div class="doc-container">
+    <!-- TOP HEADER -->
+    <header class="doc-header">
+        <div class="doc-badge">Legal Documentation</div>
+        <h1>Privacy Policy</h1>
+        <p>This policy outlines how we handle your personal data, ensuring your information is managed with the highest
+            standards of security and transparency.</p>
+        <div class="doc-meta">Last Updated: May 12, 2026</div>
+    </header>
+
+    <div class="doc-grid">
+        <!-- NAVIGATION SIDEBAR -->
+        <aside class="doc-sidebar">
+            <h5>Policy Sections</h5>
+            <ul>
+                <li><a href="#collection">Data Collection</a></li>
+                <li><a href="#usage">How We Use Data</a></li>
+                <li><a href="#tracking">Cookies & Tracking</a></li>
+                <li><a href="#security">Security & Protection</a></li>
+                <li><a href="#vendors">Third-Party Access</a></li>
+                <li><a href="#rights">User Rights</a></li>
+                <li><a href="#retention">Data Retention</a></li>
+                <li><a href="#contact">Support Contact</a></li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="doc-content">
+
+            <section id="collection" class="doc-section">
+                <h2>Information Collection</h2>
+                <p>To provide a seamless service experience, we collect specific data points during your interaction
+                    with our platform. This collection is limited to what is essential for operation.</p>
+                <ul class="doc-list">
+                    <li>Identity data including full name and professional designations.</li>
+                    <li>Contact details such as verified email addresses and phone numbers.</li>
+                    <li>Technical logs including IP addresses and browser configurations.</li>
+                    <li>Secure encrypted authentication and protected server infrastructure.</li>
+                    <li>Restricted administrative access to sensitive customer information.</li>
+                    <li>Regular monitoring and security updates for platform protection.</li>
+                </ul>
+            </section>
+
+            <section id="usage" class="doc-section">
+                <h2>Data Usage</h2>
+                <p>The primary objective of data processing is to maintain system integrity and facilitate service
+                    fulfillment between users and verified vendors.</p>
+                <p>
+                    Access to sensitive user information is restricted only to authorized
+                    administrators and verified personnel responsible for maintaining
+                    platform functionality and customer service operations.
+                </p>
+                <div class="doc-note">
+
+                    <h4>Internal Processing Only</h4>
+
+                    <p>
+                        We do not use your personal information for automated profiling or unauthorized marketing
+                        campaigns.
+                    </p>
+
+                    <p>
+                        All user information is handled securely and accessed only for legitimate operational and
+                        customer support purposes.
+                    </p>
+
+                </div>
+            </section>
+<section id="tracking" class="doc-section">
+
+    <h2>Cookies & Tracking</h2>
+
+    <p>
+        Our platform utilizes essential cookies to maintain session persistence,
+        improve platform security, and ensure a smooth browsing experience
+        across authenticated areas of the system.
+    </p>
+
+    <p>
+        Analytical and performance-related cookies may be used to understand
+        user interaction patterns, optimize loading speeds,
+        and improve the overall usability of our services.
+    </p>
+
+    <p>
+        Certain cookies help remember user preferences such as language settings,
+        login sessions, recently accessed pages, and dashboard configurations
+        for a more personalized experience.
+    </p>
+
+    <p>
+        Tracking technologies are implemented responsibly and are never used
+        for unauthorized advertising, invasive monitoring,
+        or sharing sensitive personal information with unrelated third parties.
+    </p>
+
+    <p>
+        Users may manage browser cookie preferences through their device settings.
+        Disabling certain cookies may affect the availability of some platform features
+        and authentication functionality.
+    </p>
+
+    <ul class="doc-list">
+
+        <li>
+            Essential cookies required for secure login sessions and authentication.
+        </li>
+
+        <li>
+            Performance tracking used to improve platform speed and stability.
+        </li>
+
+        <li>
+            Preference cookies used to remember user settings and navigation history.
+        </li>
+
+        <li>
+            Optional analytics tools activated only with user consent where applicable.
+        </li>
+
+    </ul>
+
+</section>
+
+
+
+<section id="security" class="doc-section">
+
+    <h2>Security & Protection</h2>
+
+    <p>
+        We employ enterprise-level encryption protocols (AES-256)
+        for data at rest and TLS 1.3 for data in transit.
+    </p>
+
+    <p>
+        Access to sensitive information is strictly restricted
+        to authorized personnel and monitored through internal security systems.
+    </p>
+
+    <p>
+        Regular security audits, server monitoring,
+        and infrastructure updates are implemented to maintain
+        platform integrity and prevent unauthorized access attempts.
+    </p>
+
+    <p>
+        User account credentials, payment activities,
+        and sensitive booking information are processed through protected environments
+        designed to minimize security vulnerabilities and operational risks.
+    </p>
+
+    <ul class="doc-list">
+
+        <li>
+            Secure encrypted communication for all authenticated sessions.
+        </li>
+
+        <li>
+            Multi-layer infrastructure protection and server monitoring.
+        </li>
+
+        <li>
+            Restricted administrator access for sensitive customer data.
+        </li>
+
+        <li>
+            Continuous security updates and vulnerability management.
+        </li>
+
+    </ul>
+
+</section>
+
+
+
+<section id="vendors" class="doc-section">
+
+    <h2>Vendor & Third Party Access</h2>
+
+    <p>
+        Information is shared with third-party vendors only when necessary
+        to complete a requested service or operational requirement.
+    </p>
+
+    <p>
+        All vendors, partners, and service providers are legally obligated
+        to comply with strict confidentiality agreements
+        and applicable data protection standards.
+    </p>
+
+    <p>
+        Third-party access is limited to the minimum information required
+        for service fulfillment, support coordination,
+        booking management, or technical infrastructure operations.
+    </p>
+
+    <p>
+        We do not authorize vendors or external partners
+        to independently market products or misuse customer information
+        outside approved operational activities.
+    </p>
+
+    <ul class="doc-list">
+
+        <li>
+            Limited vendor access for service assignment and operational support.
+        </li>
+
+        <li>
+            Confidential handling of customer-related service information.
+        </li>
+
+        <li>
+            Secure contractual agreements with external providers.
+        </li>
+
+        <li>
+            Monitoring and review of third-party data handling practices.
+        </li>
+
+    </ul>
+
+</section>
+
+
+
+<section id="rights" class="doc-section">
+
+    <h2>User Rights</h2>
+
+    <p>
+        Under global privacy regulations, users maintain
+        control over personal information and account-related data.
+    </p>
+
+    <p>
+        Customers may review, update, or request modifications
+        to stored information through account settings
+        or by contacting platform support services.
+    </p>
+
+    <p>
+        Requests related to privacy, data access,
+        and account management are processed
+        according to applicable legal and operational requirements.
+    </p>
+
+    <ul class="doc-list">
+
+        <li>
+            The right to request a complete export of personal account data.
+        </li>
+
+        <li>
+            The right to rectify inaccurate or outdated information.
+        </li>
+
+        <li>
+            The right to request permanent deletion of account records where applicable.
+        </li>
+
+        <li>
+            The right to review how personal information is processed and stored.
+        </li>
+
+    </ul>
+
+</section>
+
+
+
+<section id="retention" class="doc-section">
+
+    <h2>Data Retention</h2>
+
+    <p>
+        Personal information is retained only for the duration necessary
+        to fulfill service obligations, resolve disputes,
+        maintain security records, or comply with legal requirements.
+    </p>
+
+    <p>
+        Inactive accounts may be archived after extended periods
+        of inactivity in accordance with internal data management policies.
+    </p>
+
+    <p>
+        Archived information is protected through restricted access controls
+        and may be permanently removed after applicable retention periods expire.
+    </p>
+
+    <p>
+        Certain transactional records, invoices,
+        and operational logs may be retained longer
+        where legally required for compliance or auditing purposes.
+    </p>
+
+    <ul class="doc-list">
+
+        <li>
+            Secure archival procedures for inactive customer accounts.
+        </li>
+
+        <li>
+            Controlled retention of operational and transactional records.
+        </li>
+
+        <li>
+            Permanent deletion policies for expired archived data.
+        </li>
+
+        <li>
+            Compliance with legal and regulatory retention obligations.
+        </li>
+
+    </ul>
+
+</section>
+
+            <section id="contact" class="doc-section">
+                <h2>Contact Support</h2>
+                <p>For inquiries regarding this policy or to report a security concern, please reach out to our
+                    dedicated compliance team.</p>
+
+                <div class="contact-footer">
+                    <div class="contact-card">
+                        <label>Compliance Email</label>
+                        <span>sridixitha@gmail.com</span>
+                    </div>
+                    <div class="contact-card">
+                        <label>Phone Support</label>
+                        <span>+91 9966286721</span>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</div>
+
+{% endblock %}

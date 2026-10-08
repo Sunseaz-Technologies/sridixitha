@@ -1,0 +1,359 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="category-page">
+
+    
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                Category Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Create and manage service categories
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'create.category' %}"
+           class="add-btn">
+
+            <i class="bi bi-plus-circle-fill"></i>
+
+            Add Category
+
+        </a>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="category-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Category List
+
+                </h5>
+
+                <p class="card-desc">
+
+                    View and manage all categories
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table class="category-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Badge</th>
+                        <th>Tags</th>
+                        <th>Icon</th>
+                        <th>Service Description</th>
+                        <th>Service Image</th>
+                        <th>Banner</th>
+                        <th>Date</th>
+                        <th class="text-center">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for category in categories %}
+
+                    <tr>
+
+                        <!-- SL NO -->
+
+                        <td>
+
+                            <div class="sl-no">
+
+                               {{ page_obj.start_index|add:forloop.counter0 }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- TITLE -->
+
+                        <td>
+
+                            <div class="category-title-text">
+
+                                {{ category.title }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- DESCRIPTION -->
+
+                        <td>
+
+                            <div class="category-desc-text">
+
+                                {{ category.description|truncatechars:45 }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- BADGE -->
+
+                        <td>
+
+                            {% if category.badge %}
+
+                            <span class="badge-pill green-pill">
+
+                                {{ category.badge }}
+
+                            </span>
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- TAGS -->
+
+                        <td>
+
+                            {% for tag in category.get_tags_list %}
+
+                            <span class="badge-pill">
+
+                                {{ tag }}
+
+                            </span>
+
+                            {% empty %}
+
+                            -
+
+                            {% endfor %}
+
+                        </td>
+
+                        <!-- ICON -->
+
+                        <td>
+
+                            {% if category.icon %}
+
+                            <div class="img-box">
+
+                                <img src="{{ category.icon.url }}">
+
+                            </div>
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- SERVICE DESCRIPTION -->
+
+                        <td>
+
+                            <div class="category-desc-text">
+
+                                {{ category.category_about_des|truncatechars:50 }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- SERVICE IMAGE -->
+
+                        <td>
+
+                            {% if category.category_about_img %}
+
+                            <div class="img-box">
+
+                                <img src="{{ category.category_about_img.url }}">
+
+                            </div>
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- BANNER IMAGE -->
+
+                        <td>
+
+                            {% if category.banner_image %}
+
+                            <div class="img-box">
+
+                                <img src="{{ category.banner_image.url }}">
+
+                            </div>
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            <div class="date-text">
+
+                                {{ category.created_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="action-wrap">
+
+                                <a href="{% url 'update.category' category.pk %}"
+                                   class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                </a>
+
+                                <a href="{% url 'delete.category' category.pk %}"
+                                   class="action-btn delete-btn">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="11"
+                            class="empty-row">
+
+                            No categories available
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.previous_page_number }}">
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                <span class="pg-btn active">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    {{ page_obj.next_page_number }}
+
+                </a>
+
+                {% endif %}
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

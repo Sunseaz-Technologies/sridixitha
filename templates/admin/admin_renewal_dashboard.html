@@ -1,0 +1,961 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    background:#f4f7fb;
+  
+}
+/* =========================
+   PAGINATION
+========================= */
+.pg-wrap {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 32px 28px;
+}
+.tbl-footer{
+    width:100%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:20px 24px;
+    border-top:1px solid #eef2f7;
+    background:#fff;
+}
+.expiry-alert-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:16px;
+}
+
+.expiry-alert{
+    background:#fffbeb;
+    border:1px solid #fde68a;
+    color:#92400e;
+    border-radius:10px;
+    padding:10px 14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.expiry-alert-text{
+    font-size:12px;
+    font-weight:600;
+    line-height:1.5;
+}
+
+.expiry-close{
+    border:none;
+    background:none;
+    color:#dc2626;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0;
+    margin-left:10px;
+}
+
+.page-btns{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.pg-btn{
+    min-width:40px;
+    height:40px;
+    padding:0 14px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    color:#111827;
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s ease;
+}
+
+.pg-btn:hover{
+    background:#f3f4f6;
+    border-color:#d1d5db;
+    color:#111827;
+}
+
+.pg-btn.active{
+    background:#2563eb;
+    color:#fff;
+    border-color:#2563eb;
+    box-shadow:0 4px 12px rgba(37,99,235,.18);
+}
+.dashboard-page{
+    max-width:1450px;
+    margin:auto;
+    padding:24px 14px;
+}
+
+/* HEADER */
+
+.page-header{
+    margin-bottom:20px;
+}
+
+.page-title{
+    font-size:28px;
+    font-weight:700;
+    color:#111827;
+}
+
+.page-sub{
+    margin-top:5px;
+    font-size:13px;
+    color:#6b7280;
+}
+
+/* TABLE */
+
+.table-card{
+    background:#fff;
+    border-radius:22px;
+    border:1px solid #e5e7eb;
+    overflow:hidden;
+}
+
+.table-header{
+    padding:16px 18px;
+    border-bottom:1px solid #edf2f7;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.table-title{
+    font-size:18px;
+    font-weight:700;
+}
+
+.filter-bar{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.filter-input,
+.filter-select{
+    height:40px;
+    border:1px solid #dbe1ea;
+    border-radius:10px;
+    padding:0 12px;
+    font-size:12px;
+    min-width:140px;
+}
+
+.filter-btn{
+    height:40px;
+    padding:0 16px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+.lead-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.lead-table thead{
+    background:#f8fafc;
+}
+
+.lead-table th{
+    padding:12px 8px;
+    text-align:left;
+    font-size:10px;
+    color:#6b7280;
+    text-transform:uppercase;
+    font-weight:700;
+    border-bottom:1px solid #edf2f7;
+    white-space:nowrap;
+}
+
+.lead-table td{
+    padding:12px 8px;
+    border-bottom:1px solid #edf2f7;
+    vertical-align:top;
+    font-size:11px;
+}
+
+.lead-table tr:hover{
+    background:#fbfdff;
+}
+
+/* TEXT */
+
+.order-id{
+    font-size:12px;
+    font-weight:700;
+    color:#2563eb;
+}
+
+.small-text{
+    margin-top:3px;
+    font-size:10px;
+    color:#6b7280;
+}
+
+.customer-name,
+.service-title,
+.vendor-name{
+    font-size:12px;
+    font-weight:700;
+    color:#111827;
+}
+
+/* STATUS */
+
+.status-badge{
+    width:fit-content;
+    padding:6px 10px;
+    border-radius:30px;
+    font-size:10px;
+    font-weight:700;
+}
+
+.status-pending{
+    background:#fff7ed;
+    color:#ea580c;
+}
+
+.status-accepted{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-completed{
+    background:#f3e8ff;
+    color:#7e22ce;
+}
+
+/* RENEW */
+
+.renew-status{
+    width:fit-content;
+    padding:6px 10px;
+    border-radius:10px;
+    font-size:10px;
+    font-weight:700;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.gray{
+    background:#f3f4f6;
+    color:#6b7280;
+}
+
+/* DETAILS */
+
+.renew-details{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    min-width:170px;
+}
+
+.renew-item{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    background:#f9fafb;
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:10px;
+}
+
+.label{
+    color:#6b7280;
+    font-weight:600;
+}
+
+.value{
+    color:#111827;
+    font-weight:700;
+}
+
+/* TIMELINE */
+
+.timeline-box{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.timeline-step{
+    padding:7px 9px;
+    border-radius:10px;
+    font-size:10px;
+    font-weight:700;
+}
+
+.step-created{
+    background:#e0f2fe;
+    color:#0369a1;
+}
+
+.step-renew{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.step-accept{
+    background:#dcfce7;
+    color:#166534;
+}
+
+/* BUTTON */
+
+.edit-btn{
+    height:34px;
+    padding:0 14px;
+    border:none;
+    border-radius:10px;
+    background:#111827;
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* MODAL */
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+}
+
+.modal-card{
+    width:450px;
+    background:#fff;
+    border-radius:22px;
+    padding:24px;
+}
+
+.modal-title{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+.form-group{
+    margin-bottom:16px;
+}
+
+.form-label{
+    display:block;
+    margin-bottom:8px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.form-control{
+    width:100%;
+    height:46px;
+    border:1px solid #dbe1ea;
+    border-radius:12px;
+    padding:0 14px;
+    font-size:13px;
+}
+
+.save-btn{
+    width:100%;
+    height:48px;
+    border:none;
+    border-radius:14px;
+    background:#2563eb;
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+}
+/* view more*/ 
+.expiry-alert-wrap{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    margin-bottom:20px;
+}
+
+.expiry-alert{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    background:#fff7ed;
+
+    border:1px solid #fed7aa;
+
+    border-radius:12px;
+
+    padding:14px 16px;
+}
+
+.expiry-alert-text{
+
+    font-size:13px;
+
+    color:#9a3412;
+
+    line-height:1.6;
+}
+
+.expiry-close{
+
+    width:28px;
+
+    height:28px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    color:#9a3412;
+
+    font-size:13px;
+
+    cursor:pointer;
+
+    flex-shrink:0;
+}
+
+/* HIDE EXTRA */
+
+.extra-alert{
+
+    display:none;
+}
+
+/* VIEW MORE */
+
+.view-more-wrap{
+
+    display:flex;
+
+    justify-content:flex-end;
+}
+
+.view-more-btn{
+
+    font-size:13px;
+
+    color:#2563eb;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.view-more-btn:hover{
+
+    text-decoration:underline;
+}
+
+@media(max-width:768px){
+
+    .expiry-alert{
+
+        align-items:flex-start;
+    }
+
+    .expiry-alert-text{
+
+        font-size:12px;
+    }
+
+}
+/* =========================================
+   MOBILE RESPONSIVE FIX
+========================================= */
+
+@media(max-width:768px){
+
+    .dashboard-page,
+    .pg-wrap{
+        padding:14px;
+    }
+
+    /* HEADER */
+
+    .dashboard-heading{
+        font-size:22px;
+        line-height:1.4;
+    }
+
+    .dashboard-subheading{
+        font-size:13px;
+    }
+
+    /* TABLE HEADER */
+
+    .table-header{
+        flex-direction:column;
+        align-items:stretch;
+        gap:16px;
+        padding:16px;
+    }
+
+    .card-title{
+        font-size:18px;
+    }
+
+    /* FILTER BAR */
+
+    .filter-bar{
+        display:flex;
+        flex-direction:column;
+        width:100%;
+        gap:12px;
+    }
+
+    .filter-input,
+    .filter-select{
+        width:100%;
+        min-width:100%;
+        height:46px;
+        font-size:14px;
+        border-radius:12px;
+        padding:0 14px;
+    }
+
+    /* SEARCH BUTTON */
+
+    .filter-btn{
+        width:100%;
+        height:48px;
+        border-radius:12px;
+        font-size:14px;
+        font-weight:700;
+        padding: 10px 10px !important;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    /* TABLE */
+
+    .table-responsive{
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+    }
+
+    .lead-table{
+        min-width:950px;
+    }
+
+    /* MODAL */
+
+    .modal-card{
+        width:95%;
+        padding:20px;
+        border-radius:18px;
+    }
+
+    .modal-title{
+        font-size:20px;
+    }
+
+    /* PAGINATION */
+
+    .tbl-footer{
+        padding:16px;
+        justify-content:center;
+    }
+
+    .page-btns{
+        justify-content:center;
+    }
+
+    .pg-btn{
+        min-width:38px;
+        height:38px;
+        font-size:12px;
+    }
+
+    /* ALERT */
+
+    .expiry-alert{
+        flex-direction:row;
+        align-items:flex-start;
+        gap:10px;
+        padding:12px;
+    }
+
+    .expiry-alert-text{
+        font-size:11px;
+        line-height:1.5;
+    }
+
+}
+
+</style>
+
+<div class="pg-wrap">
+
+    <h2 class="dashboard-heading">
+       Admin Renewal Management
+    </h2>
+
+    <p class="dashboard-subheading">
+        Track renewals and booking lifecycle
+    </p>
+
+    <div class="expiry-alert-wrap">
+        {% for booking in expiring_bookings %}
+            {% if booking.show_renew_button %}
+            <div
+                class="expiry-alert {% if forloop.counter > 2 %}extra-alert{% endif %}"
+                id="expiry-alert-{{ booking.id }}"
+                data-id="{{ booking.id }}"
+            >
+                <div class="expiry-alert-text">
+                    🔔 
+                    <strong>{{ booking.user.first_name }}</strong> 
+                    service 
+                    <strong>{{ booking.order_id }}</strong> 
+                    is expiring soon
+                </div>
+
+                <button
+                    class="expiry-close"
+                    onclick="closeExpiryAlert('{{ booking.id }}')"
+                >
+                    ✕
+                </button>
+            </div>
+            {% endif %}
+        {% endfor %}
+
+        {% if expiring_bookings|length > 2 %}
+        <div class="view-more-wrap">
+            <span
+                class="view-more-btn"
+                onclick="toggleAlerts()"
+                id="toggleBtn"
+            >
+                View More
+            </span>
+        </div>
+        {% endif %}
+    </div>
+    <div class="table-card">
+        <div class="table-header">
+            <div class="card-title">
+               Renewal Tracking Leads
+            </div>
+
+            <form method="GET" class="filter-bar">
+                <input
+                    type="text"
+                    name="customer"
+                    placeholder="Customer"
+                    class="filter-input"
+                >
+
+                <input
+                    type="text"
+                    name="vendor"
+                    placeholder="Vendor"
+                    class="filter-input"
+                >
+
+                <select
+                    name="renewal_status"
+                    class="filter-select"
+                >
+                    <option value="">All Renewals</option>
+                    <option value="renewed">Renewed</option>
+                    <option value="pending">Pending</option>
+                </select>
+
+                <button type="submit" class="filter-btn">Apply</button>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="lead-table">
+                <thead>
+                    <tr>
+                        <th>Sl.No</th>
+                        <th>Service ID</th>
+                        <th>Customer</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Renewal</th>
+                        <th>Duration</th>
+                        <th>Timeline</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+                        <td>
+                            <div class="order-id">{{ booking.order_id }}</div>
+                            <div class="small-text">{{ booking.created_at|date:"d M Y" }}</div>
+                        </td>
+                        <td>
+                            <div class="customer-name">{{ booking.user.first_name }}</div>
+                            <div class="small-text">{{ booking.phone }}</div>
+                        </td>
+                        <td>
+                            <div class="service-title">{{ booking.service.s_title }}</div>
+                            <div class="small-text">{{ booking.category }}</div>
+                        </td>
+                        <td>
+                            <div class="status-badge status-{{ booking.status|lower }}">
+                                {{ booking.get_status_display }}
+                            </div>
+                        </td>
+                        <td>
+                            {% if booking.renewal_requested %}
+                            <div class="renew-status pending">Renewal Requested</div>
+                            {% elif booking.is_renewed %}
+                            <div class="renew-status success">Renewed</div>
+                            {% else %}
+                            <div class="renew-status gray">No Renewal</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if booking.start_date and booking.end_date %}
+                            <div class="renew-details">
+                                <div class="renew-item">
+                                    <span class="label">Start</span>
+                                    <span class="value">{{ booking.start_date }}</span>
+                                </div>
+                                <div class="renew-item">
+                                    <span class="label">End</span>
+                                    <span class="value">{{ booking.end_date }}</span>
+                                </div>
+                                <div class="renew-item">
+                                    <span class="label">Days</span>
+                                    <span class="value">{{ booking.total_days }}</span>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="renew-details">
+                                <div class="renew-item">
+                                    <span class="label">Date</span>
+                                    <span class="value">{{ booking.scheduled_date }}</span>
+                                </div>
+                                <div class="renew-item">
+                                    <span class="label">Time</span>
+                                    <span class="value">{{ booking.scheduled_time }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="timeline-box">
+                                <div class="timeline-step step-created">Created</div>
+                                {% if booking.renewal_requested %}
+                                <div class="timeline-step step-renew">Renewal Requested</div>
+                                {% endif %}
+                                {% if booking.is_renewed %}
+                                <div class="timeline-step step-accept">Vendor Accepted</div>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <button
+                                onclick="openEditModal(
+                                    '{{ booking.id }}',
+                                    '{{ booking.start_date|default:'' }}',
+                                    '{{ booking.end_date|default:'' }}',
+                                    '{{ booking.scheduled_date|default:'' }}',
+                                    '{{ booking.scheduled_time|default:'' }}'
+                                )"
+                                class="edit-btn"
+                            >
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if page_obj %}
+        <div class="tbl-footer">
+            <div class="page-btns">
+                {% if page_obj.has_previous %}
+                <a class="pg-btn" href="?page={{ page_obj.previous_page_number }}">‹</a>
+                {% endif %}
+
+                <span class="pg-btn active">{{ page_obj.number }}</span>
+
+                {% if page_obj.has_next %}
+                <a class="pg-btn" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                <a class="pg-btn" href="?page={{ page_obj.next_page_number }}">›</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="modal-overlay" id="editModal">
+    <div class="modal-card">
+        <div class="modal-title">Update Booking</div>
+        <form method="POST" action="{% url 'admin_renewal_dashboard' %}">
+            {% csrf_token %}
+            <input type="hidden" name="booking_id" id="booking_id">
+
+            <div id="multipleDaysBox">
+                <div class="form-group">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" name="start_date" id="start_date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">End Date</label>
+                    <input type="date" name="end_date" id="end_date" class="form-control">
+                </div>
+            </div>
+
+            <div id="singleDayBox">
+                <div class="form-group">
+                    <label class="form-label">Scheduled Date</label>
+                    <input type="date" name="scheduled_date" id="scheduled_date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Scheduled Time</label>
+                    <select name="scheduled_time" id="scheduled_time" class="form-control">
+                        <option value="">Select Time</option>
+                        <option value="09 AM - 11 AM">09 AM - 11 AM</option>
+                        <option value="11 AM - 01 PM">11 AM - 01 PM</option>
+                        <option value="01 PM - 03 PM">01 PM - 03 PM</option>
+                        <option value="03 PM - 05 PM">03 PM - 05 PM</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="save-btn">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleAlerts(){
+    const alerts = document.querySelectorAll(".extra-alert");
+    const btn = document.getElementById("toggleBtn");
+    if (!alerts.length) return;
+
+    let isHidden = alerts[0].style.display !== "flex";
+
+    alerts.forEach(alert => {
+        // Only toggle alerts that haven't been dismissed by the user
+        const bookingId = alert.dataset.id;
+        if (localStorage.getItem("expiry_closed_" + bookingId) !== "true") {
+            alert.style.display = isHidden ? "flex" : "none";
+        }
+    });
+
+    btn.innerText = isHidden ? "Show Less" : "View More";
+}
+
+function openEditModal(bookingId, startDate, endDate, scheduledDate, scheduledTime){
+    document.getElementById("editModal").style.display = "flex";
+    document.getElementById("booking_id").value = bookingId;
+    document.getElementById("start_date").value = startDate;
+    document.getElementById("end_date").value = endDate;
+    document.getElementById("scheduled_date").value = scheduledDate;
+    document.getElementById("scheduled_time").value = scheduledTime;
+
+    if(startDate && endDate){
+        document.getElementById("multipleDaysBox").style.display = "block";
+        document.getElementById("singleDayBox").style.display = "none";
+    } else {
+        document.getElementById("multipleDaysBox").style.display = "none";
+        document.getElementById("singleDayBox").style.display = "block";
+    }
+}
+
+window.onclick = function(e){
+    let modal = document.getElementById("editModal");
+    if(e.target == modal){
+        modal.style.display = "none";
+    }
+}
+
+window.onload = function(){
+    const alerts = document.querySelectorAll(".expiry-alert");
+    alerts.forEach(function(alert){
+        const bookingId = alert.dataset.id;
+        if(localStorage.getItem("expiry_closed_" + bookingId) === "true"){
+            alert.style.display = "none";
+            // Remove extra-alert class if it's explicitly closed to balance layout math
+            alert.classList.remove("extra-alert"); 
+        }
+    });
+}
+
+function closeExpiryAlert(id){
+    const alertBox = document.getElementById("expiry-alert-" + id);
+    if(alertBox){
+        alertBox.style.display = "none";
+        localStorage.setItem("expiry_closed_" + id, "true");
+    }
+}
+</script>
+
+{% endblock %}

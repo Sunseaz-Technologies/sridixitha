@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    background:#f4f7fb;
+    font-family:'DM Sans',sans-serif;
+}
+
+.timeline-page{
+    max-width:950px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.timeline-card{
+    background:#fff;
+    border-radius:24px;
+    padding:34px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 2px 16px rgba(0,0,0,0.04);
+}
+
+.page-title{
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:8px;
+    color:#111827;
+}
+
+.page-subtitle{
+    font-size:14px;
+    color:#6b7280;
+    margin-bottom:30px;
+}
+
+.booking-box{
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:24px;
+    margin-bottom:34px;
+}
+
+.booking-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:24px;
+}
+
+.booking-item{
+    display:flex;
+    flex-direction:column;
+}
+
+.booking-label{
+    font-size:11px;
+    font-weight:700;
+    color:#6b7280;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    margin-bottom:8px;
+}
+
+.booking-value{
+    font-size:15px;
+    font-weight:700;
+    color:#111827;
+}
+
+.timeline{
+    position:relative;
+    margin-left:12px;
+}
+
+.timeline::before{
+    content:'';
+    position:absolute;
+    left:10px;
+    top:0;
+    width:2px;
+    height:100%;
+    background:#dbeafe;
+}
+
+.timeline-item{
+    position:relative;
+    padding-left:46px;
+    padding-bottom:34px;
+}
+
+.timeline-item:last-child{
+    padding-bottom:0;
+}
+
+.timeline-dot{
+    position:absolute;
+    left:0;
+    top:4px;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#2563eb;
+    border:5px solid #dbeafe;
+}
+
+.timeline-status{
+    font-size:17px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:8px;
+    text-transform:capitalize;
+}
+
+.timeline-message{
+    font-size:14px;
+    color:#4b5563;
+    line-height:1.8;
+    margin-bottom:8px;
+}
+
+.highlight-text{
+    font-weight:700;
+    color:#2563eb;
+}
+
+.timeline-date{
+    font-size:13px;
+    color:#9ca3af;
+    font-weight:500;
+}
+
+.empty-box{
+    text-align:center;
+    padding:50px 20px;
+}
+
+.empty-icon{
+    font-size:42px;
+    margin-bottom:14px;
+}
+
+.empty-title{
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:8px;
+}
+
+.empty-subtitle{
+    font-size:14px;
+    color:#6b7280;
+}
+
+@media(max-width:768px){
+
+    .timeline-page{
+        padding:12px;
+    }
+
+    .timeline-card{
+        padding:24px 18px;
+    }
+
+    .booking-grid{
+        grid-template-columns:1fr;
+        gap:18px;
+    }
+
+    .page-title{
+        font-size:26px;
+    }
+
+    .timeline-item{
+        padding-left:40px;
+    }
+
+}
+
+</style>
+
+<div class="timeline-page">
+
+    <div class="timeline-card">
+
+        <div class="page-title">
+            Service Timeline
+        </div>
+
+        <div class="page-subtitle">
+            Track all booking status updates and activity history
+        </div>
+
+        <div class="booking-box">
+
+            <div class="booking-grid">
+
+                <div class="booking-item">
+
+                    <div class="booking-label">
+                        Service ID
+                    </div>
+
+                    <div class="booking-value">
+                        {{ booking.order_id }}
+                    </div>
+
+                </div>
+
+                <div class="booking-item">
+
+                    <div class="booking-label">
+                        Service
+                    </div>
+
+                    <div class="booking-value">
+                        {{ booking.service.s_title }}
+                    </div>
+
+                </div>
+
+                <div class="booking-item">
+
+                    <div class="booking-label">
+                        Vendor
+                    </div>
+
+                    <div class="booking-value">
+
+                        {% if booking.vendor %}
+
+                            {{ booking.vendor.first_name }}
+
+                        {% else %}
+
+                            Not Assigned
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% if history %}
+
+        <div class="timeline">
+
+            {% for h in history %}
+
+            <div class="timeline-item">
+
+                <div class="timeline-dot"></div>
+
+                <div class="timeline-status">
+
+                    {{ h.get_status_display }}
+
+                </div>
+
+                <div class="timeline-message">
+
+                    {% if h.updated_by.role == "admin" %}
+
+                        {% if h.status == "assigned" %}
+
+                            Admin assigned vendor
+
+                            <span class="highlight-text">
+
+                                {{ booking.vendor.first_name }}
+
+                            </span>
+
+                            to this booking
+
+                        {% else %}
+
+                            Admin changed booking status to
+
+                            <span class="highlight-text">
+
+                                {{ h.get_status_display }}
+
+                            </span>
+
+                        {% endif %}
+
+                    {% elif h.updated_by.role == "vendor" %}
+
+                        Vendor updated booking status to
+
+                        <span class="highlight-text">
+
+                            {{ h.get_status_display }}
+
+                        </span>
+
+                    {% else %}
+
+                        Booking status updated to
+
+                        <span class="highlight-text">
+
+                            {{ h.get_status_display }}
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="timeline-date">
+
+                    {{ h.created_at|date:"d M Y • h:i A" }}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-box">
+
+            <div class="empty-icon">
+                📦
+            </div>
+
+            <div class="empty-title">
+                No Timeline History
+            </div>
+
+            <div class="empty-subtitle">
+                Booking updates and status history will appear here
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

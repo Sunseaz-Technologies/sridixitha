@@ -1,0 +1,452 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+
+:root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#111827;
+    --sub:#6b7280;
+    --primary:#2563eb;
+}
+
+body{
+    background:var(--bg);
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.dashboard-container{
+    max-width:1200px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+}
+
+.page-title{
+    font-size:30px;
+    font-weight:800;
+    color:var(--text);
+    margin-bottom:6px;
+}
+
+.page-subtitle{
+    color:var(--sub);
+    font-size:14px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.table-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(15,23,42,.05);
+}
+
+/* =========================
+   CARD HEADER
+========================= */
+
+.card-header-flex{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+    padding:20px 24px;
+    border-bottom:1px solid var(--border);
+    background:#fafafa;
+}
+
+.card-title{
+    font-size:18px;
+    font-weight:700;
+    color:var(--text);
+}
+
+.card-desc{
+    font-size:13px;
+    color:var(--sub);
+    margin-top:4px;
+}
+
+/* =========================
+   BODY
+========================= */
+
+.card-body-custom{
+    padding:28px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group{
+    margin-bottom:24px;
+}
+
+.form-label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:10px;
+}
+
+.textarea-custom{
+    width:100%;
+    min-height:180px;
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+    font-size:14px;
+    color:var(--text);
+    background:#fff;
+    resize:none;
+    transition:.2s ease;
+    line-height:1.7;
+}
+
+.textarea-custom:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(37,99,235,.08);
+}
+
+.select-custom{
+    width:100%;
+    height:52px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:0 16px;
+    font-size:13px;
+    font-weight:600;
+    background:#fff;
+    color:var(--text);
+    transition:.2s ease;
+}
+
+.select-custom:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(37,99,235,.08);
+}
+
+/* =========================
+   PRIORITY INFO
+========================= */
+
+.priority-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-top:18px;
+}
+
+.priority-card{
+    border-radius:16px;
+    padding:18px;
+    border:1px solid var(--border);
+}
+
+.priority-title{
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:6px;
+}
+
+.priority-text{
+    font-size:12px;
+    line-height:1.6;
+}
+
+/* LOW */
+
+.low-card{
+    background:#eff6ff;
+    border-color:#bfdbfe;
+}
+
+.low-card .priority-title{
+    color:#2563eb;
+}
+
+.low-card .priority-text{
+    color:#1e40af;
+}
+
+/* MEDIUM */
+
+.medium-card{
+    background:#fff7ed;
+    border-color:#fed7aa;
+}
+
+.medium-card .priority-title{
+    color:#ea580c;
+}
+
+.medium-card .priority-text{
+    color:#9a3412;
+}
+
+/* HIGH */
+
+.high-card{
+    background:#fef2f2;
+    border-color:#fecaca;
+}
+
+.high-card .priority-title{
+    color:#dc2626;
+}
+
+.high-card .priority-text{
+    color:#991b1b;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.form-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:34px;
+}
+
+.submit-btn{
+    height:48px;
+    padding:0 24px;
+    border:none;
+    border-radius:14px;
+    background:var(--primary);
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+    transition:.2s ease;
+    box-shadow:0 4px 12px rgba(37,99,235,.18);
+}
+
+.submit-btn:hover{
+    background:#1d4ed8;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .dashboard-container{
+        padding:14px;
+    }
+
+    .page-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .card-body-custom{
+        padding:20px;
+    }
+
+    .priority-grid{
+        grid-template-columns:1fr;
+    }
+
+    .submit-btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+<div class="dashboard-container">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="page-title">
+                Complaint Management
+            </div>
+
+            <div class="page-subtitle">
+                Submit complaints and track support resolution
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="table-card">
+
+        <!-- CARD HEADER -->
+
+        <div class="card-header-flex">
+
+            <div>
+
+                <div class="card-title">
+                    Raise Complaint
+                </div>
+
+                <div class="card-desc">
+                    Explain your issue clearly for faster support assistance
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                <!-- MESSAGE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+
+                        Complaint Message
+
+                    </label>
+
+                    <textarea
+                        name="message"
+                        class="textarea-custom"
+                        placeholder="Describe your issue here..."
+                        required></textarea>
+
+                </div>
+
+                <!-- PRIORITY -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+
+                        Select Priority
+
+                    </label>
+
+                    <select
+                        name="priority"
+                        class="select-custom">
+
+                        <option value="low">
+                            Low Priority
+                        </option>
+
+                        <option value="medium" selected>
+                            Medium Priority
+                        </option>
+
+                        <option value="high">
+                            High Priority
+                        </option>
+
+                    </select>
+
+                    <!-- PRIORITY INFO -->
+
+                    <div class="priority-grid">
+
+                        <div class="priority-card low-card">
+
+                            <div class="priority-title">
+                                Low Priority
+                            </div>
+
+                            <div class="priority-text">
+                                Small issues that do not affect
+                                core functionality.
+                            </div>
+
+                        </div>
+
+                        <div class="priority-card medium-card">
+
+                            <div class="priority-title">
+                                Medium Priority
+                            </div>
+
+                            <div class="priority-text">
+                                Important issues needing
+                                regular support attention.
+                            </div>
+
+                        </div>
+
+                        <div class="priority-card high-card">
+
+                            <div class="priority-title">
+                                High Priority
+                            </div>
+
+                            <div class="priority-text">
+                                Critical problems requiring
+                                immediate resolution.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTON -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="submit-btn">
+
+                        Submit Complaint
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

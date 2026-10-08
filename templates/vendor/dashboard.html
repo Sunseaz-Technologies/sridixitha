@@ -1,0 +1,571 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+/* CONTAINER */
+
+.dashboard-container{
+    padding:1.2rem;
+}
+
+/* HEADER */
+
+.dashboard-topbar{
+    margin-bottom:1.2rem;
+}
+
+.dashboard-heading{
+    margin:0;
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+}
+
+.dashboard-subheading{
+    margin-top:.35rem;
+    font-size:13px;
+    color:#6b7280;
+}
+
+/* DASHBOARD CARDS */
+
+.dashboard-cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1rem;
+    margin-bottom:1.5rem;
+}
+
+.dashboard-card{
+    background:#fff;
+    border-radius:14px;
+    padding:1.2rem;
+    border:1px solid #ececf3;
+    transition:.2s;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 14px rgba(0,0,0,.05);
+}
+
+.card-label{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:.7rem;
+    font-weight:500;
+}
+
+.card-count{
+    font-size:32px;
+    font-weight:700;
+    color:#111827;
+}
+
+.card-text{
+    margin-top:.7rem;
+    font-size:12px;
+    color:#9ca3af;
+}
+
+/* CARD COLORS */
+
+.total-card{
+    border-left:4px solid #4f46e5;
+}
+
+.assigned-card{
+    border-left:4px solid #2563eb;
+}
+
+.progress-card{
+    border-left:4px solid #f59e0b;
+}
+
+.completed-card{
+    border-left:4px solid #16a34a;
+}
+
+.cancel-card{
+    border-left:4px solid #dc2626;
+}
+
+.pending-card{
+    border-left:4px solid #9333ea;
+}
+
+.customer-card{
+    border-left:4px solid #0891b2;
+}
+
+/* ANALYTICS */
+
+.analytics-wrapper{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:1.2rem;
+    margin-top:1.5rem;
+}
+
+/* CHART */
+
+.chart-card{
+    background:#fff;
+    border:1px solid #ececf3;
+    border-radius:14px;
+    padding:1.2rem;
+}
+
+.chart-header{
+    margin-bottom:1rem;
+}
+
+.chart-header h3{
+    margin:0;
+    font-size:18px !important;
+    color:#111827;
+}
+
+.chart-header p{
+    margin-top:.35rem;
+    font-size:13px;
+    color:#6b7280;
+}
+
+.chart-container{
+    height:320px;
+}
+
+/* RECENT CARD */
+
+.recent-card{
+    background:#fff;
+    border-radius:14px;
+    border:1px solid #ececf3;
+    overflow:hidden;
+}
+
+.recent-header{
+    padding:1rem 1.2rem;
+    border-bottom:1px solid #f3f4f6;
+}
+
+.recent-header h3{
+    margin:0;
+    font-size:18px !important;
+    color:#111827;
+}
+
+.recent-body{
+    padding:1rem 1.2rem;
+}
+
+.recent-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-bottom:1rem;
+    margin-bottom:1rem;
+    border-bottom:1px solid #f3f4f6;
+}
+
+.recent-item:last-child{
+    margin-bottom:0;
+    padding-bottom:0;
+    border-bottom:none;
+}
+
+.recent-left h4{
+    margin:0;
+    font-size:15px !important;
+    color:#111827;
+}
+
+.recent-left p{
+    margin-top:.3rem;
+    font-size:13px;
+    color:#6b7280;
+}
+
+.status-badge{
+    background:#eef2ff;
+    color:#4f46e5;
+    padding:.45rem .8rem;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:600;
+    text-transform:capitalize;
+}
+
+.empty-box{
+    text-align:center;
+    padding:2rem;
+    font-size:14px;
+    color:#9ca3af;
+}
+.dashboard-container{
+    padding: 1.2rem;
+}
+
+.dashboard-topbar{
+    margin-bottom: 1.2rem;
+}
+
+.dashboard-heading{
+    margin: 0;
+    font-size: 24px !important;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+}
+
+.dashboard-subheading{
+    margin-top: .35rem;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* REMOVE EXTRA SPACE */
+
+.dashboard-cards{
+    margin-top: 0;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:992px){
+
+    .dashboard-cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .analytics-wrapper{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:576px){
+
+    .dashboard-cards{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+
+<div class="dashboard-container">
+
+    <!-- HEADER -->
+    <div>
+
+        <h2 class="dashboard-heading">
+            Vendor Dashboard
+        </h2>
+        <p class="dashboard-subheading">
+                Manage leads, customers and service activities.
+        </p>
+
+    </div>
+
+
+    <!-- CARDS -->
+
+    <div class="dashboard-cards">
+
+        <div class="dashboard-card total-card">
+
+            <div class="card-label">
+                Total Leads
+            </div>
+
+            <div class="card-count">
+                {{ total_leads }}
+            </div>
+
+            <div class="card-text">
+                Total leads received
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card assigned-card">
+
+            <div class="card-label">
+                Assigned Leads
+            </div>
+
+            <div class="card-count">
+                {{ assigned_leads }}
+            </div>
+
+            <div class="card-text">
+                Assigned service leads
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card progress-card">
+
+            <div class="card-label">
+                In Progress
+            </div>
+
+            <div class="card-count">
+                {{ progress_leads }}
+            </div>
+
+            <div class="card-text">
+                Ongoing works
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card completed-card">
+
+            <div class="card-label">
+                Completed Leads
+            </div>
+
+            <div class="card-count">
+                {{ completed_leads }}
+            </div>
+
+            <div class="card-text">
+                Successfully completed
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card cancel-card">
+
+            <div class="card-label">
+                Cancelled Leads
+            </div>
+
+            <div class="card-count">
+                {{ cancelled_leads }}
+            </div>
+
+            <div class="card-text">
+                Cancelled bookings
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card pending-card">
+
+            <div class="card-label">
+                Pending Leads
+            </div>
+
+            <div class="card-count">
+                {{ pending_leads }}
+            </div>
+
+            <div class="card-text">
+                Waiting for response
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card customer-card">
+
+            <div class="card-label">
+                Customers
+            </div>
+
+            <div class="card-count">
+                {{ total_customers }}
+            </div>
+
+            <div class="card-text">
+                Total unique customers
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ANALYTICS -->
+
+    <div class="analytics-wrapper">
+
+        <!-- CHART -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <h3>
+                    Monthly Leads
+                </h3>
+
+                <p>
+                    Month wise leads overview
+                </p>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas id="monthlyChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT BOOKINGS -->
+
+        <div class="recent-card">
+
+            <div class="recent-header">
+
+                <h3>
+                    Recent Bookings
+                </h3>
+
+            </div>
+
+            <div class="recent-body">
+
+                {% for lead in recent_leads %}
+
+                <div class="recent-item">
+
+                    <div class="recent-left">
+
+                        <h4>
+                            {{ lead.name }}
+                        </h4>
+
+                        <p>
+                            {{ lead.service.name }}
+                        </p>
+
+                    </div>
+
+                    <div class="recent-right">
+
+                        <span class="status-badge">
+                            {{ lead.status }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <div class="empty-box">
+
+                    No recent bookings found.
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('monthlyChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: [
+
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+
+        ],
+
+        datasets: [{
+
+            label: 'Monthly Leads',
+
+            data: [
+
+                {{ jan_leads }},
+                {{ feb_leads }},
+                {{ mar_leads }},
+                {{ apr_leads }},
+                {{ may_leads }},
+                {{ jun_leads }},
+                {{ jul_leads }},
+                {{ aug_leads }},
+                {{ sep_leads }},
+                {{ oct_leads }},
+                {{ nov_leads }},
+                {{ dec_leads }}
+
+            ],
+
+            backgroundColor:'#4f46e5',
+            borderRadius:8
+
+        }]
+
+    },
+
+    options: {
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                display:false
+            }
+        },
+
+        scales:{
+            y:{
+                beginAtZero:true
+            }
+        }
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

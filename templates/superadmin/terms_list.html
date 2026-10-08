@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet"
+      href="{% static 'assets/css/style.css' %}">
+
+<style>
+
+.page-wrap{
+    padding:24px;
+}
+
+/* CARD */
+
+.card{
+    background:#ffffff;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    overflow:hidden;
+    margin-top:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.04);
+}
+
+/* CARD HEADER */
+
+.card-header{
+    padding:18px 22px;
+    border-bottom:1px solid #eef2f7;
+    background:#ffffff;
+}
+
+.card-header-flex{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.card-title{
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+}
+
+/* TABLE */
+
+.table-wrap{
+    width:100%;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#f8fafc;
+}
+
+thead th{
+    padding:16px;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    color:#6b7280;
+    text-align:left;
+    border-bottom:1px solid #e5e7eb;
+    white-space:nowrap;
+}
+
+tbody td{
+    padding:18px 16px;
+    border-bottom:1px solid #f1f5f9;
+    font-size:14px;
+    color:#374151;
+    vertical-align:middle;
+}
+
+tbody tr:hover{
+    background:#fafcff;
+}
+
+/* USER */
+
+.user-info{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.user-name{
+    font-size:14px;
+    font-weight:700;
+    color:#111827;
+}
+
+.user-email{
+    font-size:12px;
+    color:#6b7280;
+}
+
+/* PHONE */
+
+.phone-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:#f3f4f6;
+    color:#374151;
+    padding:7px 14px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* DATE */
+
+.date-text{
+    font-size:13px;
+    color:#6b7280;
+    font-weight:500;
+}
+
+/* BUTTON */
+
+.view-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px 18px;
+    border-radius:10px;
+    background:#2563eb;
+    color:#ffffff;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    transition:.2s ease;
+}
+
+.view-btn:hover{
+    background:#1d4ed8;
+    color:#ffffff;
+}
+
+/* EMPTY */
+
+.empty-row{
+    text-align:center;
+    padding:40px 20px !important;
+    color:#6b7280;
+    font-size:14px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .page-wrap{
+        padding:15px;
+    }
+
+    thead th,
+    tbody td{
+        padding:14px;
+    }
+
+}
+
+</style>
+
+
+<div class="page-wrap">
+
+    <!-- HEADER -->
+
+    <div>
+
+        <h2 class="dashboard-heading">
+            Customer Terms & Conditions Records
+        </h2>
+
+        <p class="dashboard-subheading">
+            Customer Order Management
+        </p>
+
+    </div>
+
+
+    <!-- CARD -->
+
+    <div class="card">
+
+        <!-- CARD HEADER -->
+
+        <div class="card-header card-header-flex">
+
+            <div class="card-title">
+                Accepted Terms & Conditions
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>S.No</th>
+
+                        <th>Customer ID</th>
+
+                        <th>Customer Details</th>
+
+                        <th>Phone</th>
+
+                        <th>Accepted Date</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for i in forms %}
+
+                    <tr>
+
+                        <td>
+                            {{ forloop.counter }}
+                        </td>
+
+                        <td>
+                            SDE-{{ i.customer.id  }}
+                        </td>
+
+                        <td>
+
+                            <div class="user-info">
+
+                                <span class="user-name">
+                                    {{ i.customer.first_name }}
+                                </span>
+
+                                <span class="user-email">
+                                    {{ i.customer.email }}
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="phone-badge">
+                                {{ i.customer.phone }}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="date-text">
+
+                                {{ i.accepted_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <a href="{% url 'terms_details' i.id %}"
+                               class="view-btn">
+
+                                View Form
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="6"
+                            class="empty-row">
+
+                            No Accepted Forms Found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

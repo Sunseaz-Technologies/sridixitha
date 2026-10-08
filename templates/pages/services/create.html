@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="service-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h6 class="fw-semibold mb-0">
+
+                Add Service
+
+            </h6>
+
+            <p class="page-subtitle">
+
+                Create and publish latest news updates
+
+            </p>
+
+        </div>
+
+                <div class="header-right">
+
+            <div class="banner-badge">
+                Create Service
+
+            </div>
+
+            <a href="{% url 'services.list' %}"
+               class="list-btn">
+
+                <i class="bi bi-images"></i>
+
+               Service List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="service-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Add New Service
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Upload service images and enter service details
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <!-- ICON IMAGE -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Upload Service Icon Image
+
+                        </label>
+
+                        <div class="image-box">
+
+                            <img id="iconPreview">
+
+                        </div>
+
+                        <input type="file" name="serviceicon" class="file-input" onchange="previewIcon(event)" required>
+
+                    </div>
+
+                    <!-- BACKGROUND IMAGE -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Upload Background Image
+
+                        </label>
+
+                        <div class="image-box">
+
+                            <img id="bgPreview">
+
+                        </div>
+
+                        <input type="file" name="service_image" class="file-input" onchange="previewBg(event)" required>
+
+                    </div>
+
+                    <!-- SERVICE NAME -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+
+                            Service Name
+
+                        </label>
+
+                        <input type="text" name="servicename" class="form-control-custom"
+                            placeholder="Enter Service Name..." required>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'services.list' %}" class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <div class="right-btns">
+
+                        <button type="submit" name="save_add_more" class="save-more-btn">
+
+                            Save & Add More
+
+                        </button>
+
+                        <button type="submit" class="save-btn">
+
+                            Save
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- IMAGE PREVIEW SCRIPT -->
+
+<script>
+
+    function previewIcon(event) {
+
+        const reader = new FileReader();
+
+        reader.onload = function () {
+
+            document.getElementById(
+                'iconPreview'
+            ).src = reader.result;
+
+        }
+
+        reader.readAsDataURL(
+            event.target.files[0]
+        );
+
+    }
+
+    function previewBg(event) {
+
+        const reader = new FileReader();
+
+        reader.onload = function () {
+
+            document.getElementById(
+                'bgPreview'
+            ).src = reader.result;
+
+        }
+
+        reader.readAsDataURL(
+            event.target.files[0]
+        );
+
+    }
+
+</script>
+
+{% endblock %}

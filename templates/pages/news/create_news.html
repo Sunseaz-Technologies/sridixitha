@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="news-create-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h6 class="fw-semibold mb-0">
+
+                Add News
+
+            </h6>
+
+            <p class="page-subtitle">
+
+                Create and publish latest news updates
+
+            </p>
+
+        </div>
+
+                <div class="header-right">
+
+            <div class="banner-badge">
+                Create News
+
+            </div>
+
+            <a href="{% url 'news.list' %}"
+               class="list-btn">
+
+                <i class="bi bi-images"></i>
+
+                News List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="news-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <h5 class="card-title">
+
+                News Information
+
+            </h5>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <!-- HEADLINE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+
+                        Headlines
+
+                    </label>
+
+                    <textarea name="news_headline"
+                              class="form-control-custom"
+                              rows="6"
+                              placeholder="Enter news headlines here"
+                              required></textarea>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'news.list' %}"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="save-btn">
+
+                        Save News
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,732 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    background:#f4f7fb;
+   
+}
+
+.dashboard-wrapper{
+    padding:30px;
+}
+
+/* HEADER */
+
+.dashboard-header{
+    margin-bottom:30px;
+}
+
+.dashboard-title{
+    font-size:30px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:5px;
+}
+
+.dashboard-subtitle{
+    font-size:14px;
+    color:#6b7280;
+}
+
+/* CARDS */
+
+.cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:22px;
+    margin-bottom:30px;
+}
+
+.analytics-card{
+    background:#fff;
+    border-radius:24px;
+    padding:24px;
+    border:1px solid #e5e7eb;
+    transition:.2s ease;
+}
+
+.analytics-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 30px rgba(0,0,0,.06);
+}
+
+.card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.card-title{
+    font-size:14px;
+    font-weight:600;
+    color:#6b7280;
+}
+
+.card-icon{
+    width:52px;
+    height:52px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+.blue{
+    background:#dbeafe;
+}
+
+.green{
+    background:#dcfce7;
+}
+
+.orange{
+    background:#ffedd5;
+}
+
+.purple{
+    background:#ede9fe;
+}
+
+.red{
+    background:#fee2e2;
+}
+
+.cyan{
+    background:#cffafe;
+}
+
+.yellow{
+    background:#fef3c7;
+}
+
+.card-value{
+    font-size:34px;
+    font-weight:700;
+    color:#111827;
+}
+
+.card-text{
+    margin-top:8px;
+    color:#6b7280;
+    font-size:13px;
+}
+
+/* CHARTS */
+
+.chart-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+}
+
+.chart-card{
+    background:#fff;
+    border-radius:24px;
+    padding:24px;
+    border:1px solid #e5e7eb;
+}
+
+.chart-title{
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:20px;
+}
+
+.chart-box{
+    width:100%;
+    height:380px;
+}
+/* SMALL CLEAN CARDS */
+
+.cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:16px;
+    margin-bottom:28px;
+}
+
+.analytics-card{
+    background:#fff;
+    border:1px solid #eef2f7;
+    border-radius:18px;
+    padding:18px;
+    transition:.2s ease;
+    position:relative;
+    overflow:hidden;
+}
+
+.analytics-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 22px rgba(0,0,0,.05);
+}
+
+.analytics-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:4px;
+    background:#2563eb;
+}
+
+/* CARD TOP */
+
+.card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+}
+
+.card-title{
+    font-size:13px;
+    font-weight:600;
+    color:#6b7280;
+    margin-bottom:0;
+}
+
+/* ICON */
+
+.card-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+}
+
+/* COLORS */
+
+.blue{
+    background:#dbeafe;
+}
+
+.green{
+    background:#dcfce7;
+}
+
+.orange{
+    background:#ffedd5;
+}
+
+.purple{
+    background:#ede9fe;
+}
+
+/* VALUE */
+
+.card-value{
+    font-size:28px;
+    font-weight:700;
+    line-height:1;
+    color:#111827;
+    margin-bottom:8px;
+}
+
+/* TEXT */
+
+.card-text{
+    font-size:12px;
+    color:#9ca3af;
+    line-height:1.4;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .cards-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+    }
+
+    .analytics-card{
+        padding:16px;
+    }
+
+    .card-value{
+        font-size:22px;
+    }
+
+    .card-icon{
+        width:38px;
+        height:38px;
+        font-size:16px;
+    }
+
+}
+/* MOBILE */
+
+@media(max-width:991px){
+
+    .chart-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .dashboard-wrapper{
+        padding:15px;
+    }
+
+    .dashboard-title{
+        font-size:24px;
+    }
+
+}
+
+</style>
+
+<div class="dashboard-wrapper">
+
+    <!-- HEADER -->
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+    <div>
+
+        <h2 class="dashboard-heading">
+            Dashboard
+        </h2>
+
+        <p class="dashboard-subheading">
+            Monitor all users, vendors, bookings and analytics reports
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'export_dashboard_excel' %}"
+        class="btn btn-primary dashboard-download-btn">
+
+        ⬇ Download Excel
+
+    </a>
+
+</div>
+
+    <!-- CARDS -->
+
+    <div class="cards-grid">
+
+        <!-- CUSTOMERS -->
+
+        <div class="analytics-card">
+
+            <div class="card-top">
+
+                <div class="card-title">
+                    Total Custom..
+                </div>
+
+                <div class="card-icon blue">
+                    👥
+                </div>
+
+            </div>
+
+            <div class="card-value">
+                {{ total_customers }}
+            </div>
+
+            <div class="card-text">
+                Registered customer accounts
+            </div>
+
+        </div>
+
+        <!-- VENDORS -->
+
+        <div class="analytics-card">
+
+            <div class="card-top">
+
+                <div class="card-title">
+                    Total Vendors
+                </div>
+
+                <div class="card-icon green">
+                    🧑‍💼
+                </div>
+
+            </div>
+
+            <div class="card-value">
+                {{ total_vendors }}
+            </div>
+
+            <div class="card-text">
+                Active vendors in platform
+            </div>
+
+        </div>
+
+        <!-- ADMINS -->
+
+        <div class="analytics-card">
+
+            <div class="card-top">
+
+                <div class="card-title">
+                    Total Admins
+                </div>
+
+                <div class="card-icon purple">
+                    🛡️
+                </div>
+
+            </div>
+
+            <div class="card-value">
+                {{ total_admins }}
+            </div>
+
+            <div class="card-text">
+                Platform administrators
+            </div>
+
+        </div>
+
+        <!-- BOOKINGS -->
+
+        <div class="analytics-card">
+
+            <div class="card-top">
+
+                <div class="card-title">
+                    Total Bookings
+                </div>
+
+                <div class="card-icon orange">
+                    📦
+                </div>
+
+            </div>
+
+            <div class="card-value">
+                {{ total_bookings }}
+            </div>
+
+            <div class="card-text">
+                Overall booking requests
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!-- CHARTS -->
+
+    <div class="chart-grid">
+
+        <!-- PIE CHART -->
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                Show Booking Status
+            </div>
+
+            <div class="chart-box">
+
+                <canvas id="pieChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- BAR CHART -->
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                Show Monthly Leads
+            </div>
+
+            <div class="chart-box">
+
+                <canvas id="barChart"></canvas>
+
+            </div>
+
+        </div>
+<!-- SERVICE ANALYTICS -->
+
+<div class="chart-card mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div class="chart-title mb-0">
+            Category Wise Service Leads
+        </div>
+
+        <form method="GET">
+
+            <select
+                name="category"
+                class="form-select"
+                onchange="this.form.submit()"
+                style="
+                    min-width:220px;
+                    border-radius:12px;
+                    height:45px;
+                ">
+
+                <option value="">
+                    All Categories
+                </option>
+
+                {% for category in categories %}
+
+                <option
+                    value="{{ category.id }}"
+                    {% if selected_category == category.id|stringformat:"s" %}
+                    selected
+                    {% endif %}>
+
+                    {{ category.title }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+
+    <div class="chart-box">
+
+        <canvas id="serviceChart"></canvas>
+
+    </div>
+
+</div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PIE CHART */
+
+const pieCtx = document.getElementById('pieChart');
+
+if (pieCtx) {
+
+    new Chart(pieCtx, {
+
+        type:'doughnut',
+
+        data:{
+
+            labels:[
+
+                'Pending',
+                'Assigned',
+                'Accepted',
+                'In Progress',
+                'Completed',
+                'Cancelled'
+
+            ],
+
+            datasets:[{
+
+                data:[
+
+                    {{ total_pending }},
+                    {{ total_assigned }},
+                    {{ total_accepted }},
+                    {{ total_in_progress }},
+                    {{ total_completed }},
+                    {{ total_cancelled }}
+
+                ],
+
+                backgroundColor:[
+
+                    '#f59e0b',
+                    '#3b82f6',
+                    '#8b5cf6',
+                    '#06b6d4',
+                    '#16a34a',
+                    '#ef4444'
+
+                ],
+
+                borderWidth:0
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+            maintainAspectRatio:false,
+
+            cutout:'68%',
+
+            plugins:{
+
+                legend:{
+
+                    position:'bottom',
+
+                    labels:{
+                        usePointStyle:true,
+                        pointStyle:'circle',
+                        padding:18
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+
+/* MONTHLY LEADS CHART */
+
+const barCtx = document.getElementById('barChart');
+
+if (barCtx) {
+
+    new Chart(barCtx, {
+
+        type:'bar',
+
+        data:{
+
+            labels: {{ month_labels|safe }},
+
+            datasets:[{
+
+                label:'Monthly Leads',
+
+                data: {{ monthly_data|safe }},
+
+                backgroundColor:'#2563eb',
+
+                borderRadius:10,
+
+                barThickness:28
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+            maintainAspectRatio:false,
+
+            plugins:{
+
+                legend:{
+                    display:false
+                }
+
+            },
+
+            scales:{
+
+                y:{
+                    beginAtZero:true
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+
+/* SERVICE LEADS CHART */
+
+const serviceChart = document.getElementById('serviceChart');
+
+if (serviceChart) {
+
+    new Chart(serviceChart, {
+
+        type:'bar',
+
+        data:{
+
+            labels: {{ service_labels|safe }},
+
+            datasets:[{
+
+                label:'Service Leads',
+
+                data: {{ service_data|safe }},
+
+                backgroundColor:'#06b6d4',
+
+                borderRadius:10,
+
+                barThickness:28
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+            maintainAspectRatio:false,
+
+            plugins:{
+
+                legend:{
+                    display:false
+                }
+
+            },
+
+            scales:{
+
+                y:{
+                    beginAtZero:true
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+
+</script>
+
+{% endblock %}

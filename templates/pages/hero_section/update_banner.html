@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="banner-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                Banner Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Update and manage homepage banner information
+
+            </p>
+
+        </div>
+
+        <div class="header-right">
+
+            <div class="banner-badge">
+
+                Update Banner
+
+            </div>
+
+            <a href="{% url 'list.banner' %}"
+               class="list-btn">
+
+                <i class="bi bi-images"></i>
+
+                Banner List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="banner-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Update Banner Information
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Edit and update banner details and images
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <!-- IMAGE -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Upload Image
+
+                        </label>
+
+                        <div class="image-box">
+
+                            {% if banner.image %}
+
+                            <img id="preview"
+                                 src="{{ banner.image.url }}">
+
+                            {% else %}
+
+                            <img id="preview"
+                                 src="">
+
+                            {% endif %}
+
+                        </div>
+
+                        <input type="file"
+                               name="image"
+                               class="file-input"
+                               onchange="previewImage(event)">
+
+                        <small class="small-text">
+
+                            Leave empty to keep old image
+
+                        </small>
+
+                    </div>
+
+                    <!-- CONTENT -->
+
+                    <div class="col-md-8">
+
+                        <!-- HEADING -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Heading
+
+                            </label>
+
+                            <input type="text"
+                                   name="heading"
+                                   class="form-control-custom"
+                                   value="{{ banner.heading }}"
+                                   placeholder="Enter main heading..."
+                                   required>
+
+                        </div>
+
+                        <!-- SUB HEADING -->
+
+                        <div>
+
+                            <label class="form-label">
+
+                                Sub Heading
+
+                            </label>
+
+                            <input type="text"
+                                   name="sub_heading"
+                                   class="form-control-custom"
+                                   value="{{ banner.sub_heading }}"
+                                   placeholder="Enter sub heading..."
+                                   required>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'list.banner' %}"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="update-btn">
+
+                        Update Banner
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- IMAGE PREVIEW -->
+
+<script>
+
+function previewImage(event){
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+
+        document.getElementById(
+            "preview"
+        ).src = reader.result;
+
+    }
+
+    reader.readAsDataURL(
+        event.target.files[0]
+    );
+
+}
+
+</script>
+
+{% endblock %}

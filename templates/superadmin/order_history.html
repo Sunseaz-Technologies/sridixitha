@@ -1,0 +1,976 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tz %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+
+        --bg: #f4f7fb;
+
+        --card: #ffffff;
+
+        --border: #e5e7eb;
+
+        --text: #111827;
+
+        --muted: #6b7280;
+
+        --primary: #2563eb;
+
+        --success: #10b981;
+
+        --warning: #f59e0b;
+
+        --purple: #8b5cf6;
+
+        --danger: #ef4444;
+    }
+
+    /* BASE */
+
+    body {
+
+        background: var(--bg);
+
+        font-family: 'Inter', sans-serif;
+
+        color: var(--text);
+    }
+
+    .page-container {
+
+        max-width: 1150px;
+
+        margin: 28px auto;
+
+        padding: 0 15px;
+    }
+
+    /* MAIN CARD */
+
+    .main-card {
+
+        background: #fff;
+
+        border: 1px solid var(--border);
+
+        border-radius: 22px;
+
+        overflow: hidden;
+
+        margin-bottom: 22px;
+    }
+
+    /* HEADER */
+
+    .order-header {
+
+        padding: 24px;
+
+        border-bottom: 1px solid #eef2f7;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        flex-wrap: wrap;
+
+        gap: 20px;
+    }
+
+    .order-id {
+
+        font-size: 13px;
+
+        color: #64748b;
+
+        font-weight: 700;
+
+        letter-spacing: .3px;
+    }
+
+    .page-title {
+
+        margin-top: 5px;
+
+        font-size: 26px;
+
+        font-weight: 800;
+
+        color: #111827;
+    }
+
+    .page-subtitle {
+
+        margin-top: 5px;
+
+        font-size: 13px;
+
+        color: #64748b;
+    }
+
+    /* STATUS */
+
+    .status-badge {
+
+        padding: 9px 18px;
+
+        border-radius: 30px;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        text-transform: capitalize;
+    }
+
+    .status-badge.pending {
+
+        background: #fff7ed;
+
+        color: #f59e0b;
+    }
+
+    .status-badge.assigned {
+
+        background: #f3e8ff;
+
+        color: #8b5cf6;
+    }
+
+    .status-badge.accepted {
+
+        background: #ecfdf5;
+
+        color: #10b981;
+    }
+
+    .status-badge.in_progress {
+
+        background: #eff6ff;
+
+        color: #2563eb;
+    }
+
+    .status-badge.completed {
+
+        background: #dcfce7;
+
+        color: #15803d;
+    }
+
+    .status-badge.cancelled {
+
+        background: #fef2f2;
+
+        color: #dc2626;
+    }
+
+    /* DETAILS */
+
+    .details-section {
+
+        padding: 24px;
+    }
+
+    .section-title {
+
+        font-size: 17px;
+
+        font-weight: 700;
+
+        margin-bottom: 20px;
+    }
+
+    .details-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(auto-fit, minmax(240px, 1fr));
+
+        gap: 16px;
+    }
+
+    .detail-box {
+
+        background: #f8fafc;
+
+        border: 1px solid #eef2f7;
+
+        border-radius: 16px;
+
+        padding: 16px;
+    }
+
+    .detail-label {
+
+        font-size: 11px;
+
+        color: #94a3b8;
+
+        font-weight: 700;
+
+        text-transform: uppercase;
+
+        margin-bottom: 7px;
+    }
+
+    .detail-value {
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        color: #111827;
+
+        line-height: 1.7;
+    }
+
+    /* SUMMARY */
+
+    .summary-box {
+
+        background: #fff;
+
+        border: 1px solid var(--border);
+
+        border-radius: 20px;
+
+        overflow: hidden;
+
+        margin-bottom: 22px;
+    }
+
+    .summary-item {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 18px 20px;
+
+        border-bottom: 1px solid #eef2f7;
+    }
+
+    .summary-item:last-child {
+
+        border-bottom: none;
+    }
+
+    .summary-label {
+
+        font-size: 14px;
+
+        color: #64748b;
+
+        font-weight: 600;
+    }
+
+    .summary-value {
+
+        font-size: 15px;
+
+        font-weight: 800;
+    }
+
+    .summary-value.paid {
+
+        color: #10b981;
+    }
+
+    .summary-value.due {
+
+        color: #ef4444;
+    }
+
+    /* TIMELINE */
+
+    .timeline-card {
+
+        background: #fff;
+
+        border: 1px solid var(--border);
+
+        border-radius: 22px;
+
+        padding: 24px;
+    }
+
+    .timeline-header {
+
+        margin-bottom: 24px;
+    }
+
+    .timeline-title {
+
+        font-size: 18px;
+
+        font-weight: 800;
+
+        color: #111827;
+    }
+
+    .timeline-subtitle {
+
+        margin-top: 5px;
+
+        font-size: 13px;
+
+        color: #64748b;
+    }
+
+    .timeline {
+
+        position: relative;
+
+        padding-left: 30px;
+    }
+
+    /* LINE */
+
+    .timeline::before {
+
+        content: "";
+
+        position: absolute;
+
+        left: 8px;
+
+        top: 0;
+
+        width: 2px;
+
+        height: 100%;
+
+        background: #dbe4f0;
+    }
+
+    /* ITEM */
+
+    .timeline-item {
+
+        position: relative;
+
+        padding-bottom: 22px;
+    }
+
+    .timeline-item:last-child {
+
+        padding-bottom: 0;
+    }
+
+    /* DOT */
+
+    .timeline-dot {
+
+        position: absolute;
+
+        left: -30px;
+
+        top: 6px;
+
+        width: 16px;
+
+        height: 16px;
+
+        border-radius: 50%;
+
+        border: 3px solid #fff;
+
+        box-shadow: 0 0 0 2px #dbeafe;
+    }
+
+    /* COLORS */
+
+    .timeline-dot.pending {
+
+        background: #f59e0b;
+    }
+
+    .timeline-dot.assigned {
+
+        background: #8b5cf6;
+    }
+
+    .timeline-dot.accepted {
+
+        background: #10b981;
+    }
+
+    .timeline-dot.in_progress {
+
+        background: #2563eb;
+    }
+
+    .timeline-dot.completed {
+
+        background: #16a34a;
+    }
+
+    .timeline-dot.cancelled {
+
+        background: #ef4444;
+    }
+
+    /* CONTENT */
+
+    .timeline-content {
+
+        background: #f8fafc;
+
+        border: 1px solid #eef2f7;
+
+        border-radius: 16px;
+
+        padding: 16px;
+    }
+
+    /* TOP */
+
+    .timeline-top {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 10px;
+
+        flex-wrap: wrap;
+    }
+
+    .timeline-status {
+
+        font-size: 14px;
+
+        font-weight: 800;
+
+        color: #111827;
+    }
+
+    .timeline-date {
+
+        font-size: 11px;
+
+        color: #94a3b8;
+
+        font-weight: 700;
+    }
+
+    .timeline-time {
+
+        margin-top: 6px;
+
+        font-size: 12px;
+
+        color: #475569;
+
+        font-weight: 600;
+    }
+
+    .timeline-user {
+
+        margin-top: 10px;
+
+        font-size: 13px;
+
+        color: #2563eb;
+
+        font-weight: 700;
+
+        line-height: 1.7;
+    }
+
+    .timeline-delay {
+
+        margin-top: 12px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        background: #fff7ed;
+
+        color: #ea580c;
+
+        border: 1px solid #fed7aa;
+
+        padding: 7px 12px;
+
+        border-radius: 30px;
+
+        font-size: 11px;
+
+        font-weight: 800;
+    }
+
+    /* EMPTY */
+
+    .empty-history {
+
+        font-size: 14px;
+
+        color: #64748b;
+    }
+
+    /* BACK */
+
+    .back-btn {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-top: 20px;
+
+        text-decoration: none;
+
+        color: #64748b;
+
+        font-size: 14px;
+
+        font-weight: 700;
+    }
+
+    /* MOBILE */
+
+    @media(max-width:768px) {
+
+        .page-container {
+
+            margin: 18px auto;
+        }
+
+        .order-header {
+
+            padding: 18px;
+
+            align-items: flex-start;
+        }
+
+        .page-title {
+
+            font-size: 22px;
+        }
+
+        .details-section {
+
+            padding: 18px;
+        }
+
+        .details-grid {
+
+            grid-template-columns: 1fr;
+        }
+
+        .summary-item {
+
+            padding: 16px;
+        }
+
+        .timeline-card {
+
+            padding: 18px;
+        }
+
+        .timeline-content {
+
+            padding: 14px;
+        }
+
+        .timeline-top {
+
+            flex-direction: column;
+
+            align-items: flex-start;
+        }
+
+        .timeline-status {
+
+            font-size: 13px;
+        }
+
+        .timeline-user {
+
+            font-size: 12px;
+        }
+
+    }
+</style>
+
+<div class="page-container">
+
+    <!-- ORDER DETAILS -->
+
+    <div class="main-card">
+
+        <div class="order-header">
+
+            <div>
+
+                <div class="order-id">
+
+                    Order ID :
+                    {{ booking.order_id }}
+
+                </div>
+
+                <div class="page-title">
+
+                    Service Tracking
+
+                </div>
+
+                <div class="page-subtitle">
+
+                    Complete admin and vendor tracking details
+
+                </div>
+
+            </div>
+
+            <div class="status-badge {{ booking.status }}">
+
+                {{ booking.get_status_display }}
+
+            </div>
+
+        </div>
+
+        <!-- DETAILS -->
+
+        <div class="details-section">
+
+            <div class="section-title">
+
+                Booking Details
+
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Customer
+                    </div>
+
+                    <div class="detail-value">
+                        {{ booking.user.first_name }}
+                    </div>
+
+                </div>
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Phone
+                    </div>
+
+                    <div class="detail-value">
+                        {{ booking.phone }}
+                    </div>
+
+                </div>
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Service
+                    </div>
+
+                    <div class="detail-value">
+                        {{ booking.service.s_title }}
+                    </div>
+
+                </div>
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Vendor
+                    </div>
+
+                    <div class="detail-value">
+
+                        {% if booking.vendor %}
+
+                        {{ booking.vendor.first_name }}
+
+                        {% else %}
+
+                        <span style="color:#ef4444;">
+                            Not Assigned
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Scheduled Date
+                    </div>
+
+                    <div class="detail-value">
+                        {{ booking.scheduled_date }}
+                    </div>
+
+                </div>
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Scheduled Time
+                    </div>
+
+                    <div class="detail-value">
+                        {{ booking.scheduled_time }}
+                    </div>
+
+                </div>
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Address
+                    </div>
+
+                    <div class="detail-value">
+                        {{ booking.address }}
+                    </div>
+
+                </div>
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        City
+                    </div>
+
+                    <div class="detail-value">
+
+                        {{ booking.city }}
+
+                    </div>
+
+                </div>
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Service Request
+                    </div>
+
+                    <div class="detail-value">
+                        {{ booking.problem }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SUMMARY -->
+
+    <div class="summary-box">
+
+        <div class="summary-item">
+
+            <div class="summary-label">
+
+                Total Services
+
+            </div>
+
+            <div class="summary-value">
+
+                {{ total_services }}
+
+            </div>
+
+        </div>
+
+        <div class="summary-item">
+
+            <div class="summary-label">
+
+                Total Amount
+
+            </div>
+
+            <div class="summary-value">
+
+                ₹ {{ total_amount }}
+
+            </div>
+
+        </div>
+
+        <div class="summary-item">
+
+            <div class="summary-label">
+
+                Paid Amount
+
+            </div>
+
+            <div class="summary-value paid">
+
+                ₹ {{ paid_amount }}
+
+            </div>
+
+        </div>
+
+        <div class="summary-item">
+
+            <div class="summary-label">
+
+                Due Amount
+
+            </div>
+
+            <div class="summary-value due">
+
+                ₹ {{ due_amount }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TIMELINE -->
+
+    <div class="timeline-card">
+
+        <div class="timeline-header">
+
+            <div class="timeline-title">
+
+                Order Timeline
+
+            </div>
+
+            <div class="timeline-subtitle">
+
+                Complete order activity tracking
+
+            </div>
+
+        </div>
+        <div class="timeline-card">
+
+            <div class="timeline-header">
+
+                <div class="timeline-title">
+
+                    Order Timeline
+
+                </div>
+
+                <div class="timeline-subtitle">
+
+                    Complete order activity tracking
+
+                </div>
+
+            </div>
+
+            <div class="timeline">
+
+                {% for h in history %}
+
+                <div class="timeline-item">
+
+                    <div class="timeline-dot {{ h.status }}"></div>
+
+                    <div class="timeline-content">
+
+                        <!-- STATUS -->
+
+                        <div class="timeline-status">
+
+                             {{ h.status|title }}
+
+
+                        </div>
+
+                        <!-- DATE & TIME -->
+
+                        <div class="timeline-time">
+
+                            {{ h.created_at|localtime|date:"M d, Y • h:i A" }}
+
+                        </div>
+
+                        <!-- MESSAGE -->
+
+                        <div class="timeline-user">
+
+                            {{ h.custom_message }}
+
+                        </div>
+
+                        <!-- ACCEPT DELAY -->
+
+                        {% if h.time_taken %}
+
+                        <div class="timeline-delay">
+
+                            ⏱ {{ h.time_taken }}
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <div class="empty-history">
+
+                    No tracking updates available.
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BACK -->
+
+    <a href="javascript:history.back()" class="back-btn">
+
+        ← Back
+
+    </a>
+
+</div>
+
+{% endblock %}

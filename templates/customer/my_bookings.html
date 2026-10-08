@@ -1,0 +1,587 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+ <style>
+:root {
+    --cp-bg: #f4f7fb;
+    --cp-card: #ffffff;
+    --cp-border: #e5e7eb;
+    --cp-text: #111827;
+    --cp-sub: #6b7280;
+    --cp-primary: #2563eb;
+    --cp-danger: #dc2626;
+    --cp-success: #16a34a;
+}
+
+body {
+    background: var(--cp-bg);
+    
+}
+/* =========================
+   PAGINATION
+========================= */
+
+.tbl-footer{
+    width:100%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:20px 24px;
+    border-top:1px solid #eef2f7;
+    background:#fff;
+}
+
+.page-btns{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.pg-btn{
+    min-width:40px;
+    height:40px;
+    padding:0 14px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    color:#111827;
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s ease;
+}
+
+.pg-btn:hover{
+    background:#f3f4f6;
+    border-color:#d1d5db;
+    color:#111827;
+}
+
+.pg-btn.active{
+    background:#2563eb;
+    color:#fff;
+    border-color:#2563eb;
+    box-shadow:0 4px 12px rgba(37,99,235,.18);
+}
+.cp-portal-page {
+    max-width: 1450px;
+    margin: auto;
+    padding: 30px 20px;
+}
+
+/* HEADER */
+.cp-page-header {
+    margin-bottom: 20px;
+}
+
+.cp-page-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cp-text);
+    margin: 0;
+}
+
+.cp-page-sub {
+    font-size: 14px;
+    color: var(--cp-sub);
+    margin-top: 5px;
+}
+
+/* TABLE CARD */
+.cp-table-card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid var(--cp-border);
+    overflow: hidden;
+}
+
+.cp-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--cp-border);
+    background: #fafafa;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.cp-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cp-text);
+}
+
+/* SEARCH */
+.cp-search-container {
+    position: relative;
+}
+
+.cp-search-container input {
+    padding-left: 32px;
+    height: 38px;
+    border: 1px solid var(--cp-border);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--cp-text);
+    background: #fff;
+    min-width: 220px;
+}
+
+.cp-search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: var(--cp-sub);
+}
+
+/* TABLE */
+.cp-table-wrap {
+    overflow-x: auto;
+}
+
+.cp-main-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cp-main-table thead th {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 11px;
+    color: var(--cp-sub);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: .5px;
+    border-bottom: 1px solid var(--cp-border);
+    background: #f9fafb;
+}
+
+.cp-main-table tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--cp-border);
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.cp-main-table tbody tr:hover {
+    background: #f9fbff;
+}
+
+/* SERVICE & ID ROW STYLE */
+.cp-service-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+.cp-id-tag {
+    font-size: 16px;
+  
+    color: var(--cp-primary);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-family: monospace;
+}
+
+.cp-service-name {
+    font-weight: 700;
+    color: var(--cp-text);
+}
+
+.cp-vendor-name {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.cp-small-text {
+    font-size: 12px;
+    color: var(--cp-sub);
+}
+
+/* STATUS BADGES */
+.cp-status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.cp-status-open { background: #fef2f2; color: #dc2626; }
+.cp-status-in_progress { background: #fffbeb; color: #d97706; }
+.cp-status-resolved { background: #ecfdf5; color: #16a34a; }
+
+/* ACTION BUTTONS */
+.cp-action-btn {
+    height: 32px;
+    padding: 0 20px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+    transition: .15s;
+    white-space: nowrap;
+}
+
+.cp-btn-raise {
+    background: #dc2626;
+    color: #fff;
+}
+
+.cp-btn-raise:hover {
+    background: #b91c1c;
+}
+
+.cp-btn-view {
+    background: #ecfdf5;
+    color: #15803d;
+}
+
+.cp-btn-view:hover {
+    background: #15803d;
+    color: #fff;
+}
+
+.cp-empty-box {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--cp-sub);
+    font-size: 14px;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+    .cp-portal-page{
+        padding:14px;
+    }
+
+    /* HEADER */
+
+    .dashboard-heading{
+        font-size:24px;
+        line-height:1.3;
+        font-weight:700;
+        color:#111827;
+    }
+
+    .dashboard-subheading{
+        font-size:13px;
+        line-height:1.4;
+        color:#6b7280;
+        margin-top:4px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    /* CARD */
+
+    .cp-table-card{
+        border-radius:16px;
+    }
+
+    .cp-card-header{
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+        padding:14px;
+    }
+
+    .card-title{
+        font-size:15px;
+        font-weight:700;
+        color:#111827;
+    }
+
+    /* SEARCH */
+
+    .cp-search-container{
+        width:100%;
+    }
+
+    .cp-search-container input{
+        width:100%;
+        min-width:unset;
+        height:44px;
+        border-radius:12px;
+        font-size:13px;
+        padding-left:36px;
+    }
+
+    .cp-search-icon{
+        left:12px;
+        font-size:13px;
+    }
+
+    /* TABLE */
+
+    .cp-table-wrap{
+        overflow-x:auto;
+        border-radius:0 0 16px 16px;
+    }
+
+    .cp-main-table{
+        min-width:1050px;
+    }
+
+    .cp-main-table thead th{
+        padding:12px;
+        font-size:10px;
+    }
+
+    .cp-main-table tbody td{
+        padding:12px;
+        font-size:13px;
+    }
+
+    .cp-id-tag{
+        font-size:13px;
+    }
+
+    .cp-service-name{
+        font-size:13px;
+    }
+
+    .cp-vendor-name{
+        font-size:13px;
+    }
+
+    .cp-small-text{
+        font-size:11px;
+    }
+
+    /* STATUS */
+
+    .cp-status-badge{
+        padding:5px 10px;
+        font-size:10px;
+        border-radius:20px;
+        white-space:nowrap;
+    }
+
+    /* BUTTONS */
+
+    .cp-action-btn{
+        height:36px;
+        padding:0 14px;
+        border-radius:10px;
+        font-size:11px;
+        font-weight:600;
+    }
+
+    /* PAGINATION */
+
+    .tbl-footer{
+        justify-content:center;
+        padding:14px;
+    }
+
+    .page-btns{
+        justify-content:center;
+    }
+
+    .pg-btn{
+        min-width:36px;
+        height:36px;
+        border-radius:10px;
+        font-size:12px;
+    }
+}
+</style> 
+
+<div class="cp-portal-page">
+
+
+
+    <div>
+
+        <h2 class="dashboard-heading">
+                My Complaints
+        </h2>
+
+        <p class="dashboard-subheading">
+            View and manage support requests for your booked services
+        </p>
+
+    </div>
+
+    <div class="cp-table-card">
+        <form method="GET">
+            <div class="cp-card-header">
+             
+                      <div class="card-title">
+                  Bookings & Issues
+                </div>
+                
+                <div class="cp-search-container">
+                    <span class="cp-search-icon">🔍</span>
+                    <input type="text" name="search" placeholder="Search order or service..." value="{{ request.GET.search }}">
+                </div>
+            </div>
+        </form>
+
+        <div class="cp-table-wrap">
+            <table class="cp-main-table">
+                <thead>
+                    <tr>
+                        <th>Sl.No</th>
+                        <th>Service ID </th>
+                        <th>Service Name</th>
+                        <th>Vendor Details</th>
+                        <th>Date Booked</th>
+                        <th>Complaint Status</th>
+                        <th style="text-align:right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <!-- ID AND SERVICE (SIDE BY SIDE) -->
+                         <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+                        <td>
+                            <div class="cp-service-inline">
+                                <span class="cp-id-tag">{{ booking.order_id|default:booking.id }}</span>
+                             
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="cp-service-inline">
+                             
+                                <span class="cp-service-name">{{ booking.service.s_title }}</span>
+                            </div>
+                        </td>
+
+                        <!-- VENDOR -->
+                        <td>
+                            <div class="cp-vendor-name">{{ booking.vendor.first_name }}</div>
+                            <div class="cp-small-text">{{ booking.vendor.phone }}</div>
+                        </td>
+
+                        <!-- DATE ONLY -->
+                        <td>
+                            <div class="cp-vendor-name">{{ booking.booking_created_at|date:"d M Y" }}</div>
+                        </td>
+
+                        <!-- STATUS -->
+                        <td>
+                            {% if booking.remarks.all %}
+                                {% with r=booking.remarks.first %}
+                                    <span class="cp-status-badge cp-status-{{ r.status|lower }}">
+                                        {{ r.get_status_display|default:r.status|title }}
+                                    </span>
+                                {% endwith %}
+                            {% else %}
+                                <span class="cp-small-text" style="font-style: italic;">No active issue</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- ACTIONS -->
+                        <td style="text-align:right;">
+                            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                                {% if booking.remarks.all %}
+                                    <a href="{% url 'complaint_detail' booking.remarks.first.id %}" class="cp-action-btn cp-btn-view">
+                                        View Details
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'complaint_add' booking.id %}" class="cp-action-btn cp-btn-raise">
+                                        Raise Complaint
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="cp-empty-box">No records found.</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <!-- PAGINATION -->
+
+{% if page_obj %}
+
+<div class="tbl-footer">
+
+    <div class="page-btns">
+
+        <!-- PREVIOUS -->
+
+        {% if page_obj.has_previous %}
+
+        <a class="pg-btn"
+           href="?page={{ page_obj.previous_page_number }}">
+
+            ‹
+
+        </a>
+
+        {% endif %}
+
+        <!-- CURRENT PAGE -->
+
+        <span class="pg-btn active">
+
+            {{ page_obj.number }}
+
+        </span>
+
+        <!-- NEXT PAGE -->
+
+        {% if page_obj.has_next %}
+
+        <a class="pg-btn"
+           href="?page={{ page_obj.next_page_number }}">
+
+            {{ page_obj.next_page_number }}
+
+        </a>
+
+        <!-- NEXT -->
+
+        <a class="pg-btn"
+           href="?page={{ page_obj.next_page_number }}">
+
+            ›
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="contact-update-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+            <h5 class="fw-bold mb-0">
+                Contact Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                View and manage all customer contact requests
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'list.contact' %}"
+           class="list-btn">
+
+            <i class="bi bi-grid"></i>
+
+            Contact List
+
+        </a>
+
+    </div>
+
+    <!-- ALERTS -->
+
+    
+
+    <!-- CARD -->
+
+    <div class="contact-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Update Contact Status
+
+                </h5>
+
+                <p class="card-desc">
+
+                    View contact information and update enquiry status
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <!-- NAME -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+
+                        Name
+
+                    </label>
+
+                    <input type="text"
+                           class="form-control-custom"
+                           value="{{ contact.name }}"
+                           readonly>
+
+                </div>
+
+                <!-- EMAIL -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+
+                        Email Address
+
+                    </label>
+
+                    <input type="text"
+                           class="form-control-custom"
+                           value="{{ contact.email }}"
+                           readonly>
+
+                </div>
+
+                <!-- PHONE -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+
+                        Phone Number
+
+                    </label>
+
+                    <input type="text"
+                           class="form-control-custom"
+                           value="{{ contact.phone }}"
+                           readonly>
+
+                </div>
+
+                <!-- CITY -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+
+                        City
+
+                    </label>
+
+                    <input type="text"
+                           class="form-control-custom"
+                           value="{{ contact.city }}"
+                           readonly>
+
+                </div>
+
+                <!-- MESSAGE -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+
+                        Message
+
+                    </label>
+
+                    <textarea class="textarea-custom"
+                              rows="5"
+                              readonly>{{ contact.message }}</textarea>
+
+                </div>
+
+                <!-- STATUS -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+
+                        Status
+
+                    </label>
+
+                    <select name="status"
+                            class="status-select">
+
+                        <option value="pending"
+                            {% if contact.status == 'pending' %}selected{% endif %}>
+
+                            Pending
+
+                        </option>
+
+                        <option value="contacted"
+                            {% if contact.status == 'contacted' %}selected{% endif %}>
+
+                            Contacted
+
+                        </option>
+
+                        <option value="in_progress"
+                            {% if contact.status == 'in_progress' %}selected{% endif %}>
+
+                            In Progress
+
+                        </option>
+
+                        <option value="completed"
+                            {% if contact.status == 'completed' %}selected{% endif %}>
+
+                            Completed
+
+                        </option>
+
+                        <option value="closed"
+                            {% if contact.status == 'closed' %}selected{% endif %}>
+
+                            Closed
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'list.contact' %}"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="update-btn">
+
+                        Update Status
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

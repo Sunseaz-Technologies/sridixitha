@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="max-width:600px; margin:30px auto;">
+
+<h2>Update Service</h2>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<input name="name" value="{{ service.name }}">
+<input name="title" value="{{ service.title }}">
+
+<textarea name="description">{{ service.description }}</textarea>
+
+<input type="file" name="image">
+
+{% if service.image %}
+<img src="{{ service.image.url }}" width="100">
+{% endif %}
+
+<br><br>
+
+<button>Update Service</button>
+
+</form>
+
+</div>
+
+{% endblock %}

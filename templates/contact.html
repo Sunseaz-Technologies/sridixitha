@@ -1,0 +1,248 @@
+{% extends 'public_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+    <!-- BREADCRUMB -->
+
+ <div class="breadcumb-wrapper" style="background-image: url('{% static "assets/images/bg/contact_us_banner.webp" %}');">
+
+        <div class="container">
+
+            <div class="breadcumb-content">
+
+                <h1 class="breadcumb-title">
+
+                    Contact Us
+
+                </h1>
+
+                <div class="breadcumb-menu">
+
+                    <span>
+
+                        <a href="{% url 'indexpage' %}">
+
+                            Home
+
+                        </a>
+
+                    </span>
+
+                    <span>
+
+                        Contact Us
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ALERTS -->
+
+    <div class="container">
+
+        
+
+    </div>
+
+    <!-- CONTACT -->
+
+    <section class="contact-layout1">
+
+        <div class="container">
+
+            <div class="contact-form">
+
+                <div class="row g-5 align-items-center">
+
+                    <!-- IMAGE -->
+
+                    <div class="col-xl-4 d-none d-xl-block">
+
+                        <div class="contact-img">
+
+                            <img src="{% static 'assets/images/bg/contact_us_02.webp' %}"
+                                 alt="Contact Image">
+
+                        </div>
+
+                    </div>
+
+                    <!-- FORM -->
+
+                    <div class="col-xl-8">
+
+                        <form class="form-style1"
+                              method="POST">
+
+                            {% csrf_token %}
+
+                            <div class="title-area">
+
+                                <h2 class="sec-title">
+
+                                    Reach Out to Us
+
+                                </h2>
+
+                            </div>
+
+                            <div class="row gx-20">
+
+                                <!-- NAME -->
+
+                                <div class="col-md-6 form-group">
+
+                                    <label>
+
+                                        Your Name*
+
+                                    </label>
+
+                                    <input class="form-control"
+                                           type="text"
+                                           name="name"
+                                           value="{{ old.name }}"
+                                           placeholder="Enter your full name">
+
+                                    <span style="color:red;">
+
+                                        {{ errors.name }}
+
+                                    </span>
+
+                                </div>
+
+                                <!-- EMAIL -->
+
+                                <div class="col-md-6 form-group">
+
+                                    <label>
+
+                                        Email Address*
+
+                                    </label>
+
+                                    <input class="form-control"
+                                           type="email"
+                                           name="email"
+                                           value="{{ old.email }}"
+                                           placeholder="example@gmail.com">
+
+                                    <span style="color:red;">
+
+                                        {{ errors.email }}
+
+                                    </span>
+
+                                </div>
+
+                                <!-- PHONE -->
+
+                                <div class="col-md-6 form-group">
+
+                                    <label>
+
+                                        Phone Number*
+
+                                    </label>
+
+                                    <input class="form-control"
+                                           type="text"
+                                           name="phone"
+                                           value="{{ old.phone }}"
+                                           placeholder="Enter phone number">
+
+                                    <span style="color:red;">
+
+                                        {{ errors.phone }}
+
+                                    </span>
+
+                                </div>
+
+                                <!-- CITY -->
+
+                                <div class="col-md-6 form-group">
+
+                                    <label>
+
+                                        City*
+
+                                    </label>
+
+                                    <input class="form-control"
+                                           type="text"
+                                           name="city"
+                                           value="{{ old.city }}"
+                                           placeholder="Enter city">
+
+                                    <span style="color:red;">
+
+                                        {{ errors.city }}
+
+                                    </span>
+
+                                </div>
+
+                                <!-- MESSAGE -->
+
+                                <div class="col-md-12 form-group">
+
+                                    <label>
+
+                                        Message*
+
+                                    </label>
+
+                                    <textarea name="message"
+                                              class="form-control"
+                                              placeholder="Message Here...">{{ old.message }}</textarea>
+
+                                    <span style="color:red;">
+
+                                        {{ errors.message }}
+
+                                    </span>
+
+                                </div>
+
+                                <!-- BUTTON -->
+
+                                <div class="col-md-12 form-group">
+
+                                    <button class="vs-btn"
+                                            type="submit">
+
+                                        Submit
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

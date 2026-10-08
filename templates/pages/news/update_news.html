@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="news-create-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                News Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Update and manage latest news information
+
+            </p>
+
+        </div>
+        <div class="header-right">
+
+            <div class="banner-badge">
+
+                Update News
+
+            </div>
+
+            <a href="{% url 'news.list' %}"
+               class="list-btn">
+
+                <i class="bi bi-images"></i>
+
+                News List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="news-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Update News Information
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Edit and update published news headlines
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <!-- HEADLINE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+
+                        Headlines
+
+                    </label>
+
+                    <textarea name="update_headline"
+                              class="form-control-custom"
+                              rows="6"
+                              placeholder="Enter news headlines here">{{ news.content }}</textarea>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'news.list' %}"
+                       class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="save-btn">
+
+                        Update News
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

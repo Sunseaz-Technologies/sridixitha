@@ -1,0 +1,1445 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+<style>
+
+body{
+    background:#f4f7fb;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page-wrap{
+    padding:24px;
+}
+#locationFilter{
+    min-width:132px;
+    background:#fff;
+    padding:10px 20px;
+}
+
+.user-location{
+    font-size:13px;
+    font-weight:600;
+    color:#374151;
+}
+/* =========================
+   HEADER
+========================= */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.page-subtitle{
+    font-size:14px;
+    color:#6b7280;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stat-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:18px;
+}
+
+.stat-card.total{
+    border-left:4px solid #111827;
+}
+
+.stat-card.customer{
+    border-left:4px solid #f59e0b;
+}
+
+.stat-card.admin{
+    border-left:4px solid #2563eb;
+}
+
+.stat-card.vendor{
+    border-left:4px solid #10b981;
+}
+
+.stat-label{
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    color:#9ca3af;
+    margin-bottom:6px;
+}
+
+.stat-value{
+    font-size:24px;
+    font-weight:700;
+    color:#111827;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.main-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.card-header-flex{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    padding:20px;
+    border-bottom:1px solid #f1f5f9;
+    flex-wrap:wrap;
+}
+
+.card-title{
+    font-size:18px;
+    font-weight:700;
+    color:#111827;
+}
+
+.toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+/* =========================
+   FILTER
+========================= */
+
+.filter-group{
+    display:flex;
+    gap:6px;
+    background:#f3f4f6;
+    padding:5px;
+    border-radius:10px;
+}
+
+.filter-btn{
+    padding:8px 14px;
+    border-radius:8px;
+    border:none;
+    background:transparent;
+    font-size:13px;
+    font-weight:600;
+    color:#6b7280;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.filter-btn.active{
+    background:#fff;
+    color:#2563eb;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-container{
+    position:relative;
+}
+
+.search-input{
+    width:240px;
+    height:40px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    padding:0 14px 0 38px;
+    font-size:13px;
+}
+
+.search-input:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+.search-icon{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#9ca3af;
+}
+
+/* =========================
+   DATE
+========================= */
+
+.date-input{
+    height:40px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    padding:0 12px;
+    font-size:13px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#f9fafb;
+}
+
+thead th{
+    padding:16px;
+    text-align:left;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:#6b7280;
+    font-weight:700;
+}
+
+tbody td{
+    padding:16px;
+    border-top:1px solid #f1f5f9;
+    vertical-align:middle;
+}
+
+tbody tr:hover{
+    background:#f8fbff;
+}
+
+/* =========================
+   USER
+========================= */
+
+.user-cell{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.user-avatar{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:#eff6ff;
+    color:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:700;
+}
+
+.user-name{
+    font-size:14px;
+    font-weight:700;
+    color:#111827;
+}
+
+.user-email{
+    font-size:12px;
+    color:#6b7280;
+    margin-top:3px;
+}
+
+/* =========================
+   ROLE
+========================= */
+/* =========================
+   STATUS
+========================= */
+
+.status-group{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.status-btn{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-size:18px;
+    transition:.2s ease;
+    border:1px solid transparent;
+}
+
+/* ACTIVE BUTTON */
+
+.active-btn{
+    background:#dcfce7;
+    color:#16a34a;
+}
+
+/* INACTIVE BUTTON */
+
+.inactive-btn{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+/* SELECTED ACTIVE */
+
+.selected-active{
+    background:#16a34a;
+    color:#fff;
+    box-shadow:0 4px 12px rgba(22,163,74,.25);
+}
+
+/* SELECTED INACTIVE */
+
+.selected-inactive{
+    background:#dc2626;
+    color:#fff;
+    box-shadow:0 4px 12px rgba(220,38,38,.25);
+}
+
+.status-btn:hover{
+    transform:scale(1.08);
+}
+.role{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 12px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:700;
+    text-transform:capitalize;
+}
+
+.role.customer{
+    background:#fff7ed;
+    color:#ea580c;
+}
+
+.role.admin{
+    background:#eef2ff;
+    color:#4338ca;
+}
+
+.role.vendor{
+    background:#ecfdf5;
+    color:#15803d;
+}
+
+/* =========================
+   DATE
+========================= */
+
+.joined-date{
+    font-size:13px;
+    font-weight:600;
+    color:#6b7280;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status-group{
+    display:flex;
+    gap:8px;
+}
+
+.status-btn{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#fff;
+    font-size:18px;
+    transition:.2s ease;
+}
+
+.status-btn.active{
+    background:#16a34a;
+}
+
+.status-btn.inactive{
+    background:#dc2626;
+}
+
+.status-btn:hover{
+    transform:scale(1.08);
+}
+
+/* =========================
+   BEHAVIOUR
+========================= */
+
+.behaviour-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.behaviour-badge{
+    width:fit-content;
+    padding:6px 12px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:700;
+    text-transform:capitalize;
+}
+
+.behaviour-badge.good{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.behaviour-badge.average{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.behaviour-badge.bad{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.behaviour-badge.normal{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.behaviour-action{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:5px;
+    width:220px;
+}
+
+.behaviour-select{
+    flex:1;
+    height:34px;
+    border:none;
+    outline:none;
+    background:#fff;
+    border-radius:8px;
+    padding:0 10px;
+    font-size:12px;
+}
+
+.behaviour-btn{
+    height:34px;
+    padding:0 12px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.behaviour-btn:hover{
+    background:#1d4ed8;
+}
+
+/* =========================
+   ACTION
+========================= */
+
+.actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.view-btn{
+    height:36px;
+    padding:0 14px;
+    border-radius:8px;
+    background:#eff6ff;
+    color:#2563eb;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:700;
+}
+
+.delete-btn{
+    height:36px;
+    padding:0 14px;
+    border:none;
+    border-radius:8px;
+    background:#fee2e2;
+    color:#dc2626;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+
+
+.tbl-footer{
+    width:100%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:20px;
+    border-top:1px solid #eef2f7;
+    background:#fff;
+}
+
+/* BUTTON GROUP */
+
+.page-btns{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+/* BUTTON */
+
+.pg-btn{
+    min-width:40px;
+    height:40px;
+    padding:0 14px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    color:#111827;
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s ease;
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+
+/* HOVER */
+
+.pg-btn:hover{
+    background:#f3f4f6;
+    border-color:#d1d5db;
+}
+
+/* ACTIVE */
+
+.pg-btn.active{
+    background:#2563eb;
+    color:#fff;
+    border-color:#2563eb;
+    box-shadow:0 4px 12px rgba(37,99,235,.25);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .tbl-footer{
+        justify-content:center;
+        padding:16px;
+    }
+
+    .page-btns{
+        justify-content:center;
+        width:100%;
+    }
+
+    .pg-btn{
+        min-width:36px;
+        height:36px;
+        font-size:12px;
+        border-radius:10px;
+    }
+
+}
+
+.page-btns{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.pg-btn{
+    min-width:38px;
+    height:38px;
+    padding:0 14px;
+    border-radius:10px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    color:#111827;
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s ease;
+}
+
+.pg-btn:hover{
+    background:#f3f4f6;
+}
+
+.pg-btn.active{
+    background:#2563eb;
+    color:#fff;
+    border-color:#2563eb;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty-row{
+    text-align:center;
+    padding:50px !important;
+    color:#94a3b8;
+    font-size:14px;
+}
+
+/* =========================
+   DELETE BUTTON
+========================= */
+
+.delete-btn{
+    height:38px;
+    padding:0 29px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(
+        135deg,
+        #ef4444,
+        #dc2626
+    );
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.25s ease;
+    box-shadow:0 4px 14px rgba(239,68,68,.25);
+}
+
+/* HOVER */
+
+.delete-btn:hover{
+    background:linear-gradient(
+        135deg,
+        #dc2626,
+        #b91c1c
+    );
+    color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(220,38,38,.30);
+}
+
+/* CLICK */
+
+.delete-btn:active{
+    transform:scale(.97);
+}
+
+/* FOCUS */
+
+.delete-btn:focus{
+    outline:none;
+}
+
+/* FORM FIX */
+.user-avatar{
+
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    overflow:hidden;
+
+    background:#2563eb;
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:16px;
+    font-weight:700;
+
+}
+
+.user-profile-img{
+
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+}
+.actions form{
+    margin:0;
+}
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .page-wrap{
+        padding:15px;
+    }
+
+    .page-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:6px;
+    }
+
+    .card-header-flex{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .toolbar{
+        flex-direction:column;
+    }
+
+    .search-input,
+    .date-input{
+        width:100%;
+    }
+
+    table{
+        min-width:1300px;
+    }
+
+}
+
+</style>
+
+<div class="page-wrap">
+
+    <div class="page-header">
+        <div>
+
+            <h2 class="dashboard-heading">
+                User Management
+            </h2>
+
+            <p class="dashboard-subheading">
+                Manage all users and behaviour
+            </p>
+
+        </div>
+
+
+    </div>
+
+    <div class="stat-row">
+
+        <div class="stat-card total">
+
+            <span class="stat-label">
+                Total Users
+            </span>
+
+            <div class="stat-value">
+                {{  total_users  }}
+            </div>
+
+        </div>
+
+        <div class="stat-card customer">
+
+            <span class="stat-label">
+                Customers
+            </span>
+
+            <div class="stat-value">
+                {{ customer_count }}
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card vendor">
+
+            <span class="stat-label">
+                Vendors
+            </span>
+
+            <div class="stat-value">
+                {{ vendor_count }}
+            </div>
+
+        </div>
+
+        <div class="stat-card admin">
+
+            <span class="stat-label">
+                Admins
+            </span>
+
+            <div class="stat-value">
+                {{ admin_count }}
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <div class="main-card">
+
+        <div class="card-header-flex">
+
+            <div class="card-title">
+                Users
+            </div>
+
+            <div class="toolbar">
+
+                <div class="filter-group">
+
+                    <button class="filter-btn active" onclick="setRole('', this)">
+                        All
+                    </button>
+
+                    <button class="filter-btn" onclick="setRole('customer', this)">
+                        Customers
+                    </button>
+
+
+                    <button class="filter-btn" onclick="setRole('vendor', this)">
+                        Vendor
+                    </button>
+
+                    
+                    <button class="filter-btn" onclick="setRole('admin', this)">
+                        Admin
+                    </button>
+
+                </div>
+
+                <div class="search-container">
+
+                    <span class="search-icon">
+                        🔍
+                    </span>
+
+                    <input type="text"
+                           id="searchInput"
+                           class="search-input"
+                           placeholder="Search users..."
+                           onkeyup="applyFilters()">
+
+                </div>
+
+                <input type="date"
+                       id="dateFilter"
+                       class="date-input"
+                       onchange="applyFilters()">
+
+                    <select id="locationFilter"
+            class="date-input"
+            onchange="applyFilters()">
+
+        <option value="">
+            All Locations
+        </option>
+
+        {% for location in locations %}
+
+        <option value="{{ location|lower }}">
+
+            {{ location }}
+
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+            </div>
+
+        </div>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th>Location</th>
+                        <th>Joined</th>
+                        <th>Block</th>
+                        <th>User Response</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for user in page_obj %}
+
+                    <tr class="user-row">
+
+                        <td>
+                            {{ forloop.counter }}
+                        </td>
+
+                        <td>
+
+                            <div class="user-cell">
+<div class="user-avatar">
+
+    {% if user.profile_image %}
+
+        <img
+            src="{{ user.profile_image.url }}"
+            alt="{{ user.first_name }}"
+            class="user-profile-img"
+        >
+
+    {% else %}
+
+        {{ user.first_name|first|upper }}
+
+    {% endif %}
+
+</div>
+                                <div>
+
+                                    <div class="user-name">
+
+                                        {% if user.first_name %}
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        {% else %}
+                                            {{ user.username }}
+                                        {% endif %}
+
+                                    </div>
+
+                                    <div class="user-email">
+                                        {{ user.email }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="role {{ user.role }}">
+                                {{ user.role }}
+                            </span>
+
+                        </td>
+<td class="user-location">
+
+    {{ user.city|default:"Not Added" }}
+
+</td>
+
+                        <td class="joined-date"
+                            data-date="{{ user.date_joined|date:'Y-m-d' }}">
+
+                            {{ user.date_joined|date:"d M Y" }}
+
+                        </td>
+
+                        <td>
+
+                            {% if user.role != "superadmin" %}
+
+                            <div class="status-group">
+<a href="{% url 'set_user_status' user.id 'active' %}"
+   class="status-btn active-btn {% if user.is_active %}selected-active{% endif %}">
+
+    <iconify-icon icon="mdi:power"></iconify-icon>
+
+</a>
+
+<a href="{% url 'set_user_status' user.id 'inactive' %}"
+   class="status-btn inactive-btn {% if not user.is_active %}selected-inactive{% endif %}">
+
+    <iconify-icon icon="mdi:power"></iconify-icon>
+
+</a>
+
+                            </div>
+
+                            {% else %}
+
+                            <span class="role admin">
+                                Protected
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if user.role != "superadmin" %}
+
+                            <div class="behaviour-wrap">
+
+                                <div class="behaviour-badge {{ user.behaviour }}">
+
+                                    {{ user.get_behaviour_display }}
+
+                                </div>
+
+                                <div class="behaviour-action">
+
+                                    <select id="behaviour-{{ user.id }}"
+                                            class="behaviour-select">
+
+                                        <option value="good"
+                                            {% if user.behaviour == "good" %}selected{% endif %}>
+                                            Good
+                                        </option>
+
+                                        <option value="average"
+                                            {% if user.behaviour == "average" %}selected{% endif %}>
+                                            Average
+                                        </option>
+
+                                        <option value="bad"
+                                            {% if user.behaviour == "bad" %}selected{% endif %}>
+                                            Bad
+                                        </option>
+
+                                        <option value="normal"
+                                            {% if user.behaviour == "normal" %}selected{% endif %}>
+                                            Normal
+                                        </option>
+
+                                    </select>
+
+                                    <button type="button"
+                                            class="behaviour-btn"
+                                            onclick="updateBehaviour('{{ user.id }}')">
+
+                                        Update
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <div class="actions">
+
+                                <a href="{% url 'user_profile' user.id %}"
+                                   class="view-btn">
+
+                                    View
+
+                                </a>
+
+                                {% if user.role != "superadmin" %}
+
+                                <form method="post" action="{% url 'delete_user' user.id %}" class="delete-user-form">
+                                    {% csrf_token %}
+                                    <button type="button" class="delete-btn" onclick="confirmDelete(this, '{{ user.first_name|default:user.username }}')">
+                                        Delete
+                                    </button>
+                                </form>
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7"
+                            class="empty-row">
+
+                            No users found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+<!-- PAGINATION -->
+
+<div class="tbl-footer">
+
+    <div class="page-btns">
+
+        <!-- PREVIOUS -->
+
+        {% if page_obj.has_previous %}
+
+        <a class="pg-btn"
+           href="?page={{ page_obj.previous_page_number }}">
+
+            ‹
+
+        </a>
+
+        {% endif %}
+
+        <!-- CURRENT PAGE -->
+
+        <span class="pg-btn active">
+
+            {{ page_obj.number }}
+
+        </span>
+
+        <!-- NEXT PAGE NUMBER -->
+
+        {% if page_obj.has_next %}
+
+        <a class="pg-btn"
+           href="?page={{ page_obj.next_page_number }}">
+
+            {{ page_obj.next_page_number }}
+
+        </a>
+
+        {% endif %}
+
+        <!-- NEXT ARROW -->
+
+        {% if page_obj.has_next %}
+
+        <a class="pg-btn"
+           href="?page={{ page_obj.next_page_number }}">
+
+            ›
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+    </div>
+
+</div>
+
+<script>
+
+let currentRole = "";
+
+function setRole(role, el){
+
+    currentRole = role
+        .toLowerCase()
+        .trim();
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+    el.classList.add("active");
+
+    applyFilters();
+
+}
+
+/* =========================
+   FILTER FUNCTION
+========================= */
+
+function applyFilters(){
+
+    const q = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const selectedDate = document
+        .getElementById("dateFilter")
+        .value;
+
+    const selectedLocation = document
+        .getElementById("locationFilter")
+        .value
+        .toLowerCase()
+        .trim();
+
+    document.querySelectorAll(".user-row").forEach(row => {
+
+        /* USER TEXT */
+
+        const text = row.innerText
+            .toLowerCase()
+            .trim();
+
+        /* ROLE */
+
+        const roleElement = row.querySelector(".role");
+
+        const role = roleElement
+            ? roleElement.innerText
+                .toLowerCase()
+                .trim()
+            : "";
+
+        /* DATE */
+
+        const joinedDateElement = row.querySelector(".joined-date");
+
+        const date = joinedDateElement
+            ? joinedDateElement.dataset.date
+            : "";
+
+        /* LOCATION */
+
+        const locationElement = row.querySelector(".user-location");
+
+        const location = locationElement
+            ? locationElement.innerText
+                .toLowerCase()
+                .trim()
+            : "";
+
+        let show = true;
+
+        /* SEARCH FILTER */
+
+        if(q){
+
+            if(!text.includes(q)){
+
+                show = false;
+
+            }
+
+        }
+
+        /* ROLE FILTER */
+
+        if(currentRole){
+
+            if(!role.includes(currentRole)){
+
+                show = false;
+
+            }
+
+        }
+
+        /* DATE FILTER */
+
+        if(selectedDate){
+
+            if(date !== selectedDate){
+
+                show = false;
+
+            }
+
+        }
+
+        /* LOCATION FILTER */
+
+        if(selectedLocation){
+
+            if(!location.includes(selectedLocation)){
+
+                show = false;
+
+            }
+
+        }
+
+        /* FINAL SHOW/HIDE */
+
+        row.style.display = show
+            ? ""
+            : "none";
+
+    });
+
+}
+
+/* =========================
+   CSRF TOKEN
+========================= */
+
+function getCSRFToken(){
+
+    let cookieValue = null;
+
+    let cookies = document.cookie.split(";");
+
+    for(let i = 0; i < cookies.length; i++){
+
+        let cookie = cookies[i].trim();
+
+        if(cookie.startsWith("csrftoken=")){
+
+            cookieValue = cookie.substring(
+                "csrftoken=".length
+            );
+
+        }
+
+    }
+
+    return cookieValue;
+
+}
+
+/* =========================
+   UPDATE BEHAVIOUR
+========================= */
+
+function updateBehaviour(userId){
+
+    let behaviour = document.getElementById(
+        "behaviour-" + userId
+    ).value;
+
+    fetch(window.location.href,{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json",
+            "X-CSRFToken":getCSRFToken()
+        },
+
+        body:JSON.stringify({
+
+            user_id:userId,
+            behaviour:behaviour
+
+        })
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        if(data.success){
+
+            location.reload();
+
+        }else{
+
+            alert(data.error);
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.log(error);
+
+        alert("Something went wrong");
+
+    });
+
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmDelete(buttonElement, userName) {
+    Swal.fire({
+        title: 'Delete User?',
+        text: "Are you sure you want to delete '" + userName + "'? This action cannot be undone.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            buttonElement.closest('form').submit();
+        }
+    });
+}
+</script>
+
+{% endblock %}

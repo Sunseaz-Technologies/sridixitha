@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="news-page">
+  
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h5 class="fw-bold mb-0">
+
+                News Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                Manage all latest news and announcements
+
+            </p>
+
+        </div>
+
+        <div class="header-right">
+
+
+
+            <a href="{% url 'createnews' %}"
+               class="add-btn">
+
+                <i class="bi bi-plus-circle-fill"></i>
+
+                Add News
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="news-card">
+
+        <!-- TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    News List
+
+                </h5>
+
+                <p class="card-desc">
+
+                    View, update and manage all published news
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table class="news-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+                        <th>Headline</th>
+                        <th>Created Date</th>
+                        <th class="text-center">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for news in news %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="sl-no">
+
+                                {{ page_obj.start_index|add:forloop.counter0 }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="news-content">
+
+                                {{ news.content|truncatewords:10 }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="news-date">
+
+                                {{ news.created_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-wrap">
+
+                                <a href="{% url 'update.news' news.pk %}"
+                                   class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                </a>
+
+                                <a href="{% url 'delete.news' news.pk %}"
+                                   class="action-btn delete-btn"
+                                   onclick="return confirm('Are you sure you want to delete this news?')">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="4"
+                            class="empty-row">
+
+                            No news available
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        {% if page_obj %}
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.previous_page_number }}">
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                <span class="pg-btn active">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    {{ page_obj.next_page_number }}
+
+                </a>
+
+                {% endif %}
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn"
+                   href="?page={{ page_obj.next_page_number }}">
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+ <style>
+.cp-wrap{max-width:860px;margin:0 auto;padding:24px 16px;font-family:inherit}
+.cp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.cp-title{font-size:17px;font-weight:600;color:#111827;margin:0}
+.cp-sub{font-size:13px;color:#6b7280;margin-top:2px}
+.cp-back{height:36px;padding:0 14px;border-radius:8px;background:#f3f4f6;color:#374151;text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-size:13px;border:1px solid #e5e7eb;transition:.15s}
+.cp-back:hover{background:#e5e7eb}
+.cp-card{background:#fff;border-radius:14px;border:1px solid #e5e7eb;overflow:hidden}
+.cp-banner{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid #f3f4f6;background:#fafafa;flex-wrap:wrap;gap:12px}
+.cp-id-label{font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.cp-id-value{font-size:18px;font-weight:700;color:#111827}
+.cp-pill{height:30px;padding:0 14px;border-radius:999px;background:#ecfdf5;color:#15803d;display:inline-flex;align-items:center;font-size:12px;font-weight:600}
+.cp-body{padding:22px}
+.cp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:22px}
+.cp-info{background:#f9fafb;border:1px solid #f3f4f6;border-radius:10px;padding:14px 16px}
+.cp-info label{display:block;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.cp-info p{margin:0;font-size:15px;font-weight:600;color:#111827}
+.cp-empty-val{font-size:14px;color:#9ca3af;font-weight:400}
+.cp-divider{height:1px;background:#f3f4f6;margin:0 0 20px}
+.cp-tl-title{font-size:14px;font-weight:600;color:#374151;margin-bottom:16px}
+.cp-timeline{position:relative;padding-left:26px}
+.cp-tl-line{position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:#e5e7eb}
+.cp-step{position:relative;margin-bottom:12px}
+.cp-step:last-child{margin-bottom:0}
+.cp-dot{position:absolute;left:-26px;top:10px;width:13px;height:13px;border-radius:50%;background:#fff;border:2px solid #d1d5db;z-index:1}
+.cp-step.latest .cp-dot{border-color:#2563eb;background:#2563eb}
+.cp-step-card{background:#f9fafb;border:1px solid #f3f4f6;border-radius:10px;padding:13px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.cp-step-status{font-size:14px;font-weight:600;color:#111827;margin-bottom:2px}
+.cp-step-user{font-size:12px;color:#2563eb}
+.cp-step-date{font-size:12px;color:#9ca3af;white-space:nowrap;padding-top:1px}
+.cp-empty-box{text-align:center;padding:36px;font-size:13px;color:#9ca3af}
+@media(max-width:600px){
+  .cp-grid{grid-template-columns:1fr}
+  .cp-step-card{flex-direction:column}
+}
+</style> 
+
+<div class="cp-wrap">
+
+  <div class="cp-header">
+    <div>
+      <p class="cp-title">Order activity details</p>
+      <p class="cp-sub">Track complete order history and activity updates</p>
+    </div>
+    <a href="{% url 'customer_orders' %}" class="cp-back">← Back to my orders</a>
+  </div>
+
+  <div class="cp-card">
+
+    <div class="cp-banner">
+      <div>
+        <div class="cp-id-label">Order reference</div>
+        <div class="cp-id-value">{{ booking.order_id|default:booking.id }}</div>
+      </div>
+      <span class="cp-pill">{{ booking.status|title }}</span>
+    </div>
+
+    <div class="cp-body">
+
+      <div class="cp-grid">
+        <div class="cp-info">
+          <label>Service name</label>
+          <p>{{ booking.service.s_title }}</p>
+        </div>
+<div class="cp-info">
+  <label>Assigned provider</label>
+
+  <div class="d-flex align-items-center gap-2 mt-1">
+    
+    {% if booking.vendor and booking.vendor.profile_image %}
+      <img src="{{ booking.vendor.profile_image.url }}"
+           alt="Vendor"
+           style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+    {% else %}
+      <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+           alt="Default Vendor"
+           style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+    {% endif %}
+
+    <p class="mb-0">
+      {% if booking.vendor %}
+        {{ booking.vendor.first_name }}
+      {% else %}
+        <span class="cp-empty-val">Unassigned</span>
+      {% endif %}
+    </p>
+
+  </div>
+</div>
+      </div>
+
+      <div class="cp-divider"></div>
+
+      <div class="cp-tl-title">Activity timeline</div>
+
+      <div class="cp-timeline">
+        <div class="cp-tl-line"></div>
+
+        {% for h in history %}
+        <div class="cp-step {% if forloop.first %}latest{% endif %}">
+          <div class="cp-dot"></div>
+          <div class="cp-step-card">
+            <div>
+              <div class="cp-step-status">{{ h.status|title }}</div>
+              {% if h.updated_by %}
+              <div class="cp-step-user">Updated by {{ h.updated_by.first_name }}</div>
+              {% endif %}
+            </div>
+            <div class="cp-step-date">{{ h.created_at|date:"M d, Y" }}</div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="cp-empty-box">No activity history found</div>
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

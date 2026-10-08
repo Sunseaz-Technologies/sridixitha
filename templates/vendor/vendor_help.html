@@ -1,0 +1,549 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+
+.help-page{
+    max-width:1100px;
+    margin:auto;
+    padding:1.5rem;
+   
+   
+}
+
+/* Header */
+
+.help-header{
+    display:flex;
+    align-items:center;
+    gap:.8rem;
+    margin-bottom:1.7rem;
+    padding-bottom:1rem;
+    border-bottom:1px solid #ececf3;
+}
+
+.help-header__icon{
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    background:#f5f5ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#4f46e5;
+    flex-shrink:0;
+}
+
+.help-header__title{
+    font-size:1.15rem;
+    font-weight:500;
+    margin:0;
+    line-height:1.3;
+    font-size: 22px !important;
+}
+
+.help-header__subtitle{
+    font-size:.82rem;
+    color:#6b7280;
+    margin-top:.15rem;
+}
+
+/* Layout */
+
+.help-layout{
+    display:grid;
+    grid-template-columns:1fr 280px;
+    gap:1.5rem;
+}
+
+@media(max-width:768px){
+    .help-layout{
+        grid-template-columns:1fr;
+    }
+}
+
+/* FAQ */
+
+.section-title{
+    font-size:.8rem;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:#626770;
+    margin-bottom:1rem;
+    font-size: 18px !important;
+}
+
+.faq-list{
+    display:flex;
+    flex-direction:column;
+    gap:.7rem;
+}
+
+.faq-item{
+    background:#fff;
+    border:1px solid #ececf3;
+    border-radius:10px;
+    overflow:hidden;
+    transition:.2s;
+}
+
+.faq-item:hover{
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.faq-question{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:.9rem 1rem;
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:.92rem;
+    font-weight:600;
+    color:#111827;
+}
+
+.faq-question:hover{
+    background:#f9fafb;
+}
+
+.faq-icon{
+    transition:.25s;
+    color:#9ca3af;
+}
+
+.faq-question[aria-expanded="true"] .faq-icon{
+    transform:rotate(180deg);
+    color:#4f46e5;
+}
+
+.faq-answer{
+    display:none;
+    padding:0 1rem 1rem;
+    border-top:1px solid #f3f4f6;
+}
+
+.faq-answer p{
+    margin-top:.8rem;
+    font-size:.87rem;
+    line-height:1.6;
+    color:#4b5563;
+}
+
+.faq-item.open .faq-answer{
+    display:block;
+}
+
+/* Sidebar */
+
+.help-sidebar{
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+}
+
+/* Support Card */
+
+.support-card{
+    background:#4f46e5;
+    color:#fff;
+    border-radius:12px;
+    padding:1.2rem;
+}
+
+.support-card__header{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    font-size:.95rem;
+    font-weight:700;
+    margin-bottom:.7rem;
+}
+
+.support-card__text{
+    font-size:.84rem;
+    color:rgba(255,255,255,.8);
+    margin-bottom:.8rem;
+}
+
+.support-card__list{
+    list-style:none;
+    padding:0;
+    margin:0 0 1rem;
+}
+
+.support-card__list li{
+    font-size:.84rem;
+    margin-bottom:.45rem;
+}
+
+.support-card__btn{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.25);
+    color:#fff;
+    padding:.65rem;
+    border-radius:8px;
+    font-size:.85rem;
+    font-weight:600;
+}
+
+.support-card__btn:hover{
+    background:rgba(255,255,255,.25);
+}
+
+/* Tip Card */
+
+.tip-card{
+    background:#fffbeb;
+    border:1px solid #fde68a;
+    border-radius:10px;
+    padding:1rem;
+}
+
+.tip-card__label{
+    font-size:.72rem;
+    font-weight:700;
+    color:#92400e;
+    margin-bottom:.3rem;
+    text-transform:uppercase;
+}
+
+.tip-card__text{
+    font-size:.85rem;
+    color:#78350f;
+    margin:0;
+}
+
+/* Quick Links */
+
+.status-card{
+    border:1px solid #ececf3;
+    border-radius:10px;
+    overflow:hidden;
+    background:#fff;
+}
+
+.status-card__header{
+    padding:.8rem 1rem;
+    font-size:.76rem;
+    font-weight:700;
+    color:#9ca3af;
+    text-transform:uppercase;
+    border-bottom:1px solid #f3f4f6;
+}
+
+.status-card__nav{
+    display:flex;
+    flex-direction:column;
+}
+
+.status-card__nav a{
+    padding:.8rem 1rem;
+    text-decoration:none;
+    color:#374151;
+    font-size:.88rem;
+    border-bottom:1px solid #f9fafb;
+    transition:.2s;
+}
+
+.status-card__nav a:hover{
+    background:#f5f5ff;
+    color:#4f46e5;
+}
+
+.status-card__nav a:last-child{
+    border-bottom:none;
+}
+
+</style>
+<div class="help-page">
+
+    <!-- Page Header -->
+    <div class="help-header">
+        <div class="help-header__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+        </div>
+
+
+
+
+            <div>
+
+        <h2 class="dashboard-heading">
+            Vendor Help Center
+        </h2>
+
+        <p class="dashboard-subheading">
+              Quick help and support for vendors.
+        </p>
+
+    </div>
+    </div>
+
+    <div class="help-layout">
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+
+            <h2 class="section-title">
+                Frequently Asked Questions
+            </h2>
+
+            <div class="faq-list">
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How do I view my assigned leads?</span>
+
+                        <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg"
+                            width="18" height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+
+                    <div class="faq-answer">
+                        <p>
+                            All leads assigned to you are visible in your
+                            <strong>Dashboard</strong> under the
+                            <em>Leads</em> tab.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How do I accept or reject a lead?</span>
+
+                        <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg"
+                            width="18" height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+
+                    <div class="faq-answer">
+                        <p>
+                            Open the lead and click
+                            <strong>Accept</strong> or
+                            <strong>Reject</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How do I update my profile?</span>
+
+                        <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg"
+                            width="18" height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+
+                    <div class="faq-answer">
+                        <p>
+                            Contact admin support to update profile
+                            or service details.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Payment not received?</span>
+
+                        <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg"
+                            width="18" height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+
+                    <div class="faq-answer">
+                        <p>
+                            Check your earnings section or contact
+                            admin if payment is delayed.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How do I mark a job completed?</span>
+
+                        <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg"
+                            width="18" height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+
+                    <div class="faq-answer">
+                        <p>
+                            Open booking details and click
+                            <strong>Mark as Complete</strong>.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="help-sidebar">
+
+<div class="support-card">
+
+<div class="support-card__header">
+
+    <svg xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round">
+
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2
+        19.79 19.79 0 0 1-8.63-3.07
+        19.5 19.5 0 0 1-6.05-6.05
+        19.79 19.79 0 0 1-3.07-8.67
+        A2 2 0 0 1 3 2.15h3
+        a2 2 0 0 1 2 1.72
+        c.12.96.36 1.9.7 2.81
+        a2 2 0 0 1-.45 2.11L7.09 9.91
+        a16 16 0 0 0 6 6l1.12-1.12
+        a2 2 0 0 1 2.11-.45
+        c.91.34 1.85.58 2.81.7
+        A2 2 0 0 1 22 16.92z">
+        </path>
+
+    </svg>
+
+    <span>Need Help?</span>
+
+</div>
+
+    <p class="support-card__text">
+        Contact admin support for:
+    </p>
+
+    <ul class="support-card__list">
+
+        <li>Technical issues</li>
+
+        <li>Payment problems</li>
+
+        <li>Lead allocation</li>
+
+        <li>Account updates</li>
+
+    </ul>
+
+    {% if admin_user and admin_user.phone %}
+
+    <a href="tel:{{ admin_user.phone }}"
+        class="support-card__btn">
+
+        Contact Support
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+            <div class="tip-card">
+                <div class="tip-card__label">
+                    Quick Tip
+                </div>
+
+                <p class="tip-card__text">
+                    Keep your booking ID ready while contacting support.
+                </p>
+            </div>
+
+            <div class="status-card">
+
+                <div class="status-card__header">
+                    Quick Links
+                </div>
+
+                <nav class="status-card__nav">
+
+                    <a href="#">My Dashboard</a>
+                    <a href="#">My Leads</a>
+                    <a href="#">My Bookings</a>
+                  
+
+                </nav>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+document.querySelectorAll('.faq-question').forEach(function(btn){
+
+    btn.addEventListener('click', function(){
+
+        var item = btn.closest('.faq-item');
+        var isOpen = item.classList.contains('open');
+
+        document.querySelectorAll('.faq-item.open').forEach(function(el){
+
+            el.classList.remove('open');
+
+            el.querySelector('.faq-question')
+              .setAttribute('aria-expanded','false');
+
+        });
+
+        if(!isOpen){
+
+            item.classList.add('open');
+
+            btn.setAttribute('aria-expanded','true');
+        }
+    });
+});
+
+</script>
+
+{% endblock %}

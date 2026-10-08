@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="contact-page">
+
+    
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+            <h5 class="fw-bold mb-0">
+                Contact Management
+
+            </h5>
+
+            <p class="page-subtitle">
+
+                View and manage all customer contact requests
+
+            </p>
+
+        </div>
+
+
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="contact-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Contact Details
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Customer enquiries and communication details
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+            <table class="contact-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Sl.No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>City</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th class="text-center">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for contact in contacts %}
+
+                    <tr>
+
+                        <!-- SL NO -->
+
+                        <td>
+
+                            <div class="sl-no">
+
+                                {{ page_obj.start_index|add:forloop.counter0 }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- NAME -->
+
+                        <td>
+
+                            <div class="user-name">
+
+                                {{ contact.name }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- EMAIL -->
+
+                        <td>
+
+                            <div class="user-email">
+
+                                {{ contact.email }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- PHONE -->
+
+                        <td>
+
+                            <div class="phone-text">
+
+                                {{ contact.phone }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- CITY -->
+
+                        <td>
+
+                            <span class="city-badge">
+
+                                {{ contact.city }}
+
+                            </span>
+
+                        </td>
+
+                        <!-- MESSAGE -->
+
+                        <td>
+
+                            <div class="message-text">
+
+                                {{ contact.message|truncatechars:50 }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if contact.status == 'pending' %}
+
+                            <span class="status-badge pending">
+
+                                Pending
+
+                            </span>
+
+                            {% elif contact.status == 'contacted' %}
+
+                            <span class="status-badge contacted">
+
+                                Contacted
+
+                            </span>
+
+                            {% elif contact.status == 'in_progress' or contact.status == 'progress' %}
+
+                            <span class="status-badge progress">
+
+                                In Progress
+
+                            </span>
+
+                            {% elif contact.status == 'completed' %}
+
+                            <span class="status-badge completed">
+
+                                Completed
+
+                            </span>
+
+                            {% elif contact.status == 'closed' %}
+
+                            <span class="status-badge closed">
+
+                                Closed
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="status-badge pending">
+
+                                {{ contact.get_status_display|default:contact.status|title }}
+
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            <div class="date-text">
+
+                                {{ contact.contact_created_at|date:"d M Y" }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="action-wrap">
+
+                                <a href="{% url 'update.contact' contact.pk %}" class="action-btn edit-btn">
+
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                </a>
+
+                                <a href="{% url 'delete.contact' contact.pk %}" class="action-btn delete-btn"
+                                    onclick="return confirm('Are you sure you want to delete this?')">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="9" class="empty-row">
+
+                            No Contacts Found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+
+        {% if page_obj.has_other_pages %}
+
+        <div class="tbl-footer">
+
+            <div class="page-btns">
+
+                {% if page_obj.has_previous %}
+
+                <a class="pg-btn" href="?page={{ page_obj.previous_page_number }}">
+
+                    ‹
+
+                </a>
+
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+
+                    {% if page_obj.number == num %}
+
+                    <span class="pg-btn active">
+
+                        {{ num }}
+
+                    </span>
+
+                    {% else %}
+
+                    <a class="pg-btn" href="?page={{ num }}">
+
+                        {{ num }}
+
+                    </a>
+
+                    {% endif %}
+
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+
+                <a class="pg-btn" href="?page={{ page_obj.next_page_number }}">
+
+                    ›
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

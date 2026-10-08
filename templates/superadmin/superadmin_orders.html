@@ -1,0 +1,616 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tz %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+<style>
+
+/* HEADER */
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.badge-count{
+  background: var(--primary-50);
+  color: var(--primary-600);
+  padding:6px 12px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:600;
+}
+
+/* STATS */
+.stat-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+  margin-bottom:20px;
+}
+
+.stat-card{
+  background:#fff;
+  border:1px solid var(--border-color);
+  border-radius:12px;
+  padding:16px;
+  box-shadow:var(--shadow-7);
+}
+
+.stat-label{
+  font-size:11px;
+  color:var(--neutral-400);
+  font-weight:600;
+  text-transform:uppercase;
+}
+
+.stat-value{
+  font-size:22px;
+  font-weight:700;
+}
+
+.stat-card.warning{ border-left:4px solid #ef8e00; }
+.stat-card.primary{ border-left:4px solid var(--primary-600); }
+.stat-card.success{ border-left:4px solid var(--success-main); }
+
+/* TOOLBAR (same as user page) */
+.card-header-flex{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+
+.toolbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.search-container{
+  position:relative;
+}
+
+.search-container input{
+  padding-left:30px;
+  height:38px;
+  border:1px solid var(--border-color);
+  border-radius:8px;
+}
+
+.search-icon{
+  position:absolute;
+  left:8px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.filter-group{
+  display:flex;
+  background:#f3f4f6;
+  padding:4px;
+  border-radius:8px;
+  gap:4px;
+}
+
+.filter-btn{
+  padding:6px 12px;
+  border:none;
+  border-radius:6px;
+  background:transparent;
+  cursor:pointer;
+}
+
+.filter-btn.active{
+  background:#fff;
+  color:var(--primary-600);
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* TABLE */
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+thead th{
+  padding:12px;
+  font-size:11px;
+  text-transform:uppercase;
+  color:var(--neutral-500);
+  border-bottom:1px solid var(--border-color);
+}
+
+tbody td{
+  padding:14px;
+  border-bottom:1px solid var(--border-color);
+}
+
+.status{
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:600;
+}
+
+.status.pending{ background:#fff4e5; color:#ef8e00; }
+.status.progress{ background:#eef1ff; color:var(--primary-600); }
+.status.completed{ background:#e6f7ed; color:var(--success-main); }
+
+.actions button{
+  border:none;
+  background:#487fff;
+  color:#fff;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+.actions button:hover{
+  background-color: blue;
+  color:#fff;
+}
+
+
+/* =========================
+   PAGINATION
+========================= */
+
+.tbl-footer{
+    width:100%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:20px;
+    border-top:1px solid #eef2f7;
+    background:#fff;
+}
+
+/* BUTTON GROUP */
+
+.page-btns{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+/* BUTTON */
+
+.pg-btn{
+    min-width:40px;
+    height:40px;
+    padding:0 14px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    color:#111827;
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s ease;
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+
+/* HOVER */
+
+.pg-btn:hover{
+    background:#f3f4f6;
+    border-color:#d1d5db;
+}
+
+/* ACTIVE */
+
+.pg-btn.active{
+    background:#2563eb;
+    color:#fff;
+    border-color:#2563eb;
+    box-shadow:0 4px 12px rgba(37,99,235,.25);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .tbl-footer{
+        justify-content:center;
+        padding:16px;
+    }
+
+    .page-btns{
+        justify-content:center;
+        width:100%;
+    }
+
+    .pg-btn{
+        min-width:36px;
+        height:36px;
+        font-size:12px;
+        border-radius:10px;
+    }
+
+}
+/* DATE INPUT */
+.date-input{
+  height:38px;
+  padding:7px 10px;
+  border:1px solid var(--border-color);
+  border-radius:8px;
+  font-size:13px;
+  color:var(--text-primary-light);
+  background:#fff;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.service{color:#2563eb}
+/* HOVER */
+.date-input:hover{
+  border-color:var(--primary-600);
+}
+
+/* FOCUS */
+.date-input:focus{
+  outline:none;
+  border-color:var(--primary-600);
+  box-shadow:0 0 0 2px rgba(37,99,235,0.1);
+}
+
+/* CALENDAR ICON FIX (optional) */
+.date-input::-webkit-calendar-picker-indicator{
+  cursor:pointer;
+  opacity:0.7;
+}
+</style>
+
+<div class="page-wrap">
+
+<!-- HEADER -->
+        <div>
+            <h2 class="dashboard-heading">
+               All Orders
+            </h2>
+            <p class="dashboard-subheading">
+              Order Management
+            </p>
+
+        </div>
+
+<!-- STATS -->
+<div class="stat-row">
+
+  <div class="stat-card">
+    <span class="stat-label">Total Orders</span>
+    <div class="stat-value">
+      {{ bookings|length }}
+    </div>
+  </div>
+
+  <div class="stat-card warning">
+    <span class="stat-label">Pending</span>
+    <div class="stat-value">{{ pending_count }}</div>
+  </div>
+
+  <div class="stat-card primary">
+    <span class="stat-label">Progress</span>
+    <div class="stat-value">{{ progress_count }}</div>
+  </div>
+
+  <div class="stat-card success">
+    <span class="stat-label">Completed</span>
+    <div class="stat-value">{{ completed_count }}</div>
+  </div>
+
+</div>
+
+<!-- CARD -->
+<div class="card">
+
+<!-- TOOLBAR -->
+<div class="card-header card-header-flex">
+
+  <div class="card-title">Orders</div>
+
+  <div class="toolbar">
+
+    <!-- FILTER -->
+<select id="statusFilter"
+        class="date-input"
+        onchange="setStatus(this.value)">
+
+    <option value="">
+        All Status
+    </option>
+
+    <option value="pending">
+        Pending
+    </option>
+
+    <option value="assigned">
+        Assigned
+    </option>
+
+    <option value="accepted">
+        Accepted
+    </option>
+
+    <option value="in_progress">
+        In Progress
+    </option>
+
+    <option value="completed">
+        Completed
+    </option>
+
+    <option value="cancelled">
+        Cancelled
+    </option>
+
+</select>
+
+    <!-- SEARCH -->
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search..." onkeyup="applyFilters()">
+    </div>
+
+    <!-- DATE -->
+  <input type="date" id="dateFilter" class="date-input" onchange="applyFilters()">
+
+  </div>
+
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+  <th>Sl.No</th>
+  <th>Service ID</th>
+  <th>Customer</th>
+  <th>Service</th>
+  <th>Lead Timing</th>
+  <th>Vendor</th> 
+  <th>Status</th>
+  <th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for b in bookings %}
+<tr>
+<td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+<td class="service">{{ b.order_id }}</td>
+
+<td>{{ b.user.first_name }}</td>
+
+<td>{{ b.service.s_title }}</td>
+
+<td>
+
+    <div class="lead-date">
+
+        {{ b.booking_created_at|localtime|date:"d M Y" }}
+
+    </div>
+
+    {% if b.assigned_time %}
+
+        <div class="lead-assign-time">
+
+            Assigned:
+            {{ b.assigned_time|date:"h:i A" }}
+
+        </div>
+
+        <div class="lead-hours">
+
+            {{ b.assign_hours }} hrs taken
+
+        </div>
+
+    {% else %}
+
+        <div class="lead-pending">
+
+            Waiting For Vendor
+
+        </div>
+
+    {% endif %}
+
+</td>
+<td>
+  {% if b.vendor %}
+    <strong>{{ b.vendor.first_name }}</strong>
+  {% else %}
+    <span style="color:#999;">Not Assigned</span>
+  {% endif %}
+</td>
+
+<td>
+
+    <span class="status {{ b.status }}"
+          data-status="{{ b.status }}">
+
+        {{ b.get_status_display }}
+
+    </span>
+
+</td>
+
+<td class="actions">
+  <button onclick="location.href='{% url 'order_history' b.id %}'">
+    View
+  </button>
+</td>
+
+</tr>
+{% empty %}
+<tr>
+<td colspan="6" style="text-align:center;padding:30px;">
+No data found
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+<!-- PAGINATION -->
+
+<div class="tbl-footer">
+
+    <div class="page-btns">
+
+        <!-- PREVIOUS -->
+
+        {% if page_obj.has_previous %}
+
+        <a class="pg-btn"
+           href="?page={{ page_obj.previous_page_number }}">
+
+            ‹
+
+        </a>
+
+        {% endif %}
+
+        <!-- CURRENT PAGE -->
+
+        <span class="pg-btn active">
+
+            {{ page_obj.number }}
+
+        </span>
+
+        <!-- NEXT PAGE NUMBER -->
+
+        {% if page_obj.has_next %}
+
+        <a class="pg-btn"
+           href="?page={{ page_obj.next_page_number }}">
+
+            {{ page_obj.next_page_number }}
+
+        </a>
+
+        {% endif %}
+
+        <!-- NEXT ARROW -->
+
+        {% if page_obj.has_next %}
+
+        <a class="pg-btn"
+           href="?page={{ page_obj.next_page_number }}">
+
+            ›
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+let currentStatus = "";
+
+function setStatus(status){
+
+    currentStatus = status
+        .toLowerCase()
+        .trim();
+
+    applyFilters();
+
+}
+
+function applyFilters(){
+
+    const q = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const selectedDate = document
+        .getElementById("dateFilter")
+        .value;
+
+    const rows = document.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+
+        const text = row.innerText
+            .toLowerCase()
+            .trim();
+
+        const statusElement = row.querySelector(".status");
+
+        const status = statusElement
+            ? statusElement.dataset.status
+                .toLowerCase()
+                .trim()
+            : "";
+
+        let show = true;
+
+        /* SEARCH */
+
+        if(q){
+
+            if(!text.includes(q)){
+
+                show = false;
+
+            }
+
+        }
+
+        /* STATUS */
+
+        if(currentStatus){
+
+            if(status !== currentStatus){
+
+                show = false;
+
+            }
+
+        }
+
+        row.style.display = show
+            ? ""
+            : "none";
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

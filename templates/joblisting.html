@@ -1,0 +1,585 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link rel="icon" type="image/png" href="{% static 'assets/images/logo/top_sridixitha_logo.gif' %}">
+  <title>SriDixitha Services</title>
+  <!-- <meta name="author" content="">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="robots" content=""> -->
+  <!-- Mobile Specific Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicons -->
+
+  <!-- <link rel="icon" href="assets/img/patience.png" type="image/x-icon"> -->
+  <!-- <link rel="icon" href="assets/img/favicons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicons/favicon.png" type="image/png" sizes="32x32">
+  <link rel="shortcut icon" href="assets/img/favicons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="assets/img/favicons/favicon.png"> -->
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css/animate.min.css" />
+  <!--==============================
+	  Google Fonts
+	============================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Miranda+Sans:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playwrite+AU+NSW+Guides&family=Playwrite+NZ+Guides&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <!--==============================
+	    All CSS File
+	============================== -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+  <!-- Fontawesome Icon -->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}">
+  <!-- Magnific Popup -->
+  <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.min.css' %}">
+  <!-- Slick Slider -->
+  <link rel="stylesheet" href="{% static 'assets/css/slick.min.css' %}">
+  <!-- nice-select -->
+  <link rel="stylesheet" href="{% static 'assets/css/nice-select.min.css' %}">
+  <!-- animate js -->
+  <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+  <!-- nouislider js -->
+  <link rel="stylesheet" href="{% static 'assets/css/nouislider.css' %}">
+  <!-- Theme Custom CSS -->
+  <link rel="stylesheet" href="{% static 'assets/css/style1.css' %}">
+  
+
+
+</head>
+
+<body>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to Top">
+    <span class="progress-circle">
+      <svg viewBox="0 0 100 100">
+        <circle class="bg" cx="50" cy="50" r="40"></circle>
+        <circle class="progress" cx="50" cy="50" r="40"></circle>
+      </svg>
+      <span class="progress-percentage" id="progressPercentage">0%</span>
+    </span>
+  </button>
+  <!--==============================
+    	Mobile Menu
+  	============================== -->
+  <div class="vs-menu-wrapper">
+    <div class="vs-menu-area text-center">
+      <div class="mobile-logo">
+        <a href="#"><img
+            src="{% if footer.logo_image %} {{ footer.logo_image.url }} {% else %} {% static 'assets/images/logo/sridixitha_logo.gif' %} {% endif %}"
+            alt="Sridixitha" class="logo logo_news"></a>
+        <button class="vs-menu-toggle"><i class="fal fa-times"></i></button>
+      </div>
+      <div class="vs-mobile-menu">
+        <ul>
+          <li class="">
+            <a href="{% url 'indexpage' %}">Home</a>
+
+          <li class="">
+            <a href="#categories">Categories</a>
+            <a href="#services">Services</a>
+
+          </li>
+          <li class="menu-item-has-children mega-menu-wrap">
+            <a href="#services">Services</a>
+
+          </li>
+          <li>
+            <a href="#jobs">Careers</a>
+          </li>
+          <li>
+            <a href="#Testimonials">Testimonials</a>
+          </li>
+          <li>
+            <a href="{% url 'feedbackform' %}" style="color: #ea6e12 !important;">FeedBack & Suggestions</a>
+          </li>
+          <li>
+            <a href="{% url 'contact' %}">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--==============================
+	Sidemenu
+	============================== -->
+  <div class="sidemenu-wrapper d-none d-lg-block">
+    <div class="sidemenu-content">
+      <button class="closeButton sideMenuCls"><i class="far fa-times"></i></button>
+      <div class="widget">
+        <div class="vs-widget-about">
+          <div class="mb-4">
+            <a href="#"><img src="{% static 'assets/images/logo/sridixitha_logo.gif' %}" alt="logo"
+                class="logo"></a>
+          </div>
+          <p class="sidemenu-text">
+     
+          </p>
+          <ul class="social-links">
+            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+          </ul>
+
+
+        </div>
+      </div>
+      <div class="widget  ">
+        <h4 class="widget_title">Recent Posts</h4>
+        <div class="widget footer-widget">
+          <div class="recent-post-wrap">
+            <div class="recent-post">
+              <div class="media-img">
+                <a href="blog-details.html"><img src="{% static 'assets/img/blog/recent-post-1-1.jpg' %}"
+                    alt="Blog Image"></a>
+              </div>
+              <div class="media-body">
+                <h4 class="post-title"><a href="blog-details.html">How to Improve Your Riding...</a>
+                </h4>
+                <div class="recent-post-meta">
+                  <i class="fas fa-calendar-alt"></i> 09 Aug, 2025
+                </div>
+              </div>
+            </div>
+            <div class="recent-post">
+              <div class="media-img">
+                <a href="blog-details.html"><img src="{% static 'assets/img/blog/recent-post-1-2.jpg' %}"
+                    alt="Blog Image"></a>
+              </div>
+              <div class="media-body">
+                <h4 class="post-title"><a href="blog-details.html">Choosing the Right Gear...</a>
+                </h4>
+                <div class="recent-post-meta">
+                  <i class="fas fa-calendar-alt"></i> 09 Aug, 2025
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="widget  ">
+        <h3 class="widget_title">Office Maps</h3>
+        <div class="footer-map">
+          <iframe title="office location map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d163720.11965853968!2d8.496481908353967!3d50.121347879150306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47bd096f477096c5%3A0x422435029b0c600!2sFrankfurt%2C%20Germany!5e0!3m2!1sen!2sbd!4v1651732317319!5m2!1sen!2sbd"
+            width="200" height="150" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--==============================
+    Popup Search Box
+    ============================== -->
+
+  <!--==============================
+        Header Area
+    ==============================-->
+ <header class="vs-header header-layout2">
+    <!--contact numbers-->
+    <div class="header-top">
+      <div class="top-container">
+        <div class="social-media-header">
+          <div class="">
+            <div class="header-links ">
+              <ul>
+                <li class="contact-info">
+
+                  <span class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+91{{ footer.phone_num }}">+91 {{ footer.phone_num }}</a>
+                  </span>
+
+                  <span class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <a href="https://wa.me/91{{ footer.whatsapp_num }}" target="_blank">+91 {{ footer.whatsapp_num }}</a>
+                  </span>
+
+                </li>
+
+              </ul>
+            </div>
+          </div>
+          <div class="">
+            <div class="header-right">
+
+              <div class="header-social">
+                {% if footer.facebook %}
+                <a href="{{ footer.facebook }}"><i class="fab fa-facebook-f"></i></a>
+                {% else %}
+                <a href=""><i class="fab fa-facebook-f"></i></a>
+                {% endif %}
+                {% if footer.twitter %}
+                <a href="{% url 'footer.twitter' %}"><i class="fa-brands fa-x-twitter"></i></a>
+                {% else %}
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                {% endif %}
+                {% if footer.instagram %}
+                <a href="{% url 'footer.instagram' %}"><i class="fab fa-instagram"></i></a>
+                {% else %}
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--news area-->
+    <div class="news-ticker">
+      <div class="news-track">
+        {% for i in news %}
+        <span> <i class="fa-solid fa-circle dot-icon"></i> {{ i.content }}</span>
+        {% empty %}
+        <span>No latest updates available</span>
+        {% endfor %}
+
+      </div>
+    </div>
+
+    <!-- <!-nav area-> -->
+      <div class="sticky-wrapper">
+        <div class="sticky-active">
+          <div class="container-fluid">
+            <div class="row justify-content-between align-items-center gx-sm-0">
+              <div class="col-auto">
+                <div class="header-logo">
+                  <a href="{% url 'indexpage' %}">
+
+                    {% if footer.logo_image %}
+                    <img src="{{ footer.logo_image.url }}" alt="Logo" class="logo logo_news">
+                    {% else %}
+                    <img src="{% static 'assets/images/logo/sridixitha_logo.gif' %}" alt="Logo" class="logo logo_news">
+                    {% endif %}
+
+                  </a>
+                </div>
+              </div>
+              <div class="col-auto d-inline-flex align-items-center">
+                <nav class="main-menu menu-style1 d-none d-lg-block">
+                  <ul>
+
+                    <li>
+                      <a href="{% url 'indexpage' %}">Home</a>
+                    </li>
+
+                    <li>
+                      <a href="#categories">categories </a>
+
+                    </li>
+                    <li>
+                      <a href="#services">Services </a>
+                    </li>
+
+                    <li>
+                      <a href="#jobs">Careers </a>
+                    </li>
+                    <li>
+                      <a href="#Testimonials">Testimonials </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'feedbackform' %}" style="color: #ea6e12;">Feedback & Suggestions</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'contact' %}">Contact</a>
+                    </li>
+
+                  </ul>
+                </nav>
+                <div class="header-buttons d-inline-block d-xl-none me-2 dropdown">
+
+                  <button class="vs-btn dropdown-toggle" data-bs-toggle="dropdown">
+                    Account
+                  </button>
+
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                    <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+                  </ul>
+
+                </div>
+                <button class="vs-menu-toggle d-inline-block d-lg-none"><i class="fal fa-bars"></i></button>
+
+              </div>
+              <div class="col-auto d-xl-block d-none">
+                <div class="header-buttons dropdown account-dropdown">
+
+                  <!-- Search Icon -->
+                  <!-- <a href="#" class="vs-icon searchBoxTggler">
+                  <i class="fas fa-search"></i>
+                </a> -->
+
+                  <!-- Account Button -->
+                  <button class="vs-btn dropdown-toggle ">
+                    Account
+                  </button>
+
+                  <!-- Dropdown -->
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="{% url 'login' %}">
+                        <i class="fa-regular fa-user me-2"></i> Login
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'register' %}">
+                        <i class="fa-regular fa-user-plus me-2"></i> Register
+                      </a>
+                    </li>
+                  </ul>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </header>
+
+
+
+      <section class="jbs-section" id="jobs">
+    <div class="jbs-wrap">
+
+      <div class="jbs-head">
+        
+        <h2 class="jbs-title " style="color: #ea6e12;">Job Listing </h2>
+        <p class="jobs-line"> </p>
+      </div>
+
+      <div class="jbs-stats">
+        <div class="jbs-stat">
+          <div class="jbs-stat-num">{{ jobs.count }}</div>
+          <div class="jbs-stat-lbl">Open roles</div>
+        </div>
+        <div class="jbs-stat">
+          <div class="jbs-stat-num">2–5 days</div>
+          <div class="jbs-stat-lbl">Response time</div>
+        </div>
+        <div class="jbs-stat">
+          <div class="jbs-stat-num">100%</div>
+          <div class="jbs-stat-lbl">Verified placements</div>
+        </div>
+        <div class="jbs-stat">
+          <div class="jbs-stat-num">500+</div>
+          <div class="jbs-stat-lbl">Families served</div>
+        </div>
+      </div>
+
+      <div class="jbs-grid">
+
+        {% for job in jobs %}
+        
+        <div class="jbs-card">
+
+          <div class="jbs-icon">
+            <img src="{% if job.icon %}{{ job.icon.url }}{% else %}{% static 'assets/img/default-job.png' %}{% endif %}"
+              alt="{{ job.title }}">
+          </div>
+          {% if job.status == 'urgent' %}
+          <div class="jbs-pill jbs-pill-urgent">Urgent</div>
+          {% else %}
+          <div class="jbs-pill jbs-pill-hire">Hiring</div>
+          {% endif %}
+
+          <p class="jbs-name">{{ job.title }}</p>
+
+          <p class="jbs-desc">
+            {{ job.description|truncatewords:15 }}
+          </p>
+
+          <div class="jbs-meta">
+            <div class="jbs-meta-item">
+              <i class="fa-regular fa-clock"></i>
+              {{ job.get_job_type_display }}
+            </div>
+
+            <div class="jbs-meta-item">
+              <i class="fa-solid fa-location-dot"></i>
+              {{ job.get_work_mode_display }}
+            </div>
+          </div>
+
+          <a href="{% url 'job.apply' job.id %}" class="jbs-btn">Apply Now</a>
+
+        </div>
+        {% empty %}
+        <p>No jobs available</p>
+        {% endfor %}
+
+
+
+      </div>
+    </div>
+    
+  </section>
+    <!--==============================
+	  Footer Area
+	============================== -->
+    <footer class="footer-layout1 bg-body z-index-common" data-bg-src="assets/img/bg/">
+        <!-- Cta Area -->
+
+        <!-- Cta Area End -->
+        <div class="footer-top">
+            <div class="container">
+                <div class="row g-5 justify-content-between">
+                    <div class="col-md-6 col-lg-6 col-xl-auto">
+                        <div class="newsletter-area">
+                            <div class="footer-logo">
+                                <a href="{% url 'indexpage' %}">
+                                    <img src="{% if footer.logo_image  %} {{ footer.logo_image.url }} {% else %} {% static 'assets/images/logo/sridixitha_logo.gif' %} {% endif %}"
+                                        alt="Sridixitha" class="logo logo_news">
+                                </a>
+                            </div>
+                            <p class="footer-text">{{ footer.footer_description }}</p>
+                            <div class="footer-social-media">
+                                {% if footer.whatsapp %}
+                                <a href="{{ footer.whatsapp }}" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                                {% elif footer.whatsapp_num %}
+                                <a href="https://wa.me/91{{ footer.whatsapp_num }}" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                                {% else %}
+                                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                                {% endif %}
+                                {% if footer.facebook %}
+                                <a href="{{ footer.facebook }}"><i class="fa-brands fa-facebook-f"></i></a>
+                                {% else %}
+                                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                                {% endif %}
+                                {% if footer.instagram %}
+                                <a href="{{ footer.instagram }}"><i class="fa-brands fa-instagram"></i></a>
+                                {% else %}
+                                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                {% endif %}
+                                {% if footer.twitter %}
+                                <a href="{{ footer.twitter }}"><i class="fa-brands fa-x-twitter"></i></a>
+                                {% else %}
+                                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-auto">
+                        <div class="widget widget_nav_menu footer-widget">
+                            <h3 class="widget_title">Company<span class="title-shape"><img
+                                        src="{% static 'assets/images/shapes/footer-line-shape.svg' %}"
+                                        alt="Shape Image"></span></h3>
+                            <ul class="menu">
+                                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Our
+                                        Services</a></li>
+                                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Careers</a>
+                                </li>
+                                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i> Contact
+                                        Us</a></li>
+                                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Join as
+                                        Vendor</a></li>
+                                <li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i> Client
+                                        Reviews</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-auto">
+                        <div class="widget widget_nav_menu footer-widget">
+                            <h3 class="widget_title"> Our Services <span class="title-shape"><img
+                                        src="{% static 'assets/images/shapes/footer-line-shape.svg' %}"
+                                        alt="Shape Image"></span></h3>
+                            <ul class="menu">
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Baby Care</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Brahmin Cook</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Catering Services</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Female Cook</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Japa Maid</a></li>
+<li><a href="#"><i style="color: #074c7d;" class="far fa-angle-right"></i>Patient Care</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-auto">
+                        <div class="widget widget_nav_menu footer-widget">
+                            <h3 class="widget_title"> Need Help?<span class="title-shape"><img
+                                        src="{% static 'assets/images/shapes/footer-line-shape.svg' %}"
+                                        alt="line footer"></span></h3>
+                            <ul class="menu footer-menu">
+
+                                <li><a href="tel:+91{{ footer.phone_num }}"><i style="color: #ea6e12" class="fa-solid fa-phone"></i>
+                                    +91 {{ footer.phone_num }}</a>
+                                </li>
+                                <li><a href="https://wa.me/91{{ footer.whatsapp_num }}" target="_blank"><i style="color: #ea6e12" class="fa-brands fa-square-whatsapp"></i>
+                                    +91 {{ footer.whatsapp_num }}</a>
+                                </li>
+                                <li><a href="mailto:{{ footer.email }}" style="text-transform: lowercase !important;"><i style="color: #ea6e12" class="fa-solid fa-envelope"></i>
+                                    {{ footer.email|lower }}</a>
+                                </li>
+                                <li><a href="#"><i style="color: #ea6e12" class="fa-solid fa-location-dot"></i>
+                                    {{ footer.address }}</a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright-wrap">
+                <div class="row g-2  justify-content-center">
+                    <div class="col-xl-6">
+                        <p class="copyright-text">
+                            Copyright <i class="fal fa-copyright"></i> 2010 - 
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            <a href="{% url 'indexpage' %}">Sri Dixitha </a>.
+                            All Rights Reserved.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Jquery -->
+    <script src="{% static 'assets/js/vendor/jquery-3.7.1.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <!-- Slick Slider -->
+    <script src="{% static 'assets/js/slick.min.js' %}"></script>
+    <!-- Magnific Popup -->
+    <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- imagesloaded -->
+    <script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+    <!-- Isotope Filter -->
+    <script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+    <!-- Gsap -->
+    <script src="{% static 'assets/js/gsap.min.js' %}"></script>
+    <!-- ScrollTrigger -->
+    <script src="{% static 'assets/js/ScrollTrigger.min.js' %}"></script>
+    <!-- Gsap ScrollTo Plugin -->
+    <script src="{% static 'assets/js/gsap-scroll-to-plugin.js' %}"></script>
+    <!-- Split Text -->
+    <script src="{% static 'assets/js/SplitText.js' %}"></script>
+    <!-- lenis -->
+    <script src="{% static 'assets/js/lenis.min.js' %}"></script>
+    <!-- wow js -->
+    <script src="{% static 'assets/js/wow.min.js' %}"></script>
+    <!-- nice-select -->
+    <script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+    <!-- nouislider -->
+    <script src="{% static 'assets/js/nouislider.min.js' %}"></script>
+    <!-- Main Js File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+
+</html>

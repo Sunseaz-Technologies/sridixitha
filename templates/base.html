@@ -1,0 +1,1061 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+
+ <link rel="icon" type="image/x-icon" href="{% static 'assets/images/logo/top_serdixitha_logo.png' %}">
+
+  <title>SriDixitha Dashboard </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- remix icon font css -->
+  <link rel="stylesheet" href="{% static 'assets/css/remixicon.css' %}">
+
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/bootstrap.min.css' %}">
+
+  <!-- Apex Chart css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/apexcharts.css' %}">
+
+  <!-- Data Table css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/dataTables.min.css' %}">
+
+  <!-- Text Editor css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/editor-katex.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/lib/editor.atom-one-dark.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/lib/editor.quill.snow.css' %}">
+
+  <!-- Date picker css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/flatpickr.min.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Calendar css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/full-calendar.css' %}">
+
+  <!-- Vector Map css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/jquery-jvectormap-2.0.5.css' %}">
+
+  <!-- Popup css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/magnific-popup.css' %}">
+
+  <!-- Slick Slider css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/slick.css' %}">
+
+  <!-- prism css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/prism.css' %}">
+
+  <!-- file upload css -->
+  <link rel="stylesheet" href="{% static 'assets/css/lib/file-upload.css' %}">
+
+  <link rel="stylesheet" href="{% static 'assets/css/lib/audioplayer.css' %}">
+
+  <!-- main css -->
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  
+   <link rel="stylesheet" href="{% static 'assets/css/dashboards.css' %}">
+ 
+  
+  
+
+</head>
+
+<body>
+
+  <!-- Theme Customization Structure Start -->
+
+
+
+  </div>
+  <!-- Theme Customization Structure End -->
+  <aside class="sidebar">
+    <button type="button" class="sidebar-close-btn">
+      <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
+    </button>
+    <div>
+     <a href="
+{% if request.user.role == 'superadmin' %}
+
+    {% url 'superadmin_dashboard' %}
+
+{% elif request.user.role == 'admin' %}
+
+    {% url 'admin_dashboard' %}
+
+{% elif request.user.role == 'vendor' %}
+
+    {% url 'vendor_dashboard' %}
+
+{% elif request.user.role == 'customer' %}
+
+    {% url 'customer_dashboard' %}
+
+{% else %}
+
+    /
+
+{% endif %}
+"
+class="sidebar-logo">
+
+        <img src="{% static 'assets/images/logo/sridixitha_logo.gif' %}" alt="site1 logo" class="light-logo">
+
+        <img src="{% static 'assets/images/logo/sridixitha_logo.gif' %}" alt="site2 logo" class="logo-icon">
+      </a>
+    </div>
+
+
+    <div class="sidebar-menu-area">
+      <ul class="sidebar-menu" id="sidebar-menu">
+        <li class="sidebar-menu-group-title">Main</li>
+
+        {% if user.is_authenticated %}
+
+
+
+        <!-- ================= SUPERADMIN ================= -->
+        {% if user.role == "superadmin" %}
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'superadmin_dashboard' %}active{% endif %}">
+          <a href="{% url 'superadmin_dashboard' %}">
+            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'create_admin' %}active{% endif %}">
+          <a href="{% url 'create_admin' %}">
+            <iconify-icon icon="mdi:account-plus-outline" class="menu-icon"></iconify-icon>
+            <span>Create Admin</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'all_users' %}active{% endif %}">
+          <a href="{% url 'all_users' %}">
+            <iconify-icon icon="mdi:account-group-outline" class="menu-icon"></iconify-icon>
+            <span>All Users</span>
+          </a>
+        </li>
+
+        <li class="sidebar-menu-group-title">Manage</li>
+
+
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'superadmin_orders' %}active{% endif %}">
+          <a href="{% url 'superadmin_orders' %}">
+            <iconify-icon icon="mdi:view-list-outline" class="menu-icon"></iconify-icon>
+            <span>All Leads</span>
+          </a>
+        </li>
+<li class="sidebar__item {% if request.resolver_match.url_name == 'assign_leads' %}active{% endif %}">
+    <a href="{% url 'assign_leads' %}">
+        <iconify-icon icon="mdi:account-switch" class="menu-icon"></iconify-icon>
+        <span>Assign Leads</span>
+    </a>
+</li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_renewal_dashboard' %}active{% endif %}">
+          <a href="{% url 'admin_renewal_dashboard' %}">
+            <iconify-icon icon="mdi:autorenew"  class="menu-icon"></iconify-icon>
+            <span> Renewal Leads</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'superadmin_payments' %}active{% endif %}">
+          <a href="{% url 'superadmin_payments' %}">
+            <iconify-icon icon="mdi:cash-multiple" class="menu-icon"></iconify-icon>
+            <span>Payments</span>
+          </a>
+        </li>
+
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'complaint_list' %}active{% endif %}">
+          <a href="{% url 'complaint_list' %}">
+            <iconify-icon icon="mdi:comment-text-outline" class="menu-icon"></iconify-icon>
+            <span>Customer Remarks</span>
+          </a>
+        </li>
+
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'terms_list' %}active{% endif %}">
+          <a href="{% url 'terms_list' %}">
+            <iconify-icon icon="mdi:clipboard-check-outline" class="menu-icon"></iconify-icon>
+            <span>T&C Approvals</span>
+          </a>
+        </li>
+                <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_permissions' %}active{% endif %}">
+          <a href="{% url 'admin_permissions' %}">
+              <iconify-icon
+                icon="mdi:shield-account-outline"
+               class="menu-icon">
+            </iconify-icon>
+            <span>
+               Admin Permissions
+            </span>
+          </a>
+        </li>
+
+
+          <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_permissions' %}active{% endif %}">
+          <a href="{% url 'visitors' %}">
+            <iconify-icon icon="mdi:web" class="menu-icon"></iconify-icon>
+            <span> Visitor Insights </span>
+          </a>
+        </li>
+
+
+        <li class="sidebar-menu-group-title">Dashboard</li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'news.list' %}active{% endif %}">
+          <a href="{% url 'news.list' %}">
+            <iconify-icon icon="mdi:newspaper-variant-multiple-outline" class="menu-icon"></iconify-icon>
+            <span>News</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.banner' %}active{% endif %}">
+          <a href="{% url 'list.banner' %}">
+            <iconify-icon icon="mdi:image-area" class="menu-icon"></iconify-icon>
+            <span>Hero Section</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.category' %}active{% endif %}">
+          <a href="{% url 'list.category' %}">
+            <iconify-icon icon="mdi:shape-outline" class="menu-icon"></iconify-icon>
+            <span>Categories</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.category.services' %}active{% endif %}">
+          <a href="{% url 'list.category.services' %}">
+            <iconify-icon icon="mdi:tools" class="menu-icon"></iconify-icon>
+            <span>Categories Services</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'services.list' %}active{% endif %}">
+          <a href="{% url 'services.list' %}">
+            <iconify-icon icon="mdi:tools" class="menu-icon"></iconify-icon>
+            <span>Services</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.jobs' %}active{% endif %}">
+          <a href="{% url 'list.jobs' %}">
+            <iconify-icon icon="mdi:briefcase-outline" class="menu-icon"></iconify-icon>
+            <span>Jobs</span>
+          </a>
+        </li>
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_job_applications' %}active{% endif %}">
+          <a href="{% url 'admin_job_applications' %}">
+            <iconify-icon icon="mdi:briefcase-outline" class="menu-icon"></iconify-icon>
+            <span>Job Applications</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.feedback' %}active{% endif %}">
+          <a href="{% url 'list.feedback' %}">
+            <iconify-icon icon="mdi:message-text-outline" class="menu-icon"></iconify-icon>
+            <span>Feedbacks</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.contact' %}active{% endif %}">
+          <a href="{% url 'list.contact' %}">
+            <iconify-icon icon="mdi:email-outline" class="menu-icon"></iconify-icon>
+            <span>Inquery Contacts</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.footer' %}active{% endif %}">
+          <a href="{% url 'list.footer' %}">
+            <iconify-icon icon="mdi:arrow-down-bold-box-outline" class="menu-icon"></iconify-icon>
+            <span>Footer</span>
+          </a>
+        </li>
+
+
+        <!-- ================= ADMIN ================= -->
+
+
+        {% elif user.role == "admin" %}
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+          <a href="{% url 'admin_dashboard' %}">
+            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <!-- 
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'all_users' %}active{% endif %}">
+          <a href="{% url 'all_users' %}">
+            <iconify-icon icon="mdi:account-group-outline" class="menu-icon"></iconify-icon>
+            <span>All Users</span>
+          </a>
+        </li> -->
+
+
+
+
+
+        <!-- 
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'create_vendor' %}active{% endif %}">
+          <a href="{% url 'create_vendor' %}">
+            <iconify-icon icon="mdi:account-plus-outline" class="menu-icon"></iconify-icon>
+            <span>Create Vendor</span>
+          </a>
+        </li> -->
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'vendor_approval' %}active{% endif %}">
+          <a href="{% url 'vendor_approval' %}">
+            <iconify-icon icon="mdi:account-plus-outline" class="menu-icon"></iconify-icon>
+            <span>Approve Vendor</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_all_users' %}active{% endif %}">
+
+          <a href="{% url 'admin_all_users' %}">
+
+            <iconify-icon icon="mdi:account-group-outline" class="menu-icon">
+            </iconify-icon>
+
+            <span>
+              All Users
+            </span>
+
+          </a>
+
+        </li>
+
+
+
+        <li class="sidebar-menu-group-title">Manage</li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_orders' %}active{% endif %}">
+          <a href="{% url 'admin_orders' %}">
+            <iconify-icon icon="mdi:cart-outline" class="menu-icon"></iconify-icon>
+            <span>Leads</span>
+          </a>
+        </li>
+
+
+
+
+          <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_renewal_dashboard' %}active{% endif %}">
+          <a href="{% url 'admin_renewal_dashboard' %}">
+          <iconify-icon icon="mdi:autorenew"  class="menu-icon"></iconify-icon>
+            <span> Renewal Leads</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_payments' %}active{% endif %}">
+          <a href="{% url 'admin_payments' %}">
+            <iconify-icon icon="mdi:cash-multiple" class="menu-icon"></iconify-icon>
+            <span>Payments</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'complaint_list' %}active{% endif %}">
+          <a href="{% url 'complaint_list' %}">
+           <iconify-icon icon="mdi:comment-text-outline" class="menu-icon"></iconify-icon>
+            <span>Customer Remarks</span>
+          </a>
+        </li>
+     
+
+
+
+
+
+        
+
+
+
+
+        <li class="sidebar-menu-group-title">Dashboard</li>
+       
+        {% if perms.core.view_news %}
+                <li class="sidebar__item {% if request.resolver_match.url_name == 'news.list' %}active{% endif %}">
+                    <a href="{% url 'news.list' %}">
+                      <iconify-icon icon="mdi:newspaper-variant-multiple-outline" class="menu-icon"></iconify-icon>
+                      <span>News</span>
+                    </a>
+                  </li>
+        {% endif %}
+
+       
+      {% if perms.core.view_herobanner %}          
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.banner' %}active{% endif %}">
+          <a href="{% url 'list.banner' %}">
+            <iconify-icon icon="mdi:image-area" class="menu-icon"></iconify-icon>
+            <span>Hero Section</span>
+          </a>
+        </li>
+      {% endif %}
+      
+  {% if perms.core.view_category %} 
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.category' %}active{% endif %}">
+          <a href="{% url 'list.category' %}">
+            <iconify-icon icon="mdi:shape-outline" class="menu-icon"></iconify-icon>
+            <span>Categories</span>
+          </a>
+        </li>
+  {% endif %}
+
+        {% if perms.core.view_categoryservice %} 
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.category.services' %}active{% endif %}">
+          <a href="{% url 'list.category.services' %}">
+            <iconify-icon icon="mdi:tools" class="menu-icon"></iconify-icon>
+            <span>Categories Services</span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if perms.core.view_servicescards %} 
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'services.list' %}active{% endif %}">
+          <a href="{% url 'services.list' %}">
+            <iconify-icon icon="mdi:tools" class="menu-icon"></iconify-icon>
+            <span>Services</span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if perms.core.view_job %} 
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.jobs' %}active{% endif %}">
+          <a href="{% url 'list.jobs' %}">
+            <iconify-icon icon="mdi:briefcase-outline" class="menu-icon"></iconify-icon>
+            <span>Jobs</span>
+          </a>
+        </li>
+        {% endif %}
+
+        
+        {% if perms.core.view_jobapplication %} 
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'admin_job_applications' %}active{% endif %}">
+          <a href="{% url 'admin_job_applications' %}">
+            <iconify-icon icon="mdi:briefcase-outline" class="menu-icon"></iconify-icon>
+            <span>Job Applications</span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if perms.core.view_servicefeedback %} 
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.feedback' %}active{% endif %}">
+          <a href="{% url 'list.feedback' %}">
+            <iconify-icon icon="mdi:message-text-outline" class="menu-icon"></iconify-icon>
+            <span>Feedbacks</span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if perms.core.view_contact %}
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.contact' %}active{% endif %}">
+          <a href="{% url 'list.contact' %}">
+            <iconify-icon icon="mdi:email-outline" class="menu-icon"></iconify-icon>
+            <span>Inquery Contacts</span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if perms.core.view_footer %}
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'list.footer' %}active{% endif %}">
+          <a href="{% url 'list.footer' %}">
+            <iconify-icon icon="mdi:arrow-down-bold-box-outline" class="menu-icon"></iconify-icon>
+            <span>Footer</span>
+          </a>
+        </li>
+        {% endif %}
+
+
+        <!-- ================= VENDOR ================= -->
+        {% elif user.role == "vendor" %}
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'vendor_dashboard' %}active{% endif %}">
+          <a href="{% url 'vendor_dashboard' %}">
+            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'vendor_profile' %}active{% endif %}">
+          <a href="{% url 'vendor_profile' request.user.id %}">
+            <iconify-icon icon="mdi:account-cog-outline" class="menu-icon"></iconify-icon>
+            <span>Update Profile</span>
+          </a>
+        </li>
+
+        <li class="sidebar-menu-group-title">Manage</li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'vendor_orders' %}active{% endif %}">
+          <a href="{% url 'vendor_orders' %}">
+           <iconify-icon icon="mdi:clipboard-account-outline" class="menu-icon"></iconify-icon>
+            <span>My Leads</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'vendor_payments' %}active{% endif %}">
+
+          <a href="{% url 'vendor_payments' %}">
+
+            <iconify-icon icon="mdi:cash-multiple" class="menu-icon"></iconify-icon>
+
+            <span>Payments</span>
+
+          </a>
+
+        </li>
+
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'vendor_payment_show' %}active{% endif %}">
+
+          <a href="{% url 'vendor_payment_show' %}">
+
+        <iconify-icon icon="mdi:receipt-text-outline" class="menu-icon"></iconify-icon>
+            <span>Payments Upload</span>
+
+          </a>
+
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'vendor_help' %}active{% endif %}">
+
+          <a href="{% url 'vendor_help' %}">
+
+            <iconify-icon icon="mdi:briefcase-outline"  class="menu-icon"></iconify-icon>
+
+            <span>Help/FAQ</span>
+
+          </a>
+
+        </li>
+
+
+
+
+
+        
+
+
+        <!-- ================= CUSTOMER ================= -->
+        {% else %}
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'customer_dashboard' %}active{% endif %}">
+          <a href="{% url 'customer_dashboard' %}">
+            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar-menu-group-title">Manage</li>
+
+              <li class="sidebar__item {% if request.resolver_match.url_name == 'services_listing_page' %}active{% endif %}">
+          <a href="{% url 'services_listing_page' %}">
+            <iconify-icon icon="mdi:view-grid-outline" class="menu-icon"></iconify-icon>
+            <span>View All Service</span>
+          </a>
+        </li>
+
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'customer_orders' %}active{% endif %}">
+          <a href="{% url 'customer_orders' %}">
+            <iconify-icon icon="mdi:briefcase-outline" class="menu-icon"></iconify-icon>
+            <span>My Services</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'customer_tracking' %}active{% endif %}">
+          <a href="{% url 'customer_tracking' %}">
+            <iconify-icon icon="mdi:crosshairs-gps" class="menu-icon"></iconify-icon>
+            <span>Tracking</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'customer_payments' %}active{% endif %}">
+          <a href="{% url 'customer_payments' %}">
+            <iconify-icon icon="mdi:credit-card-outline" class="menu-icon"></iconify-icon>
+            <span>Payments</span>
+          </a>
+        </li>
+
+
+
+
+
+
+
+        <li class="sidebar__item">
+          <a href="{% url 'my_bookings' %}">
+            <iconify-icon icon="solar:chat-round-line-outline" class="menu-icon"></iconify-icon>
+            <span>Raise Complaint</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'complaint_list' %}active{% endif %}">
+          <a href="{% url 'complaint_list' %}">
+            <iconify-icon icon="solar:clipboard-text-outline" class="menu-icon"></iconify-icon>
+            <span>Remarks</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'feedbackform' %}active{% endif %}">
+          <a href="{% url 'feedbackform' %}">
+            <iconify-icon icon="solar:chat-line-outline" class="menu-icon"></iconify-icon>
+            <span>Feedback & Suggestions</span>
+          </a>
+        </li> 
+
+        <li class="sidebar__item {% if request.resolver_match.url_name == 'privacy_policy' %}active{% endif %}">
+          <a href="{% url 'privacy_policy' %}">
+            <iconify-icon icon="solar:shield-check-outline" class="menu-icon"></iconify-icon>
+            <span> Privacy Policy</span>
+          </a>
+        </li>
+
+        
+<li class="sidebar__item {% if request.resolver_match.url_name == 'customer_terms' %}active{% endif %}">
+
+    <a href="{% url 'customer_terms' %}">
+
+<iconify-icon
+    icon="mdi:file-sign"
+    class="menu-icon">
+</iconify-icon>
+
+        <span>
+            Terms & Conditions
+        </span>
+
+    </a>
+
+</li>
+
+
+
+
+        {% endif %}
+        {% endif %}
+
+      </ul>
+    </div>
+
+
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="navbar-header">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-4">
+            <button type="button" class="sidebar-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon text-2xl non-active"></iconify-icon>
+              <iconify-icon icon="iconoir:arrow-right" class="icon text-2xl active"></iconify-icon>
+            </button>
+            <button type="button" class="sidebar-mobile-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
+            </button>
+            <form class="navbar-search">
+              <input type="text" name="search" placeholder="Search">
+              <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
+            </form>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-3">
+
+            {% if request.user.role != 'customer' %}
+            <a href="{% url 'indexpage' %}" target="_blank" class="btn btn-outline-primary d-inline-flex align-items-center gap-2" style="margin-right: 15px; border-radius: 20px; padding: 5px 15px; white-space: nowrap;">
+              <iconify-icon icon="mdi:web" style="font-size: 1.2rem;"></iconify-icon> View Website
+            </a>
+            {% endif %}
+
+            <div class="dropdown">
+              <button
+                class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"
+                type="button" data-bs-toggle="dropdown">
+                <iconify-icon icon="mage:email" class="text-primary-light text-xl"></iconify-icon>
+              </button>
+              
+            </div>
+            <!-- Message dropdown end -->
+
+<div class="dropdown">
+  <button
+    class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center position-relative border-0"
+    type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <iconify-icon icon="iconoir:bell" class="text-primary-light text-xl"></iconify-icon>
+    
+    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 8px; margin-left: -8px;"></span>
+  </button>
+
+  <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg p-0 border shadow-sm rounded-3 overflow-hidden" style="width: 360px; margin-top: 8px;">
+    
+    <div class="m-16 py-12 px-16 radius-8 bg-primary-50 d-flex align-items-center justify-content-between gap-2 mb-3">
+      <div>
+        <h6 class="text-lg text-primary-light fw-semibold mb-0">Notifications</h6>
+      </div>
+      <span class="text-primary-600 fw-semibold text-sm w-32-px h-32-px rounded-circle bg-white border border-primary-200 d-flex justify-content-center align-items-center">
+        {% if request.user.role == 'superadmin' %}{{ platform_alerts.count|default:"0" }}
+        {% elif request.user.role == 'admin' %}{{ system_alerts.count|default:"0" }}
+        {% elif request.user.role == 'vendor' %}{{ vendor_alerts.count|default:"0" }}
+        {% else %}{{ customer_alerts.count|default:"0" }}{% endif %}
+      </span>
+    </div>
+
+    <div class="max-h-400-px overflow-y-auto scroll-sm pe-4 live-notification-queue">
+      
+      {% if request.user.role == 'superadmin' %}
+        {% for alert in platform_alerts|slice:":4" %}
+        <a href="javascript:void(0)" class="px-24 py-12 d-flex align-items-start gap-3 justify-content-between notification-item-fade border-bottom">
+          <div class="text-black hover-bg-transparent d-flex align-items-center gap-3">
+            <span class="w-44-px h-44-px bg-danger-subtle text-danger-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+              <iconify-icon icon="solar:shield-warning-outline" class="icon text-xxl"></iconify-icon>
+            </span>
+            <div>
+              <h6 class="text-md fw-semibold mb-1">System Alert</h6>
+              <p class="mb-0 text-sm text-secondary-light text-w-200-px">{{ alert.message }}</p>
+            </div>
+          </div>
+          <span class="text-sm text-secondary-light flex-shrink-0">{{ alert.created_at|timesince }} ago</span>
+        </a>
+        {% empty %}
+        <div class="text-center py-4 text-muted text-sm">No platform alert logs available.</div>
+        {% endfor %}
+
+      {% elif request.user.role == 'admin' %}
+        {% for alert in system_alerts|slice:":4" %}
+        <a href="javascript:void(0)" class="px-24 py-12 d-flex align-items-start gap-3 justify-content-between notification-item-fade border-bottom">
+          <div class="text-black hover-bg-transparent d-flex align-items-center gap-3">
+            <span class="w-44-px h-44-px bg-success-subtle text-success-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+              <iconify-icon icon="bitcoin-icons:verify-outline" class="icon text-xxl"></iconify-icon>
+            </span>
+            <div>
+              <h6 class="text-md fw-semibold mb-1">New Booking Approved</h6>
+              <p class="mb-0 text-sm text-secondary-light text-w-200-px">Booking #{{ alert.booking_id }} registered successfully.</p>
+            </div>
+          </div>
+          <span class="text-sm text-secondary-light flex-shrink-0">{{ alert.created_at|timesince }} ago</span>
+        </a>
+        {% empty %}
+        <div class="text-center py-4 text-muted text-sm">No system booking notifications.</div>
+        {% endfor %}
+
+      {% elif request.user.role == 'vendor' %}
+        {% for alert in vendor_alerts|slice:":4" %}
+        <a href="javascript:void(0)" class="px-24 py-12 d-flex align-items-start gap-3 justify-content-between notification-item-fade border-bottom {% if forloop.counter|divisibleby:2 %}bg-neutral-50{% endif %}">
+          <div class="text-black hover-bg-transparent d-flex align-items-center gap-3">
+            <span class="w-44-px h-44-px bg-info-subtle text-info-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+              <iconify-icon icon="solar:case-minimalistic-outline" class="icon text-xxl"></iconify-icon>
+            </span>
+            <div>
+              <h6 class="text-md fw-semibold mb-1">New Assignment Proposal</h6>
+              <p class="mb-0 text-sm text-secondary-light text-w-200-px">{{ alert.message }}</p>
+            </div>
+          </div>
+          <span class="text-sm text-secondary-light flex-shrink-0">{{ alert.created_at|timesince }} ago</span>
+        </a>
+        {% empty %}
+        <div class="text-center py-4 text-muted text-sm">No incoming service assignments assigned.</div>
+        {% endfor %}
+
+      {% else %}
+        {% for alert in customer_alerts|slice:":4" %}
+        <a href="javascript:void(0)" class="px-24 py-12 d-flex align-items-start gap-3 justify-content-between notification-item-fade border-bottom">
+          <div class="text-black hover-bg-transparent d-flex align-items-center gap-3">
+            <span class="w-44-px h-44-px bg-success-subtle text-success-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+              <iconify-icon icon="solar:check-circle-outline" class="icon text-xxl"></iconify-icon>
+            </span>
+            <div>
+              <h6 class="text-md fw-semibold mb-1">Order Fulfilled</h6>
+              <p class="mb-0 text-sm text-secondary-light text-w-200-px">Your assigned specialist is on their way to your home destination.</p>
+            </div>
+          </div>
+          <span class="text-sm text-secondary-light flex-shrink-0">{{ alert.created_at|timesince }} ago</span>
+        </a>
+        {% empty %}
+        <div class="text-center py-4 text-muted text-sm">Your alert stream is currently clear.</div>
+        {% endfor %}
+      {% endif %}
+
+    </div>
+
+    <div class="text-center py-12 px-16 border-top bg-light">
+      <a href="javascript:void(0)" class="text-primary-600 fw-semibold text-sm text-decoration-none hover-underline">See All Notifications</a>
+    </div>
+
+  </div>
+</div>
+            
+            
+            <!-- Notification dropdown end -->
+
+            <!-- profile dropdown start -->
+
+<div class="dropdown">
+
+    <!-- TOGGLE -->
+
+    <button
+        class="pf-dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false">
+
+        {% if request.user.profile_image %}
+
+        <img
+            src="{{ request.user.profile_image.url }}"
+            alt="profile">
+
+        {% else %}
+
+        <img
+            src="{% static 'assets/images/logo/default-user-image.png' %}"
+            alt="profile">
+
+        {% endif %}
+
+    </button>
+
+
+
+    <!-- MENU -->
+
+    <div class="dropdown-menu dropdown-menu-end pf-dropdown-menu">
+
+        <!-- HEADER -->
+
+        <div class="pf-dropdown-header">
+
+            <button
+                type="button"
+                class="pf-close-btn"
+                data-bs-toggle="dropdown">
+
+                <iconify-icon icon="mdi:close"></iconify-icon>
+
+            </button>
+
+            <div class="pf-user-wrap">
+
+                {% if request.user.profile_image %}
+
+                <img
+                    src="{{ request.user.profile_image.url }}"
+                    class="pf-user-image"
+                    alt="profile">
+
+                {% else %}
+
+                <img
+                    src="{% static 'assets/images/logo/default-user-image.png' %}"
+                    class="pf-user-image"
+                    alt="profile">
+
+                {% endif %}
+
+                <div>
+
+                    <div class="pf-role-badge">
+
+                        {{ request.user.first_name }}
+
+                    </div>
+
+                    {% if user.is_authenticated %}
+
+                    <p class="pf-user-email">
+
+                        {{ request.user.email }}
+
+                    </p>
+
+                    {% else %}
+
+                    <p class="pf-user-email">
+
+                        Welcome, Guest
+
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LINKS -->
+
+        <ul class="pf-dropdown-list">
+
+            <li>
+
+                <a
+                    href="{% url 'profile' %}"
+                    class="pf-dropdown-link">
+
+                    <iconify-icon icon="solar:user-outline"></iconify-icon>
+
+                    My Profile
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a
+                    href="#"
+                    class="pf-dropdown-link">
+
+                    <iconify-icon icon="solar:inbox-outline"></iconify-icon>
+
+                    Inbox
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a
+                    href="{% url 'profile' %}"
+                    class="pf-dropdown-link">
+
+                    <iconify-icon icon="solar:settings-outline"></iconify-icon>
+
+                    Settings
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <form
+                    method="POST"
+                    action="{% url 'logout' %}">
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="pf-dropdown-link logout">
+
+                        <iconify-icon icon="solar:logout-2-outline"></iconify-icon>
+
+                        Log Out
+
+                    </button>
+
+                </form>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>
+            
+            
+            <!-- Profile dropdown end -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-main-body">
+
+
+
+      {% block content %}
+      {% endblock %}
+
+
+  </main>
+  {% load static %}
+
+  {% if messages %}
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      {% for message in messages %}
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: "{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}",
+          title: "{{ message|escapejs }}",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        });
+      {% endfor %}
+    });
+  </script>
+  {% endif %}
+
+  <!-- jQuery library js -->
+  <script src="{% static 'assets/js/lib/jquery-3.7.1.min.js' %}"></script>
+
+  <!-- Bootstrap js -->
+  <script src="{% static 'assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Apex Chart js -->
+  <script src="{% static 'assets/js/lib/apexcharts.min.js' %}"></script>
+
+  <!-- Data Table js -->
+  <script src="{% static 'assets/js/lib/dataTables.min.js' %}"></script>
+
+  <!-- Iconify Font js -->
+  <script src="{% static 'assets/js/lib/iconify-icon.min.js' %}"></script>
+
+  <!-- jQuery UI js -->
+  <script src="{% static 'assets/js/lib/jquery-ui.min.js' %}"></script>
+
+  <!-- Vector Map js -->
+  <script src="{% static 'assets/js/lib/jquery-jvectormap-2.0.5.min.js' %}"></script>
+  <script src="{% static 'assets/js/lib/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+  <!-- Popup js -->
+  <script src="{% static 'assets/js/lib/magnifc-popup.min.js' %}"></script>
+
+  <!-- Slick Slider js -->
+  <script src="{% static 'assets/js/lib/slick.min.js' %}"></script>
+
+  <!-- prism js -->
+  <script src="{% static 'assets/js/lib/prism.js' %}"></script>
+
+  <!-- file upload js -->
+  <script src="{% static 'assets/js/lib/file-upload.js' %}"></script>
+
+  <!-- audioplayer -->
+  <script src="{% static 'assets/js/lib/audioplayer.js' %}"></script>
+
+  <!-- main js -->
+  <script src="{% static 'assets/js/app.js' %}"></script>
+
+  <script src="{% static 'assets/js/homeOneChart.js' %}"></script>
+  <script src="{% static 'assets/js/timeout.js' %}"></script>
+
+</body>
+
+
+</html>

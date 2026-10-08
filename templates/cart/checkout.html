@@ -1,0 +1,499 @@
+{% extends 'public_base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    :root {
+        --primary: #ea5f01;
+        --primary-hover: #d15501;
+        --secondary: #074c7d;
+        --bg-gray: #f9fafb;
+        --border: #e5e7eb;
+        --text-dark: #1f2937;
+        --text-light: #6b7280;
+    }
+    
+    .checkout-container {
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        min-height: 100vh;
+        padding-top: 120px !important;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .checkout-header {
+        color: var(--secondary);
+        font-weight: 800 !important;
+        font-size: 2.2rem;
+        letter-spacing: -0.5px;
+    }
+    
+    .card {
+        background: #ffffff !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+    }
+    
+    .card-header {
+        background-color: #fff !important;
+        border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+        padding: 1.5rem !important;
+        border-radius: 16px 16px 0 0 !important;
+    }
+    
+    .btn-checkout {
+        background-color: var(--primary);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        border-radius: 30px !important;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-checkout:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(234, 95, 1, 0.2);
+        color: #fff;
+    }
+    
+    .form-label {
+        color: var(--text-dark);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        color: var(--text-dark) !important;
+        background-color: #ffffff !important;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+    
+    .form-control:focus {
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 4px rgba(7, 76, 125, 0.1);
+    }
+    
+    /* Segmented Control for Schedule Type */
+    .schedule-type-selector {
+        display: flex;
+        background: rgba(0,0,0,0.02);
+        padding: 0.4rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border);
+    }
+    
+    .schedule-type-selector input[type="radio"] {
+        display: none;
+    }
+    
+    .schedule-type-selector label {
+        flex: 1;
+        text-align: center;
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        color: var(--text-light);
+        font-weight: 600;
+        border-radius: 10px;
+        margin: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .schedule-type-selector input[type="radio"]:checked + label {
+        background-color: #fff;
+        color: var(--primary);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    
+    .time-slot-selector {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    
+    .time-slot-selector input[type="radio"] {
+        display: none;
+    }
+    
+    .time-slot-selector label {
+        text-align: center;
+        padding: 1rem;
+        background-color: #fff;
+        border: 1.5px solid var(--border);
+        cursor: pointer;
+        color: var(--text-dark);
+        font-weight: 600;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        margin: 0;
+    }
+    
+    .time-slot-selector label:hover {
+        border-color: var(--secondary);
+        background-color: rgba(7, 76, 125, 0.02);
+        transform: translateY(-2px);
+    }
+    
+    .time-slot-selector input[type="radio"]:checked + label {
+        background-color: var(--secondary);
+        color: white;
+        border-color: var(--secondary);
+        box-shadow: 0 6px 15px rgba(7, 76, 125, 0.2);
+    }
+    
+    .multiple-days-fields {
+        display: none;
+    }
+    
+    .time-picker-wrapper {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        padding: 0.4rem;
+        transition: all 0.3s ease;
+    }
+    
+    .custom-dropdown {
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+        flex: 1;
+    }
+    
+    .dropdown-selected {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        padding: 0.3rem 0.5rem;
+        text-align: center;
+    }
+    
+    .dropdown-options {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        list-style: none;
+        padding: 8px;
+        margin: 8px 0 0 0;
+        display: none;
+        z-index: 100;
+        min-width: 180px;
+        /* Grid Layout eliminates scrolling completely */
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+    }
+    
+    .dropdown-options.show {
+        display: grid;
+        animation: fadeIn 0.2s ease;
+    }
+    
+    .dropdown-options li {
+        padding: 0.5rem 0.2rem;
+        text-align: center;
+        font-weight: 600;
+        color: var(--text-dark);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .dropdown-options li:hover {
+        background: var(--secondary);
+        color: white;
+    }
+    
+    .ampm-toggle-btn {
+        background: var(--bg-gray);
+        color: var(--primary);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.3rem 0.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-left: 8px;
+    }
+    
+    .ampm-toggle-btn:hover {
+        background: rgba(234, 95, 1, 0.05);
+        border-color: var(--primary);
+    }
+</style>
+
+<div class="container-fluid pt-4 pb-5 checkout-container">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h2 class="font-weight-bold checkout-header">Checkout</h2>
+            <p class="text-muted">Please provide your details to confirm the booking</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Booking Form -->
+        <div class="col-lg-7 mb-4">
+            <div class="card shadow-sm border-0" style="border-radius: 10px; overflow: hidden;">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="mb-0" style="color: #074c7d; font-weight: 700;">Customer Information</h5>
+                </div>
+                <div class="card-body p-4">
+                    {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+
+                    <form action="{% url 'checkout' %}" method="POST" id="checkout-form">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ user.first_name }} {{ user.last_name }}" style="color: #000 !important;" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" value="{{ user.phone }}" style="color: #000 !important;" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="city" class="form-label">City *</label>
+                                <input type="text" class="form-control" id="city" name="city" required value="{{ user.city|default:'' }}" style="color: #000 !important;">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="area" class="form-label">Area / Locality *</label>
+                                <input type="text" class="form-control" id="area" name="area" required style="color: #000 !important;">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="pincode" class="form-label">Pincode *</label>
+                                <input type="text" class="form-control" id="pincode" name="pincode" required value="{{ user.pincode|default:'' }}" style="color: #000 !important;">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="address" class="form-label">Complete Address *</label>
+                            <textarea class="form-control" id="address" name="address" rows="2" required style="color: #000 !important;">{{ user.address|default:'' }}</textarea>
+                        </div>
+
+                        <hr class="my-4" style="border-color: var(--border);">
+                        <h5 class="mb-4" style="color: var(--secondary); font-weight: 700; font-size: 1.25rem;">Booking Schedule</h5>
+
+                        <div class="schedule-type-selector">
+                            <input type="radio" id="single-day" name="booking_type" value="single" checked>
+                            <label for="single-day">Single Day</label>
+                            
+                            <input type="radio" id="multiple-days" name="booking_type" value="multiple">
+                            <label for="multiple-days">Multiple Days</label>
+                        </div>
+
+                        <div class="row mb-4">
+                            <!-- Single Day Field -->
+                            <div class="col-12 single-day-fields">
+                                <label for="start_date" class="form-label">Preferred Date *</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date" required onclick="this.showPicker()" style="cursor: pointer;">
+                            </div>
+
+                            <!-- Multiple Days Fields -->
+                            <div class="col-md-6 multiple-days-fields">
+                                <label for="start_date_multi" class="form-label">Start Date *</label>
+                                <input type="date" class="form-control" id="start_date_multi" name="start_date_multi" onclick="this.showPicker()" style="cursor: pointer;">
+                            </div>
+                            <div class="col-md-6 multiple-days-fields mt-3 mt-md-0">
+                                <label for="end_date" class="form-label">End Date *</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date" onclick="this.showPicker()" style="cursor: pointer;">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Preferred Time Window *</label>
+                            <div class="row g-3">
+                                <!-- FROM TIME -->
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted" style="font-size: 0.85rem;">From Time</label>
+                                    <div class="time-picker-wrapper">
+                                        <i class="fa-regular fa-clock text-muted ms-2 me-2"></i>
+                                        
+                                        <div class="custom-dropdown" id="from_hr_dropdown">
+                                            <div class="dropdown-selected" id="from_hr_display">08</div>
+                                            <ul class="dropdown-options" id="from_hr_options">
+                                                <li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li>
+                                                <li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li>
+                                            </ul>
+                                            <input type="hidden" id="from_hr_input" value="08">
+                                        </div>
+                                        
+                                        <button type="button" class="ampm-toggle-btn" id="from_ampm_btn" onclick="toggleAmPm('from_ampm_btn')">AM</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- TO TIME -->
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted" style="font-size: 0.85rem;">To Time</label>
+                                    <div class="time-picker-wrapper">
+                                        <i class="fa-regular fa-clock text-muted ms-2 me-2"></i>
+                                        
+                                        <div class="custom-dropdown" id="to_hr_dropdown">
+                                            <div class="dropdown-selected" id="to_hr_display">10</div>
+                                            <ul class="dropdown-options" id="to_hr_options">
+                                                <li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li>
+                                                <li>07</li><li>08</li><li>09</li><li>10</li><li>11</li><li>12</li>
+                                            </ul>
+                                            <input type="hidden" id="to_hr_input" value="10">
+                                        </div>
+                                        
+                                        <button type="button" class="ampm-toggle-btn" id="to_ampm_btn" onclick="toggleAmPm('to_ampm_btn')">AM</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Hidden input to submit the combined time to the backend -->
+                            <input type="hidden" id="scheduled_time_hidden" name="scheduled_time" value="">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="problem" class="form-label">Remarks (Optional)</label>
+                            <textarea class="form-control" id="problem" name="problem" rows="2" placeholder="Any specific details for the technicians..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-checkout btn-block py-3 font-weight-bold" style="width: 100%; font-size: 1.1rem; border-radius: 5px;">Confirm Booking</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0 sticky-top" style="top: 100px; border-radius: 10px; overflow: hidden;">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="mb-0" style="color: #074c7d; font-weight: 700;">Order Summary</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for item in items %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <div style="color: #495057; font-weight: 500;">
+                                <i class="fas fa-check-circle mr-2" style="color: #ea5f01;"></i> {{ item.service.s_title }}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer bg-light py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0" style="color: #074c7d; font-weight: 700;">Total Services:</h5>
+                    <h5 class="mb-0" style="color: #ea5f01; font-weight: 700;">{{ items|length }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const singleDayRadio = document.getElementById('single-day');
+        const multipleDaysRadio = document.getElementById('multiple-days');
+        const singleDayFields = document.querySelector('.single-day-fields');
+        const multipleDaysFields = document.querySelectorAll('.multiple-days-fields');
+        
+        const singleDateInput = document.getElementById('start_date');
+        const multiStartDateInput = document.getElementById('start_date_multi');
+        const multiEndDateInput = document.getElementById('end_date');
+        
+        function toggleFields() {
+            if (singleDayRadio.checked) {
+                singleDayFields.style.display = 'block';
+                multipleDaysFields.forEach(el => el.style.display = 'none');
+                
+                singleDateInput.setAttribute('required', 'required');
+                multiStartDateInput.removeAttribute('required');
+                multiEndDateInput.removeAttribute('required');
+            } else {
+                singleDayFields.style.display = 'none';
+                multipleDaysFields.forEach(el => el.style.display = 'block');
+                
+                singleDateInput.removeAttribute('required');
+                multiStartDateInput.setAttribute('required', 'required');
+                multiEndDateInput.setAttribute('required', 'required');
+            }
+        }
+        
+        singleDayRadio.addEventListener('change', toggleFields);
+        multipleDaysRadio.addEventListener('change', toggleFields);
+        
+        // Initial setup
+        toggleFields();
+        
+        // Custom Dropdown JS
+        function setupDropdown(dropdownId, displayId, inputId) {
+            const dropdown = document.getElementById(dropdownId);
+            const display = document.getElementById(displayId);
+            const input = document.getElementById(inputId);
+            const options = dropdown.querySelector('.dropdown-options');
+
+            display.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Close others
+                document.querySelectorAll('.dropdown-options').forEach(opt => {
+                    if (opt !== options) opt.classList.remove('show');
+                });
+                options.classList.toggle('show');
+            });
+
+            options.querySelectorAll('li').forEach(li => {
+                li.addEventListener('click', function() {
+                    display.innerText = this.innerText;
+                    input.value = this.innerText;
+                    options.classList.remove('show');
+                });
+            });
+        }
+
+        setupDropdown('from_hr_dropdown', 'from_hr_display', 'from_hr_input');
+        setupDropdown('to_hr_dropdown', 'to_hr_display', 'to_hr_input');
+
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.dropdown-options').forEach(opt => opt.classList.remove('show'));
+        });
+
+        // Form submission handling to ensure correct field names
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            if (multipleDaysRadio.checked) {
+                // If multiple days is selected, populate start_date with start_date_multi
+                // so the backend receives the expected field
+                singleDateInput.value = multiStartDateInput.value;
+            }
+            
+            // Combine from and to times for the hidden input
+            const fromHr = document.getElementById('from_hr_input').value;
+            const fromAmPm = document.getElementById('from_ampm_btn').innerText;
+            
+            const toHr = document.getElementById('to_hr_input').value;
+            const toAmPm = document.getElementById('to_ampm_btn').innerText;
+            
+            document.getElementById('scheduled_time_hidden').value = `${fromHr}:00 ${fromAmPm} - ${toHr}:00 ${toAmPm}`;
+        });
+    });
+
+    function toggleAmPm(btnId) {
+        const btn = document.getElementById(btnId);
+        btn.innerText = btn.innerText === 'AM' ? 'PM' : 'AM';
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="footer-page">
+
+    <!-- PAGE HEADER -->
+
+   <div class="page-header">
+
+        <div>
+
+            <h6 class="fw-semibold mb-0">
+
+                Create Footer
+
+            </h6>
+
+            <p class="page-subtitle">
+
+                Create and publish latest Jobs updates
+
+            </p>
+
+        </div>
+
+                <div class="header-right">
+
+            <div class="banner-badge">
+                Create Footer
+
+            </div>
+
+            <a href="{% url 'list.footer' %}"
+               class="list-btn">
+
+                <i class="bi bi-images"></i>
+
+               Footer List
+
+            </a>
+
+        </div>
+
+    </div>
+    <!-- CARD -->
+
+    <div class="footer-card">
+
+        <!-- CARD TOP -->
+
+        <div class="card-top">
+
+            <div>
+
+                <h5 class="card-title">
+
+                    Add Footer
+
+                </h5>
+
+                <p class="card-desc">
+
+                    Create footer details and contact information
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+
+        <div class="card-body-custom">
+
+            
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    <!-- LOGO -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Footer Logo
+
+                        </label>
+
+                        <div class="image-box">
+
+                            <img id="preview">
+
+                        </div>
+
+                        <input type="file" name="logo_image" class="file-input" onchange="previewImage(event)">
+
+                    </div>
+
+                    <!-- CART IMAGE -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+
+                            Cart Section Image
+
+                        </label>
+
+                        <div class="image-box">
+
+                            <img id="cart_preview" style="max-height: 100%; max-width: 100%;">
+
+                        </div>
+
+                        <input type="file" name="cart_image" class="file-input" onchange="previewCartImage(event)">
+
+                    </div>
+
+                    <!-- DETAILS -->
+
+                    <div class="col-md-8">
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Footer Description
+
+                            </label>
+
+                            <textarea name="footer_description" class="textarea-custom" rows="4" required></textarea>
+
+                        </div>
+
+                        <!-- PHONE -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Phone Number
+
+                            </label>
+
+                            <input type="text" name="phone_num" class="form-control-custom" required>
+
+                        </div>
+
+                        <!-- WHATSAPP -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                WhatsApp Number
+
+                            </label>
+
+                            <input type="text" name="whatsapp_num" class="form-control-custom" required>
+
+                        </div>
+
+                        <!-- EMAIL -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Email
+
+                            </label>
+
+                            <input type="email" name="email" class="form-control-custom" required>
+
+                        </div>
+
+                        <!-- ADDRESS -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Address
+
+                            </label>
+
+                            <textarea name="address" class="textarea-custom" rows="3" required></textarea>
+
+                        </div>
+
+                    </div>
+
+                    <!-- SOCIAL LINKS -->
+
+                    <div class="col-md-6">
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Facebook URL
+
+                            </label>
+
+                            <input type="url" name="facebook" class="form-control-custom">
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Instagram URL
+
+                            </label>
+
+                            <input type="url" name="instagram" class="form-control-custom">
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Twitter URL
+
+                            </label>
+
+                            <input type="url" name="twitter" class="form-control-custom">
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                WhatsApp Link
+
+                            </label>
+
+                            <input type="url" name="whatsapp" class="form-control-custom">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a href="{% url 'list.footer' %}" class="back-btn">
+
+                        Back
+
+                    </a>
+
+                    <button type="submit" class="save-btn">
+
+                        Save Footer
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- IMAGE PREVIEW -->
+
+<script>
+
+    function previewImage(event) {
+
+        const reader = new FileReader();
+
+        reader.onload = function () {
+
+            document.getElementById(
+                'preview'
+            ).src = reader.result;
+
+        }
+
+        reader.readAsDataURL(
+            event.target.files[0]
+        );
+
+    }
+
+    function previewCartImage(event) {
+
+        const reader = new FileReader();
+
+        reader.onload = function () {
+
+            document.getElementById(
+                'cart_preview'
+            ).src = reader.result;
+
+        }
+
+        reader.readAsDataURL(
+            event.target.files[0]
+        );
+
+    }
+
+</script>
+
+{% endblock %}

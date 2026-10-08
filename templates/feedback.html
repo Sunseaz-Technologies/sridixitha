@@ -1,0 +1,105 @@
+{% extends 'public_base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Restore the fonts and sizes if they were overwritten */
+    .fb-label {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  
+{% if request.user.is_authenticated %}
+  <div class="fb-wrapper">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+
+          <div class="fb-card">
+            <h2 class="fb-title">Service Feedback Form</h2>
+
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <div class="row">
+
+                <!-- Service Name -->
+                <div class="col-md-6 mb-3">
+                  <label class="fb-label">Service Name</label>
+                  <input type="text" name="service_name" class="form-control fb-input" placeholder="Enter service name">
+                </div>
+
+                <!-- Customer Name -->
+                <div class="col-md-6 mb-3">
+                  <label class="fb-label">Customer Name</label>
+                  <input type="text" name="customer_name" class="form-control fb-input" placeholder="Enter your name">
+                </div>
+
+                <!-- Customer Type -->
+                <div class="col-md-6 mb-3">
+                  <label class="fb-label">Customer Type</label>
+                  <select name="customer_type" class="form-control fb-input">
+                    <option value="" disabled selected>-- Select Type --</option>
+                    <option value="Client">Client</option>
+                    <option value="House_Owner">House Owner</option>
+                    <option value="Business_Owner">Business Owner</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="col-md-6 mb-3">
+                  <label class="fb-label">Upload Image</label>
+                  <input type="file" name="image" class="form-control fb-input">
+                </div>
+
+                <!-- Rating -->
+                <div class="col-12 mb-3">
+                  <label class="fb-label">Rating</label>
+                  <div class="fb-rating">
+                    <input type="radio" name="rating" value="5" id="star5"><label for="star5">★</label>
+                    <input type="radio" name="rating" value="4" id="star4"><label for="star4">★</label>
+                    <input type="radio" name="rating" value="3" id="star3"><label for="star3">★</label>
+                    <input type="radio" name="rating" value="2" id="star2"><label for="star2">★</label>
+                    <input type="radio" name="rating" value="1" id="star1"><label for="star1">★</label>
+                  </div>
+                </div>
+
+                <!-- Description -->
+                <div class="col-12 mb-3">
+                  <label class="fb-label">Service Description</label>
+                  <textarea name="description" class="form-control fb-textarea"
+                    placeholder="Write your experience"></textarea>
+                </div>
+
+                <!-- Submit -->
+                <div class="col-12 text-center mt-3">
+                  <button type="submit" class="fb-btn">Submit Feedback</button>
+                </div>
+
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+
+<div class="text-center  mt-5" style="padding: 40px 0px; background: #ecedef7a;">
+  <h4>Please login to submit feedback</h4>
+  <a href="{% url 'login' %}" class="btn btn-primary mt-3">Login</a>
+</div>
+
+{% endif %}
+
+{% endblock %}

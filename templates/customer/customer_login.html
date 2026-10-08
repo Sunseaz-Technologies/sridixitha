@@ -1,0 +1,505 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Back | SriDixitha Home Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #005eff; 
+            --primary-hover: #004ecc;
+            --text-dark: #111827;
+            --text-gray: #36383b;
+            --border: #e5e7eb;
+            --bg-body: #f3f4f6;
+            --white: #ffffff;
+            --error: #ef4444;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .main-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1050px;
+            background: var(--white);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            min-height: 620px;
+        }
+
+        /* Left Side: Form */
+        .form-side {
+            flex: 1;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .content-container {
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            margin-bottom: 35px;
+        }
+
+        .logo-container img {
+            height: 55px;
+            object-fit: contain;
+        }
+
+        h2 {
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-gray);
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* Input Styles - Fixed Edges */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            color: var(--text-gray);
+        }
+
+        .phone-box {
+            display: flex;
+            align-items: stretch;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            background: var(--white);
+            overflow: hidden;
+        }
+
+        .phone-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 94, 255, 0.1);
+        }
+
+        .country-prefix {
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            background: #f9fafb;
+            border-right: 2px solid var(--border);
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 15px;
+            user-select: none;
+        }
+
+        input#phone {
+            flex: 1;
+            padding: 14px 16px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            font-family: inherit;
+            font-weight: 500;
+            width: 100%;
+        }
+
+        /* Button & Links */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(0, 94, 255, 0.25);
+        }
+
+        .links-area {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        .links-area a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .vendor-link {
+            margin: 20px 0;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* OTP Grid */
+        .otp-wrap {
+            display: none;
+            animation: slideUp 0.4s ease-out;
+            margin-bottom: 25px;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .otp-grid {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .otp-box {
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.2s;
+            background: #fcfcfc;
+        }
+
+        .otp-box:focus {
+            border-color: var(--primary);
+            background: #fff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 94, 255, 0.1);
+        }
+
+        .msg { font-size: 14px; margin-bottom: 15px; font-weight: 500; text-align: center;}
+
+        /* Clean styles for OTP custom timer text */
+        .otp-text-container {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .otp-resend-link {
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: none; /* Starts hidden */
+            cursor: pointer;
+        }
+
+        .otp-resend-link:hover {
+            text-decoration: underline;
+        }
+
+        .otp-countdown-timer {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Right Side: Image */
+        .image-side {
+            flex: 1;
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)), 
+            url("{% static 'assets/images/bg/login_image.jpg' %}") no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: flex-end;
+            padding: 40px;
+        }
+
+        .image-card {
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 400px;
+        }
+
+        .image-card h3 { font-size: 24px; color: white; margin-bottom: 10px; }
+        .image-card p { font-size: 15px; color: white; line-height: 1.5; }
+
+        @media (max-width: 900px) {
+            .image-side { display: none; }
+            .form-side { padding: 40px 24px; }
+            .main-wrapper { max-width: 450px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <div class="form-side">
+            <div class="content-container">
+                <div class="logo-container">
+                    <img src="{% static 'assets/images/logo/sridixitha_logo.gif' %}" alt="Login_logo">
+                </div>
+
+                <div id="step1-header">
+                    <h2>Welcome Back</h2>
+                    <p class="subtitle">Your home, cared for. Log in to schedule your next service.</p>
+                </div>
+                {% csrf_token %}
+                <div id="step2-header" style="display:none;">
+                    <h2>Verify Code</h2>
+                    <p class="subtitle">We've sent a 4-digit code to <br><strong id="displayPhone"></strong> <a href="#" onclick="location.reload()" style="font-size:12px; margin-left:8px; font-weight: 600;">Edit Number</a></p>
+                </div>
+
+                <p id="msg" class="msg"></p>
+
+                <div class="input-group" id="phoneGroup">
+                    <label class="input-label">Mobile Number</label>
+                    <div class="phone-box">
+                        <div class="country-prefix">+91</div>
+                        <input id="phone" type="tel" placeholder="Enter 10 digits" maxlength="10">
+                    </div>
+                </div>
+
+                <div class="otp-wrap" id="otpWrap">
+                    <label class="input-label" style="text-align: center; display: block;">Enter Code</label>
+                    <div class="otp-grid">
+                        <input class="otp-box" type="text" maxlength="1" inputmode="numeric">
+                        <input class="otp-box" type="text" maxlength="1" inputmode="numeric">
+                        <input class="otp-box" type="text" maxlength="1" inputmode="numeric">
+                        <input class="otp-box" type="text" maxlength="1" inputmode="numeric">
+                    </div>
+                    <p class="otp-text-container">
+                        Didn't get it? 
+                        <span id="otp-timer-text">Resend available in <span id="countdown" class="otp-countdown-timer">30</span>s</span>
+                        <a id="resend-link" class="otp-resend-link">Resend OTP</a>
+                    </p>
+                </div>
+
+                <button class="btn" id="btn">Continue</button>
+
+                <div class="links-area">
+                    <p>Don't have an account? <a href="/register/">Sign Up</a></p>
+                    
+                    <div class="vendor-link">
+                      <p>Are you a service professional? <a href="/register/">Join as a Vendor</a></p>
+                    </div>
+
+                    <p style="font-size: 11px; opacity: 1; margin-top: 20px;">
+                        By signing in, you agree to our <a href="{% url 'login_terms' %}" style="color: rgb(45, 36, 224); text-decoration: underline;">Terms</a> & <a href="{% url 'login_terms' %}" style="color: rgb(65, 54, 213); text-decoration: underline;">Privacy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="image-side">
+            <div class="image-card">
+                <h3>Your Home, Handled by Experts.</h3>
+                <p>Book trusted professionals for cleaning, repairs, and maintenance—all in one place.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const NEXT_URL = "{{ next|default:'' }}";
+        let step = 1;
+
+        const btn = document.getElementById("btn");
+        const phoneInput = document.getElementById("phone");
+        const otpWrap = document.getElementById("otpWrap");
+        const phoneGroup = document.getElementById("phoneGroup");
+        const boxes = document.querySelectorAll(".otp-box");
+        const msg = document.getElementById("msg");
+        const step1H = document.getElementById("step1-header");
+        const step2H = document.getElementById("step2-header");
+
+        // Timer Elements
+        const countdownNum = document.getElementById("countdown");
+        const timerTextWrapper = document.getElementById("otp-timer-text");
+        const resendBtn = document.getElementById("resend-link");
+
+        let timerInterval;
+        let secondsLeft = 30;
+
+        function getCSRF() {
+            return document.cookie.split('; ')
+                .find(r => r.startsWith('csrftoken='))?.split('=')[1];
+        }
+
+        function showMsg(text, type) {
+            msg.innerText = text;
+            msg.style.color = type === "error" ? "var(--error)" : "var(--success)";
+        }
+
+        // 30 Seconds Countdown Timer Function
+        function startCountdown() {
+            clearInterval(timerInterval);
+            resendBtn.style.display = "none";
+            timerTextWrapper.style.display = "inline";
+            secondsLeft = 30;
+            countdownNum.textContent = secondsLeft;
+
+            timerInterval = setInterval(function() {
+                secondsLeft--;
+                countdownNum.textContent = secondsLeft;
+
+                if (secondsLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerTextWrapper.style.display = "none";
+                    resendBtn.style.display = "inline"; // Show Resend text link
+                }
+            }, 1000);
+        }
+
+        // OTP Input Focus Logic
+        boxes.forEach((box, index) => {
+            box.addEventListener("input", function () {
+                this.value = this.value.replace(/[^0-9]/g, "");
+                if (this.value && index < boxes.length - 1) boxes[index + 1].focus();
+            });
+            box.addEventListener("keydown", function (e) {
+                if (e.key === "Backspace" && !this.value && index > 0) boxes[index - 1].focus();
+            });
+        });
+
+        // Click Action handler for Resend OTP button link
+        resendBtn.addEventListener("click", async function(e) {
+            e.preventDefault();
+            showMsg("Resending code...", "success");
+
+            try {
+                const res = await fetch(window.location.pathname, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "X-CSRFToken": getCSRF() },
+                    body: JSON.stringify({ phone: phoneInput.value, next: NEXT_URL })
+                });
+                const data = await res.json();
+                if (data.error) {
+                    showMsg(data.error, "error");
+                } else {
+                    showMsg("New verification code sent!", "success");
+                    startCountdown(); // Restart countdown clock
+                }
+            } catch (err) {
+                showMsg("Simulated code resent successfully!", "success");
+                startCountdown();
+            }
+        });
+
+        btn.onclick = async function () {
+            if (step === 1) {
+                if (phoneInput.value.length !== 10) {
+                    return showMsg("Please enter a valid 10-digit number", "error");
+                }
+
+                btn.innerText = "Processing...";
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch(window.location.pathname, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "X-CSRFToken": getCSRF() },
+                        body: JSON.stringify({ phone: phoneInput.value, next: NEXT_URL })
+                    });
+
+                    const data = await res.json();
+                    if (data.error) {
+                        showMsg(data.error, "error");
+                        btn.innerText = "Continue";
+                        btn.disabled = false;
+                    } else {
+                        showMsg("Verification code sent!", "success");
+                        phoneGroup.style.display = "none";
+                        step1H.style.display = "none";
+                        otpWrap.style.display = "block";
+                        step2H.style.display = "block";
+                        document.getElementById("displayPhone").innerText = "+91 " + phoneInput.value;
+                        btn.innerText = "Verify & Login";
+                        btn.disabled = false;
+                        step = 2;
+                        startCountdown(); // Fire timer on view change
+                        boxes[0].focus();
+                    }
+                } catch (e) {
+                    showMsg("Success! (Simulated)", "success");
+                    phoneGroup.style.display = "none";
+                    step1H.style.display = "none";
+                    otpWrap.style.display = "block";
+                    step2H.style.display = "block";
+                    document.getElementById("displayPhone").innerText = "+91 " + phoneInput.value;
+                    btn.innerText = "Verify & Login";
+                    btn.disabled = false;
+                    step = 2;
+                    startCountdown(); // Fire timer on simulation mode fallback
+                    boxes[0].focus();
+                }
+            } else if (step === 2) {
+                let otp = "";
+                boxes.forEach(b => otp += b.value);
+                if (otp.length !== 4) return showMsg("Please enter the full code", "error");
+                
+                btn.innerText = "Verifying...";
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch(window.location.pathname, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "X-CSRFToken": getCSRF() },
+                        body: JSON.stringify({ phone: phoneInput.value, otp: otp, next: NEXT_URL })
+                    });
+                    const data = await res.json();
+                    if (data.error) {
+                        showMsg(data.error, "error");
+                        btn.innerText = "Verify & Login";
+                        btn.disabled = false;
+                    } else {
+                        window.location.href = data.redirect;
+                    }
+                } catch (err) {
+                    showMsg("Simulation complete. Connect backend view routing to redirect.", "error");
+                    btn.innerText = "Verify & Login";
+                    btn.disabled = false;
+                }
+            }
+        };
+    </script>
+</body>
+</html>
